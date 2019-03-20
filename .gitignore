@@ -4,6 +4,8 @@
 ### Gradle ###
 .gradle
 /build/
+core/build/
+desktop/build/
 
 
 # Log file
