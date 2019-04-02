@@ -28,7 +28,7 @@ public class ScreenManagerTest {
     @Test
     public void testGameInfoScreen(){
         test.changeScreen(ScreenManager.Screens.GAME_INFO);
-        verify(game, times(1)).setScreen(refEq(new MainMenuScreen()));
+        verify(game, times(1)).setScreen(refEq(new GameInfoScreen()));
     }
 
     @Test
