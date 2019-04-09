@@ -36,7 +36,7 @@ public class ScreenManager {
      * Retrieve the ScreenManager instance
      * @return ScreenManager singleton
      */
-    public static ScreenManager getInstance(){
+    public static synchronized ScreenManager getInstance(){
         if(instance == null){
             instance = new ScreenManager();
         }
