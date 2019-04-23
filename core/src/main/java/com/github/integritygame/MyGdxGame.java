@@ -8,7 +8,7 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create () {
 		ScreenManager.getInstance().init(this);
-		ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
+		ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
 	}
 
 	@Override
