@@ -7,9 +7,10 @@ import com.github.integritygame.MyGdxGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-                config.height = 480;
-                config.width = 600;
-                config.resizable = false;
+			config.title = "Tank Game";
+            config.height = 480;
+            config.width = 600;
+            config.resizable = false;
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }
