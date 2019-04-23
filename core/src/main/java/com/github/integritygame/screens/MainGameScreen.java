@@ -18,12 +18,17 @@ public class MainGameScreen extends AbstractScreen {
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
 
+    private int graphicsWidth;
+    private int graphicsHeight;
+
     public MainGameScreen(){
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         loadTextures();
-        tankA = new Tank(10, 120,80,40);
-        tankB = new Tank(510,120,80,40);
+        tankA = new Tank(10, 120,50,25);
+        tankB = new Tank(510,120,50,25);
+        graphicsWidth = Gdx.graphics.getWidth();
+        graphicsHeight = Gdx.graphics.getHeight();
     }
 
     private void loadTextures(){
@@ -41,7 +46,7 @@ public class MainGameScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         userInput();
         spriteBatch.begin();
-            spriteBatch.draw(backgroundTexture, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatch.draw(backgroundTexture, 0 , 0, graphicsWidth, graphicsHeight);
             tankA.renderSprite(spriteBatch);
             tankB.renderSprite(spriteBatch);
         spriteBatch.end();
