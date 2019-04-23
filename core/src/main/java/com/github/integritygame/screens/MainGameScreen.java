@@ -25,10 +25,11 @@ public class MainGameScreen extends AbstractScreen {
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         loadTextures();
-        tankA = new Tank(10, 180,80,35);
-        tankB = new Tank(510,180,80,35);
         graphicsWidth = Gdx.graphics.getWidth();
         graphicsHeight = Gdx.graphics.getHeight();
+        tankA = new Tank(30, 180,80,35);
+        tankB = new Tank(graphicsWidth - 110,180,80,35);
+        tankB.setTexture("tanks/DesertColourTankLeft.png");
     }
 
     private void loadTextures(){

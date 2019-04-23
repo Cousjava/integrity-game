@@ -23,7 +23,7 @@ public class Tank {
         this.position = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.texture = new Texture(Gdx.files.internal("tanks/DesertColourTank.png"));
+        this.texture = new Texture(Gdx.files.internal("tanks/DesertColourTankRight.png"));
         this.graphicsWidth = Gdx.graphics.getWidth();
     }
 
@@ -57,6 +57,10 @@ public class Tank {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(localCenter.x, localCenter.y, x, y);
         shapeRenderer.end();
+    }
+
+    public void setTexture(String location){
+        texture = new Texture(Gdx.files.internal(location));
     }
 
 }
