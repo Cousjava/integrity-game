@@ -50,8 +50,8 @@ public class Tank {
     public void renderShape(ShapeRenderer shapeRenderer) {
         Vector2 localCenter = new Vector2(position.x + (width / 2), position.y + (height / 2));
         float radians = (float)Math.toRadians(rotation);
-        float x = (float)(Math.cos(radians) * 20) + localCenter.x;
-        float y = (float)(Math.sin(radians) * 20) + localCenter.y;
+        float x = (float)(Math.cos(radians) * 25) + localCenter.x;
+        float y = (float)(Math.sin(radians) * 25) + localCenter.y;
 
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
