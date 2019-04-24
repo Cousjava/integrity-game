@@ -9,4 +9,5 @@ The greatest and best game in the world.
 
 #### Development Config
 
-* indclude the assets folder in your working directory (under Run/Debug Configurations in IntelliJ)
+* include the assets folder in your working directory (under Run/Debug Configurations in IntelliJ)
+* run the DesktopLauncher class under desktop/src/main/java/com/integrity/games/desktop/DesktopLauncher.java
