@@ -51,7 +51,7 @@ public class MainMenuScreen extends AbstractScreen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainGameScreen());
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
             }
         });
 
@@ -63,9 +63,12 @@ public class MainMenuScreen extends AbstractScreen {
         });
 
         //add buttons to table
-        mainTable.add(playButton);
+        int tableWidthScalar = 4;
+        int tableHeightScalar = 3;
+
+        mainTable.add(playButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
         mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
 
         //add table to stage
         stage.addActor(mainTable);
