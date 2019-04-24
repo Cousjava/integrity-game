@@ -61,7 +61,7 @@ public class MainGameScreen extends AbstractScreen {
             
             for (Bullet bullet: bullets) {
                 //Yes, magic numbers are terrible. TODO: refactor this.
-                if (bullet.getX() < 0 || bullet.getX() > 600 || bullet.getY() < 0 || bullet.getY() > 600) {
+                if (bullet.getX() < 0 || bullet.getX() > graphicsWidth || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
                     outside.add(bullet);
                 } else {
                     bullet.update();

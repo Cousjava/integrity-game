@@ -60,7 +60,7 @@ public class Tank {
     }
     
     public Vector2 getCurrentPosition() {
-        return position;
+        return new Vector2(position.x + (width / 2), position.y + (height / 2));
     }
     
     public float getRotation() {
