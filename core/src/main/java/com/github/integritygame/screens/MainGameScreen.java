@@ -7,7 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainGameScreen extends AbstractScreen {
 
@@ -17,13 +22,21 @@ public class MainGameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
+    
+    private List<Bullet> bullets = new ArrayList<>();
+
+    private int graphicsWidth;
+    private int graphicsHeight;
 
     public MainGameScreen(){
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         loadTextures();
-        tankA = new Tank(10, 120,80,40);
-        tankB = new Tank(510,120,80,40);
+        graphicsWidth = Gdx.graphics.getWidth();
+        graphicsHeight = Gdx.graphics.getHeight();
+        tankA = new Tank(30, 180,80,35);
+        tankB = new Tank(graphicsWidth - 110,180,80,35);
+        tankB.setTexture("tanks/DesertColourTankLeft.png");
     }
 
     private void loadTextures(){
@@ -41,9 +54,23 @@ public class MainGameScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         userInput();
         spriteBatch.begin();
-            spriteBatch.draw(backgroundTexture, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatch.draw(backgroundTexture, 0 , 0, graphicsWidth, graphicsHeight);
             tankA.renderSprite(spriteBatch);
             tankB.renderSprite(spriteBatch);
+            List<Bullet> outside = new ArrayList<>();//for bullets that are outside the game
+            
+            for (Bullet bullet: bullets) {
+                //Yes, magic numbers are terrible. TODO: refactor this.
+                if (bullet.getX() < 0 || bullet.getX() > graphicsWidth || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
+                    outside.add(bullet);
+                } else {
+                    bullet.update();
+                    spriteBatch.draw(bullet.getTexture(), bullet.getX(), bullet.getY());
+                }
+                
+            }
+            
+            
         spriteBatch.end();
         tankA.renderShape(shapeRenderer);
         tankB.renderShape(shapeRenderer);
@@ -74,6 +101,18 @@ public class MainGameScreen extends AbstractScreen {
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             tankB.rotate(false);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            Vector2 bullet = new Vector2(1, 1);
+            bullet.setAngle(tankA.getRotation());
+            bullet.setLength2(2f);
+            bullets.add(new Bullet(new Vector2(tankA.getCurrentPosition()), bullet));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+            Vector2 bullet = new Vector2(1, 1);
+            bullet.setAngle(tankB.getRotation());
+            bullet.setLength2(2f);
+            bullets.add(new Bullet(new Vector2(tankB.getCurrentPosition()), bullet));
         }
     }
 

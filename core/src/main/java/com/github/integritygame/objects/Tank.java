@@ -17,18 +17,21 @@ public class Tank {
     private float toleranceMove = 0.5f;
     private float toleranceRotation = 5;
 
+    private int graphicsWidth;
+
     public Tank(float x, float y, int width, int height){
         this.position = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.texture = new Texture(Gdx.files.internal("tanks/DesertColourTank.png"));
+        this.texture = new Texture(Gdx.files.internal("tanks/DesertColourTankRight.png"));
+        this.graphicsWidth = Gdx.graphics.getWidth();
     }
 
     public void updateX(boolean positive){
         if(positive){
-            position.x = Math.min(Math.max(position.x + toleranceMove, 0), 520);
+            position.x = Math.min(Math.max(position.x + toleranceMove, 0), graphicsWidth - width);
         }else{
-            position.x = Math.min(Math.max(position.x - toleranceMove, 0), 520);
+            position.x = Math.min(Math.max(position.x - toleranceMove, 0), graphicsWidth - width);
         }
     }
 
@@ -47,13 +50,25 @@ public class Tank {
     public void renderShape(ShapeRenderer shapeRenderer) {
         Vector2 localCenter = new Vector2(position.x + (width / 2), position.y + (height / 2));
         float radians = (float)Math.toRadians(rotation);
-        float x = (float)(Math.cos(radians) * 30) + localCenter.x;
-        float y = (float)(Math.sin(radians) * 30) + localCenter.y;
+        float x = (float)(Math.cos(radians) * 25) + localCenter.x;
+        float y = (float)(Math.sin(radians) * 25) + localCenter.y;
 
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(localCenter.x, localCenter.y, x, y);
         shapeRenderer.end();
+    }
+    
+    public Vector2 getCurrentPosition() {
+        return new Vector2(position.x + (width / 2), position.y + (height / 2));
+    }
+    
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setTexture(String location){
+        texture = new Texture(Gdx.files.internal(location));
     }
 
 }
