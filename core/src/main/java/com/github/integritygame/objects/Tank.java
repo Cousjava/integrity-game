@@ -58,6 +58,14 @@ public class Tank {
         shapeRenderer.line(localCenter.x, localCenter.y, x, y);
         shapeRenderer.end();
     }
+    
+    public Vector2 getCurrentPosition() {
+        return position;
+    }
+    
+    public float getRotation() {
+        return rotation;
+    }
 
     public void setTexture(String location){
         texture = new Texture(Gdx.files.internal(location));
