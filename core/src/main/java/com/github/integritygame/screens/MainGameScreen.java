@@ -28,17 +28,28 @@ public class MainGameScreen extends AbstractScreen {
     private int graphicsWidth;
     private int graphicsHeight;
 
+    /**
+     * Create a main game screen with the main game logic
+     */
     public MainGameScreen(){
+        //Create the renderer's for the main game
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         loadTextures();
+
+        //Set the size of the screen on load
         graphicsWidth = Gdx.graphics.getWidth();
         graphicsHeight = Gdx.graphics.getHeight();
+
+        //Create new tanks and set the positions and textures
         tankA = new Tank(30, 180,80,35);
         tankB = new Tank(graphicsWidth - 110,180,80,35);
         tankB.setTexture("tanks/DesertColourTankLeft.png");
     }
 
+    /**
+     * Loads the textures
+     */
     private void loadTextures(){
         backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
     }
@@ -48,9 +59,9 @@ public class MainGameScreen extends AbstractScreen {
 
     }
 
+
     @Override
     public void render(float delta) {
-        //Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         userInput();
         spriteBatch.begin();
@@ -60,7 +71,6 @@ public class MainGameScreen extends AbstractScreen {
             List<Bullet> outside = new ArrayList<>();//for bullets that are outside the game
             
             for (Bullet bullet: bullets) {
-                //Yes, magic numbers are terrible. TODO: refactor this.
                 if (bullet.getX() < 0 || bullet.getX() > graphicsWidth || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
                     outside.add(bullet);
                 } else {
