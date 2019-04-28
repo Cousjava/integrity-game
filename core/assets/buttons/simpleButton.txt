@@ -1,0 +1,11 @@
+button.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+rounded_rectangle_button
+  rotate: false
+  xy: 0, 0
+  size: 960, 480
+  orig: 960, 480
+  offset: 0, 0
+  index: -1
