@@ -1,4 +1,4 @@
-package com.integrity.games.desktop;
+package com.github.integritygame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
