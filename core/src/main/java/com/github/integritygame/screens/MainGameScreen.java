@@ -18,7 +18,7 @@ public class MainGameScreen extends AbstractScreen {
     private int graphicsHeight;
 
     /**
-     * Create a main game screen with the main game logic
+     * Create a main game screen and initialise gamemanager to handle most the stuff
      */
     public MainGameScreen(){
         graphicsWidth = Gdx.graphics.getWidth();
@@ -46,10 +46,12 @@ public class MainGameScreen extends AbstractScreen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //Render the background
         spriteBatch.begin();
             spriteBatch.draw(backgroundTexture, 0 , 0, graphicsWidth, graphicsHeight);
         spriteBatch.end();
 
+        //Also run the render method in game manager
         gameManager.render();
     }
 

@@ -22,6 +22,9 @@ public class InputManager {
         this.turnManager = turnManager;
     }
 
+    /**
+     * Defines how the player should move depending on what side they are
+     */
     public void move(){
         if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.A))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.LEFT))){
             tank.updateX(false);
@@ -37,6 +40,10 @@ public class InputManager {
         }
     }
 
+    /**
+     * THis defines how the payer should fire
+     * @param bullets The bullet to be fired
+     */
     public void tankFire(BulletsController bullets) {
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             Vector2 bullet = new Vector2(1, 1).setLength2(1f);
