@@ -40,6 +40,13 @@ public class Bullet {
     public Texture getTexture() {
         return texture;
     }
-    
+
+    public int getTextureWidth(){
+        return 4;
+    }
+
+    public int getTextureHeight(){
+        return  4;
+    }
     
 }
