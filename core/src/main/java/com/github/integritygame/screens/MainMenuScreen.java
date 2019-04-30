@@ -100,13 +100,16 @@ public class MainMenuScreen extends AbstractScreen {
 
     @Override
     public void hide() {
-
+        skinButton.dispose();
+        buttonAtlas.dispose();
+        stage.dispose();
     }
 
     @Override
     public void dispose() {
         skinButton.dispose();
         buttonAtlas.dispose();
+        stage.dispose();
     }
 
 }
