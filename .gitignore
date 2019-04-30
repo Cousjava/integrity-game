@@ -5,7 +5,9 @@
 .gradle
 /build/
 core/build/
+core/out/
 desktop/build/
+desktop/out/
 .nb-gradle/
 
 # Log file
