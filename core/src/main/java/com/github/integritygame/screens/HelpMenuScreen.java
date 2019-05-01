@@ -14,7 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-public class SettingsMenuScreen extends AbstractScreen {
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+
+public class HelpMenuScreen extends AbstractScreen {
 
     protected Stage stage;
     private  TextButton.TextButtonStyle buttonStyle;
@@ -24,15 +27,15 @@ public class SettingsMenuScreen extends AbstractScreen {
     TextureAtlas buttonAtlas;
 
     Label titleLabel;
-    Label settingsTextLabel;
+    Label helpTextLabel;
 
     TextButton menuButton;
 
     Table mainTable;
 
-    String settingsText = "In construction. I mean, you can't have everything you want.";
+    String helpText;
 
-    public SettingsMenuScreen() {
+    public HelpMenuScreen(){
         stage = new Stage();
 
         //create button
@@ -47,6 +50,14 @@ public class SettingsMenuScreen extends AbstractScreen {
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
+
+        try {
+            File helpTextFile = new File(Gdx.files.internal("text/helpText.txt").toString());
+            helpText = FileUtils.readFileToString(helpTextFile);
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex.getMessage() + ex.getStackTrace());
+            Gdx.app.exit();
+        }
     }
 
     @Override
@@ -93,7 +104,9 @@ public class SettingsMenuScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        skinButton.dispose();
+        buttonAtlas.dispose();
+        stage.dispose();
     }
 
     /**
@@ -125,9 +138,9 @@ public class SettingsMenuScreen extends AbstractScreen {
 
         mainTable.add(titleLabel);
         mainTable.row();
-        mainTable.add(settingsTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
+        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
         mainTable.row();
-        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
+        mainTable.add(menuButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar).align(Align.bottomLeft);
     }
 
     /**
@@ -143,15 +156,15 @@ public class SettingsMenuScreen extends AbstractScreen {
         textLableStyle.fontColor = Color.WHITE;
         textLableStyle.font = font;
 
-        titleLabel = new Label("Settings", titleLabelStyle);
+        titleLabel = new Label("HELP", titleLabelStyle);
         titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
         titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
         titleLabel.setAlignment(Align.center);
         stage.addActor(titleLabel);
 
-        settingsTextLabel = new Label(settingsText, textLableStyle);
-        settingsTextLabel.setAlignment(Align.topLeft);
-        settingsTextLabel.setWrap(true);
-        stage.addActor(settingsTextLabel);
+        helpTextLabel = new Label(helpText, textLableStyle);
+        helpTextLabel.setAlignment(Align.topLeft);
+        helpTextLabel.setWrap(true);
+        stage.addActor(helpTextLabel);
     }
 }
