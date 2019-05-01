@@ -29,7 +29,7 @@ public class HelpMenuScreen extends AbstractScreen {
     Label titleLabel;
     Label helpTextLabel;
 
-    TextButton playButton;
+    TextButton menuButton;
 
     Table mainTable;
 
@@ -113,10 +113,10 @@ public class HelpMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        playButton = new TextButton("Main Menu", buttonStyle);
+        menuButton = new TextButton("Main Menu", buttonStyle);
 
         //add listeners to each button
-        playButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
@@ -138,9 +138,9 @@ public class HelpMenuScreen extends AbstractScreen {
 
         mainTable.add(titleLabel);
         mainTable.row();
-        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth()-200);
+        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
         mainTable.row();
-        mainTable.add(playButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(menuButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar).align(Align.bottomLeft);
     }
 
     /**
