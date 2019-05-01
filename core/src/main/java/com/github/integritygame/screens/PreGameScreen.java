@@ -3,9 +3,7 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,48 +14,41 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-public class MainMenuScreen extends AbstractScreen {
+public class PreGameScreen extends AbstractScreen {
 
     protected Stage stage;
     private  TextButton.TextButtonStyle buttonStyle;
-    BitmapFont buttonFont;
+    BitmapFont font;
     BitmapFont titleFont;
     Skin skinButton;
     TextureAtlas buttonAtlas;
-    private Texture backgroundTexture;
-
-    private SpriteBatch spriteBatch;
 
     Label titleLabel;
-    Label.LabelStyle labelStyle;
+    Label playerNameTextLabel;
+    String playerNameText = "Player Name: ";
 
+    TextButton menuButton;
     TextButton playButton;
-    TextButton exitButton;
-    TextButton helpButton;
-    TextButton settingsButton;
 
     Table mainTable;
 
 
 
-    public MainMenuScreen() {
+    public PreGameScreen() {
         stage = new Stage();
 
-        buttonFont = new BitmapFont();
+        //create button
+        font = new BitmapFont();
         titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
         skinButton = new Skin();
         buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
         skinButton.addRegions(buttonAtlas);
         buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = buttonFont;
+        buttonStyle.font = font;
 
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
-
-        spriteBatch = new SpriteBatch();
-
-        backgroundTexture = new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpg"));
     }
 
     @Override
@@ -77,10 +68,6 @@ public class MainMenuScreen extends AbstractScreen {
         Gdx.gl.glClearColor( 0, 0, 0, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
-        spriteBatch.begin();
-            spriteBatch.draw(backgroundTexture,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        spriteBatch.end();
-
         stage.act();
         stage.draw();
     }
@@ -95,62 +82,41 @@ public class MainMenuScreen extends AbstractScreen {
 
     }
 
-    //called when switch back to this screen
     @Override
     public void resume() {
         stage.act();
         stage.draw();
     }
 
-    //called when screens switch
     @Override
     public void hide() {
         stage.clear();
     }
 
-    //called on exit
     @Override
     public void dispose() {
-        skinButton.dispose();
-        buttonAtlas.dispose();
-        stage.dispose();
+
     }
 
     /**
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
+        menuButton = new TextButton("Main Menu", buttonStyle);
         playButton = new TextButton("Play", buttonStyle);
-        exitButton = new TextButton("Exit", buttonStyle);
-        helpButton = new TextButton("Help", buttonStyle);
-        settingsButton = new TextButton("Settings", buttonStyle);
 
         //add listeners to each button
+        menuButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
+            }
+        });
+
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.PRE_GAME_SCREEN);
-            }
-        });
-
-        helpButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.HELP_MENU);
-            }
-        });
-
-        settingsButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.SETTINGS_MENU);
-            }
-        });
-
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
             }
         });
     }
@@ -167,15 +133,12 @@ public class MainMenuScreen extends AbstractScreen {
         mainTable.setFillParent(true);
         mainTable.top();
 
-        mainTable.add(titleLabel);
+        mainTable.add(titleLabel).align(Align.center);
         mainTable.row();
-        mainTable.add(playButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(playerNameTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
         mainTable.row();
-        mainTable.add(settingsButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-        mainTable.row();
-        mainTable.add(helpButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-        mainTable.row();
-        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
+        mainTable.add(playButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomRight);
     }
 
     /**
@@ -183,14 +146,23 @@ public class MainMenuScreen extends AbstractScreen {
      */
     private void defineLabelStyle() {
         int rowHeight = Gdx.graphics.getWidth()/2;
-        labelStyle = new Label.LabelStyle();
-        labelStyle.font = titleFont;
-        labelStyle.fontColor = Color.FOREST;
+        Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
+        titleLabelStyle.font = titleFont;
+        titleLabelStyle.fontColor = Color.FOREST;
 
-        titleLabel = new Label("TANKS", labelStyle);
+        Label.LabelStyle textLableStyle = new Label.LabelStyle();
+        textLableStyle.fontColor = Color.WHITE;
+        textLableStyle.font = font;
+
+        titleLabel = new Label("Operation Briefing...", titleLabelStyle);
         titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
         titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
         titleLabel.setAlignment(Align.center);
         stage.addActor(titleLabel);
+
+        playerNameTextLabel = new Label(playerNameText, textLableStyle);
+        playerNameTextLabel.setAlignment(Align.topLeft);
+        playerNameTextLabel.setWrap(true);
+        stage.addActor(playerNameTextLabel);
     }
 }

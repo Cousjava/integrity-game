@@ -51,7 +51,7 @@ public class MainGameScreen extends AbstractScreen {
      * Loads the textures
      */
     private void loadTextures(){
-        backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
+        backgroundTexture = new Texture(Gdx.files.internal("backgrounds/gameBackground.jpg"));
     }
 
     @Override
