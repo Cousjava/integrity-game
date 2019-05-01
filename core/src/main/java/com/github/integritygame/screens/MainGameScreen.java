@@ -85,8 +85,6 @@ public class MainGameScreen extends AbstractScreen {
         tankA.renderShape(shapeRenderer);
         tankB.renderShape(shapeRenderer);
 
-        System.out.println(Gdx.graphics.getFramesPerSecond());
-
     }
 
     private void userInput(){
@@ -120,7 +118,7 @@ public class MainGameScreen extends AbstractScreen {
             bullet.setLength2(2f);
             bullets.add(new Bullet(new Vector2(tankA.getCurrentPosition()), bullet));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
             Vector2 bullet = new Vector2(1, 1);
             bullet.setAngle(tankB.getRotation());
             bullet.setLength2(2f);

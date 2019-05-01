@@ -74,14 +74,13 @@ public class MainMenuScreen extends AbstractScreen {
     public void resize(int width, int height) {
 
     }
-
-    //called before dispose()
+    
     @Override
     public void pause() {
 
     }
 
-    //not used on desktop
+    //called when switch back to this screen
     @Override
     public void resume() {
         stage.act();
