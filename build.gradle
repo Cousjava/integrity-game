@@ -49,6 +49,7 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        compile group: 'commons-io', name: 'commons-io', version: '2.4'
         testCompile "junit:junit:4.12"
         testCompile "org.mockito:mockito-core:2.2.7"
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"

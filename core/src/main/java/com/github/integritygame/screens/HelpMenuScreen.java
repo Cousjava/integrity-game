@@ -14,39 +14,50 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-public class MainMenuScreen extends AbstractScreen {
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+
+public class HelpMenuScreen extends AbstractScreen {
 
     protected Stage stage;
     private  TextButton.TextButtonStyle buttonStyle;
-    BitmapFont buttonFont;
+    BitmapFont font;
     BitmapFont titleFont;
     Skin skinButton;
     TextureAtlas buttonAtlas;
 
     Label titleLabel;
-    Label.LabelStyle labelStyle;
+    Label helpTextLabel;
 
     TextButton playButton;
-    TextButton exitButton;
-    TextButton helpButton;
-    TextButton settingsButton;
 
     Table mainTable;
 
-    public MainMenuScreen() {
+    String helpText;
+
+    public HelpMenuScreen(){
         stage = new Stage();
 
-        buttonFont = new BitmapFont();
+        //create button
+        font = new BitmapFont();
         titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
         skinButton = new Skin();
         buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
         skinButton.addRegions(buttonAtlas);
         buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = buttonFont;
+        buttonStyle.font = font;
 
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
+
+        try {
+            File helpTextFile = new File(Gdx.files.internal("text/helpText.txt").toString());
+            helpText = FileUtils.readFileToString(helpTextFile);
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex.getMessage() + ex.getStackTrace());
+            Gdx.app.exit();
+        }
     }
 
     @Override
@@ -75,26 +86,22 @@ public class MainMenuScreen extends AbstractScreen {
 
     }
 
-    //called before dispose()
     @Override
     public void pause() {
 
     }
 
-    //not used on desktop
     @Override
     public void resume() {
         stage.act();
         stage.draw();
     }
 
-    //called when screens switch
     @Override
     public void hide() {
         stage.clear();
     }
 
-    //called on exit
     @Override
     public void dispose() {
         skinButton.dispose();
@@ -106,37 +113,13 @@ public class MainMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        playButton = new TextButton("Play", buttonStyle);
-        exitButton = new TextButton("Exit", buttonStyle);
-        helpButton = new TextButton("Help", buttonStyle);
-        settingsButton = new TextButton("Settings", buttonStyle);
+        playButton = new TextButton("Main Menu", buttonStyle);
 
         //add listeners to each button
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
-            }
-        });
-
-        helpButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.HELP_MENU);
-            }
-        });
-
-        settingsButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.SETTINGS_MENU);
-            }
-        });
-
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
             }
         });
     }
@@ -155,13 +138,9 @@ public class MainMenuScreen extends AbstractScreen {
 
         mainTable.add(titleLabel);
         mainTable.row();
+        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth()-200);
+        mainTable.row();
         mainTable.add(playButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-        mainTable.row();
-        mainTable.add(settingsButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-        mainTable.row();
-        mainTable.add(helpButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-        mainTable.row();
-        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
     }
 
     /**
@@ -169,14 +148,23 @@ public class MainMenuScreen extends AbstractScreen {
      */
     private void defineLabelStyle() {
         int rowHeight = Gdx.graphics.getWidth()/2;
-        labelStyle = new Label.LabelStyle();
-        labelStyle.font = titleFont;
-        labelStyle.fontColor = Color.FOREST;
+        Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
+        titleLabelStyle.font = titleFont;
+        titleLabelStyle.fontColor = Color.FOREST;
 
-        titleLabel = new Label("TANKS", labelStyle);
+        Label.LabelStyle textLableStyle = new Label.LabelStyle();
+        textLableStyle.fontColor = Color.WHITE;
+        textLableStyle.font = font;
+
+        titleLabel = new Label("HELP", titleLabelStyle);
         titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
         titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
         titleLabel.setAlignment(Align.center);
         stage.addActor(titleLabel);
+
+        helpTextLabel = new Label(helpText, textLableStyle);
+        helpTextLabel.setAlignment(Align.topLeft);
+        helpTextLabel.setWrap(true);
+        stage.addActor(helpTextLabel);
     }
 }
