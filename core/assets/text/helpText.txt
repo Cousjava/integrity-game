@@ -1,0 +1,12 @@
+Tanks is a 2D side view strategy game where each player will have to use their strategy, skill and wit to eliminate the other before they eliminate you. What happens if I simply keep typing until I am off screen? Does it wrap around nicely or just disappear? I know what my bets are on!
+
+How To Play
+Player 1
+A/D - Move
+W/S - Aim
+
+Player 2
+Left Arrow/Right Arrow - Move
+Up Arrow/Down Arrow - Aim
+
+Both Players use Space bar to fire

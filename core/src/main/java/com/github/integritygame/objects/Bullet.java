@@ -14,18 +14,21 @@ public class Bullet {
     private Vector2 heading;
     
     private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
-    
-    
+
+    /**
+     * This will create a bullet
+     * @param position
+     * @param vector
+     */
     public Bullet(Vector2 position, Vector2 vector) {
         location = position;
         this.heading = vector;
     }
-    
+
     public float getX() {
         return location.x;
     }
-    
-    
+
     public float getY() {
         return location.y;
     }
@@ -37,6 +40,13 @@ public class Bullet {
     public Texture getTexture() {
         return texture;
     }
-    
+
+    public int getTextureWidth(){
+        return 4;
+    }
+
+    public int getTextureHeight(){
+        return  4;
+    }
     
 }

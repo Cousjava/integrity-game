@@ -18,7 +18,7 @@ public class ScreenManager {
      * Defines the different types of screens available
      */
     public enum Screens {
-        GAME_INFO, MAIN_GAME, MAIN_MENU, SETTINGS_MENU
+        GAME_INFO, MAIN_GAME, MAIN_MENU, SETTINGS_MENU, HELP_MENU
     }
 
     private ScreenManager() {
@@ -62,6 +62,9 @@ public class ScreenManager {
                     break;
                 case SETTINGS_MENU:
                     screens.put(Screens.SETTINGS_MENU, new SettingsMenuScreen());
+                    break;
+                case HELP_MENU:
+                    screens.put(Screens.HELP_MENU, new HelpMenuScreen());
                     break;
             }
         }
