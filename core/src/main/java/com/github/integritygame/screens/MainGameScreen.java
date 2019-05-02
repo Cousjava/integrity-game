@@ -2,16 +2,16 @@ package com.github.integritygame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
+import com.integrity.games.world.GameWorld;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MainGameScreen extends AbstractScreen {
@@ -27,25 +27,43 @@ public class MainGameScreen extends AbstractScreen {
 
     private int graphicsWidth;
     private int graphicsHeight;
+    
+    private static final int START_HEIGHT = 180;
+    
+    private GameWorld game;
 
     public MainGameScreen(){
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        loadTextures();
+        
         graphicsWidth = Gdx.graphics.getWidth();
         graphicsHeight = Gdx.graphics.getHeight();
-        tankA = new Tank(30, 180,80,35);
-        tankB = new Tank(graphicsWidth - 110,180,80,35);
+        
+        loadTextures();
+        
+        EdgeShape terrain = new EdgeShape();
+        terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
+        
+        
+        tankA = new Tank(30, START_HEIGHT, 80,35);
+        tankB = new Tank(graphicsWidth - 110,START_HEIGHT, 80,35);
         tankB.setTexture("tanks/DesertColourTankLeft.png");
+        
+        game = new GameWorld(terrain);
+        tankA.setTankBody(game.addTank(30, START_HEIGHT, tankA));
+        tankB.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT, tankB));
+        
+        
     }
 
     private void loadTextures(){
         backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
+        
     }
 
     @Override
     public void show() {
-
+        
     }
 
     @Override
