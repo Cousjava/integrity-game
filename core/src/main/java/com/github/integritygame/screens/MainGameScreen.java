@@ -56,7 +56,7 @@ public class MainGameScreen extends AbstractScreen {
         spriteBatch.end();
 
         //Also run the render method in game manager
-        gameManager.render();
+        gameManager.render(delta);
     }
 
     @Override

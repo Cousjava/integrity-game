@@ -52,7 +52,8 @@ public class Tank {
         
         tankFixture = new FixtureDef();
         tankFixture.shape = setTankShape(width, height);
-        tankFixture.density = 20;
+        tankFixture.density = 1f;
+        tankFixture.filter.categoryBits = 2;
         tankBodyDef = new BodyDef();
         tankBodyDef.fixedRotation = true;
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -70,12 +71,12 @@ public class Tank {
         tankBody.applyForceToCenter(position, true);
         if(positive){
             //position.x = Math.min(Math.max(position.x + toleranceMove, 0), graphicsWidth - width);
-            //tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
-            tankBody.setLinearVelocity(2000, 0);
+            tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
+            //tankBody.setLinearVelocity(2000, 0);
         }else{
             //position.x = Math.min(Math.max(position.x - toleranceMove, 0), graphicsWidth - width);
             tankBody.applyForceToCenter(new Vector2(-1000000, 0), true);
-            tankBody.applyLinearImpulse(-5000, 0, position.x, position.y, true);
+            //tankBody.applyLinearImpulse(-5000, 0, position.x, position.y, true);tankBody.getLinearVelocity();
         }
     }
 
@@ -84,7 +85,7 @@ public class Tank {
      * @param batch This will be the SpriteBatch object that will render the object
      */
     public void renderSprite (SpriteBatch batch) {
-        batch.draw(texture, position.x, position.y, width, height);
+        batch.draw(texture, tankBody.getPosition().x, tankBody.getPosition().y, width, height);
     }
 
     /**

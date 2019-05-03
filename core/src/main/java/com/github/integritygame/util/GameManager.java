@@ -64,7 +64,8 @@ public class GameManager {
     /**
      * This will render everything on screen along with executing code that should be done with every frame
      */
-    public void render(){
+    public void render(float delta){
+        game.update(delta);
         //Ensure this is called every frame so the user can move and fire during every frame
         turnManager.getTurnId().getInputManager().move();
         turnManager.getTurnId().getInputManager().tankFire(bullets);

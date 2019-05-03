@@ -23,18 +23,22 @@ public class GameWorld {
      */
     public GameWorld(EdgeShape terrain) {
         
-        world = new World(new PolarVector(1, 270), true);
+        world = new World(new PolarVector(1, 0), true);
         Body terrainBody = world.createBody(new BodyDef());
-        terrainBody.setLinearDamping(0);
+        //terrainBody.setLinearDamping(1);
         terrainBody.createFixture(terrain, 0);
+        
+        world.setContactListener(new TankContactListener());
     }
     
     public GameWorld() {
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, 180, 1000, 180);
-        world = new World(new PolarVector(1, 270), true);
+        world = new World(new PolarVector(1, 0), true);
         Body terrainBody = world.createBody(new BodyDef());
         terrainBody.createFixture(terrain, 0);
+        
+        world.setContactListener(new TankContactListener());
     }
     
     /**
@@ -55,7 +59,9 @@ public class GameWorld {
         
     }
     
-    
+    public void update(float delta) {
+        world.step(delta, 5, 5);
+    }
     
     
     
