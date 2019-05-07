@@ -70,13 +70,9 @@ public class Tank {
     public void updateX(boolean positive){
         tankBody.applyForceToCenter(position, true);
         if(positive){
-            //position.x = Math.min(Math.max(position.x + toleranceMove, 0), graphicsWidth - width);
             tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
-            //tankBody.setLinearVelocity(2000, 0);
         }else{
-            //position.x = Math.min(Math.max(position.x - toleranceMove, 0), graphicsWidth - width);
             tankBody.applyForceToCenter(new Vector2(-1000000, 0), true);
-            //tankBody.applyLinearImpulse(-5000, 0, position.x, position.y, true);tankBody.getLinearVelocity();
         }
     }
 
