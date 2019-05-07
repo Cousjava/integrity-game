@@ -25,7 +25,7 @@ public class GameManager {
     
     private GameWorld game;
 
-    private static final int START_HEIGHT = 180;
+    private static final int START_HEIGHT = 200;
     
     /**
      * Create a game manager

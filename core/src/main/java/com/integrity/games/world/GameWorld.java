@@ -1,5 +1,6 @@
 package com.integrity.games.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
@@ -29,6 +30,7 @@ public class GameWorld {
         terrainBody.createFixture(terrain, 0);
         
         world.setContactListener(new TankContactListener());
+        worldEdges();
     }
     
     public GameWorld() {
@@ -39,6 +41,22 @@ public class GameWorld {
         terrainBody.createFixture(terrain, 0);
         
         world.setContactListener(new TankContactListener());
+        worldEdges();
+    }
+    
+    /**
+     * Adds edges to all the walls of the world to
+     * prevent tanks going off-screen
+     */
+    private void worldEdges() {        
+        EdgeShape leftEdge = new EdgeShape();
+        leftEdge.set(0, 0, 0, Gdx.graphics.getHeight());
+        EdgeShape rightEdge = new EdgeShape();
+        rightEdge.set(Gdx.graphics.getWidth(), 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
+        Body edgeBody = world.createBody(new BodyDef());
+        edgeBody.createFixture(leftEdge, 0);
+        edgeBody.createFixture(rightEdge, 0);
     }
     
     /**
@@ -60,7 +78,7 @@ public class GameWorld {
     }
     
     public void update(float delta) {
-        world.step(delta, 5, 5);
+        world.step(delta, 1, 1);
     }
     
     
