@@ -35,18 +35,19 @@ public class Hud {
             hud.render(shapeRenderer);
             hud.renderText(spriteBatch);
         }
+    }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.Z)){
-            hBar.get(0).toggleByValue(true, 1);
+    //Returns true if deads
+    public boolean setPlayerTankDamage(boolean increase, int tankNumber, int damage){
+        if(tankNumber <= hBar.size()){
+            return hBar.get(tankNumber).toggleByValue(increase, damage);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.X)){
-            hBar.get(0).toggleByValue(false, 1);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.C)){
-            hBar.get(1).toggleByValue(true, 1);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.V)){
-            hBar.get(1).toggleByValue(false, 1);
+        return false;
+    }
+
+    public void setTankName(int tankNumber, String name){
+        if(tankNumber <= hBar.size()){
+            hBar.get(tankNumber).setName(name);
         }
     }
 

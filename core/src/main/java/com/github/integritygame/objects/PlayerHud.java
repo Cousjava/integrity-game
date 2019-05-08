@@ -13,16 +13,13 @@ public class PlayerHud {
 
     private int x;
     private int y;
-    private int damage = 90;
+    private int damage = 100;
     private String name;
-    private Stage stage;
     private BitmapFont font;
 
     public PlayerHud(int x, int y){
         this.x = x;
         this.y = y;
-        this.name = name;
-        this.stage = new Stage();
         this.font = new BitmapFont();
     }
 
