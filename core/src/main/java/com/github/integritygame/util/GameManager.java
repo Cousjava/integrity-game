@@ -37,8 +37,8 @@ public class GameManager {
 
         bullets = new BulletsController(graphicsWidth, graphicsHeight);
 
-        userA = new UserTurn(new Tank(30, 180,80,35));
-        userB = new UserTurn(new Tank(graphicsWidth - 110,180,80,35));
+        userA = new UserTurn(new Tank(30, 100,80,35));
+        userB = new UserTurn(new Tank(graphicsWidth - 110,100,80,35));
         setTankTextures();
 
         //This will register the different objects that will need to tanke turns

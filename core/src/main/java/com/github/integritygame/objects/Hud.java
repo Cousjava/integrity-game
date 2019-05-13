@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.github.integritygame.util.VariableManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +22,8 @@ public class Hud {
         hBar = new ArrayList<>();
         hBar.add(new PlayerHud(10,height - 90));
         hBar.add(new PlayerHud(width - 210,height - 90));
-        hBar.get(0).setName("Zach");
-        hBar.get(1).setName("Computer");
+        hBar.get(0).setName(VariableManager.getInstance().getString("PlayerOneName"));
+        hBar.get(1).setName(VariableManager.getInstance().getString("PlayerTwoName"));
     }
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch){

@@ -3,63 +3,48 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.github.integritygame.util.AssetManager;
+import com.github.integritygame.util.VariableManager;
+
+import java.util.regex.Pattern;
 
 public class PreGameScreen extends AbstractScreen {
 
-    protected Stage stage;
-    private  TextButton.TextButtonStyle buttonStyle;
-    BitmapFont font;
-    BitmapFont titleFont;
-    Skin skinButton;
-    TextureAtlas buttonAtlas;
+    private Stage stage;
+    private VariableManager variableManager;
 
-    Label titleLabel;
-    Label playerNameTextLabel;
-    String playerNameText = "Player Name: ";
+    private TextButton menuButton;
+    private TextButton playButtonGrass;
+    private TextButton playButtonDesert;
+    private Table mainTable;
+    private Table playerTable;
 
-    TextButton menuButton;
-    TextButton playButton;
+    private TextField nameOne;
+    private TextField nameTwo;
 
-    Table mainTable;
-
+    private boolean explicit;
+    private boolean name;
 
 
     public PreGameScreen() {
         stage = new Stage();
-
-        //create button
-        font = new BitmapFont();
-        titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
-        skinButton = new Skin();
-        buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
-        skinButton.addRegions(buttonAtlas);
-        buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font;
-
-        buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
+        variableManager = VariableManager.getInstance();
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
-
+        explicit = true;
+        name = true;
         createAndConfigureButtons();
-        defineLabelStyle();
         createAndConfigureTableForMenu();
-
-        //add table to stage
+        nameOne.setText(variableManager.getString("PlayerOneName"));
+        nameTwo.setText(variableManager.getString("PlayerTwoName"));
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(mainTable);
     }
 
@@ -102,67 +87,95 @@ public class PreGameScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        menuButton = new TextButton("Main Menu", buttonStyle);
-        playButton = new TextButton("Play", buttonStyle);
+        menuButton = new TextButton("Main Menu", AssetManager.preGameScreenButtons());
+        playButtonGrass = new TextButton("Play Grass", AssetManager.preGameScreenButtons());
+        playButtonDesert = new TextButton("Play Desert", AssetManager.preGameScreenButtons());
 
         //add listeners to each button
         menuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                variableManager.setString("PlayerOneName", nameOne.getText());
+                variableManager.setString("PlayerTwoName", nameTwo.getText());
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
             }
         });
 
-        playButton.addListener(new ClickListener(){
+        playButtonGrass.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
+                variableManager.setString("Background", "Grass");
+                init();
             }
         });
+
+        playButtonDesert.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                variableManager.setString("Background", "Desert");
+                init();
+            }
+        });
+    }
+
+    public void init(){
+        Pattern pattern = Pattern.compile("(?i)fuck|shit|wanker|twat");
+        if(pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find() || nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20){
+            if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find()) {
+                if(explicit){
+                    playerTable.row().height(30);
+                    playerTable.add(AssetManager.preGameScreenPlayerName("Explicit Names Not Allowed")).colspan(3);
+                }
+                explicit = false;
+            }
+            if(nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20){
+                if(name){
+                    playerTable.row().height(30);
+                    playerTable.add(AssetManager.preGameScreenPlayerName("Name must be between 3 - 20 characters")).colspan(3);
+                }
+                name = false;
+            }
+            return;
+        }
+        variableManager.setString("PlayerOneName", nameOne.getText());
+        variableManager.setString("PlayerTwoName", nameTwo.getText());
+        ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
     }
 
     /**
      * Method to create and configure the main table used for the menu buttons.
      */
     private void createAndConfigureTableForMenu() {
-        //add buttons to table
-        int tableWidthScalar = 8;
-        int tableHeightScalar = 10;
+        nameOne = AssetManager.preGameScreenPlayerInput();
+        nameTwo = AssetManager.preGameScreenPlayerInput();
 
         mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.top();
+        mainTable.setDebug(false);
 
-        mainTable.add(titleLabel).align(Align.center);
-        mainTable.row();
-        mainTable.add(playerNameTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
-        mainTable.row();
-        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
-        mainTable.add(playButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomRight);
-    }
+        playerTable = new Table();
+        //playerTable.setFillParent(true);
+        playerTable.setDebug(false);
+        playerTable.add(AssetManager.preGameScreenPlayerName("Player 1 Name: ")).width(150).height(40);
+        playerTable.add().width(10);
+        playerTable.add(nameOne).width(150);
+        playerTable.row();
+        playerTable.add(AssetManager.preGameScreenPlayerName("Player 2 Name: ")).width(150).height(40);
+        playerTable.add().width(10);
+        playerTable.add(nameTwo).width(150);
 
-    /**
-     * Method to define look and feel of labels
-     */
-    private void defineLabelStyle() {
-        int rowHeight = Gdx.graphics.getWidth()/2;
-        Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
-        titleLabelStyle.font = titleFont;
-        titleLabelStyle.fontColor = Color.FOREST;
+        Table buttonTable = new Table();
+        buttonTable.setDebug(false);
+        buttonTable.add(menuButton).width(200).height(100);
+        buttonTable.add().width(100);
+        buttonTable.add(playButtonGrass).width(200).height(100);
+        buttonTable.add().width(100);
+        buttonTable.add(playButtonDesert).width(200).height(100);
 
-        Label.LabelStyle textLableStyle = new Label.LabelStyle();
-        textLableStyle.fontColor = Color.WHITE;
-        textLableStyle.font = font;
-
-        titleLabel = new Label("Operation Briefing...", titleLabelStyle);
-        titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
-        titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
-        titleLabel.setAlignment(Align.center);
-        stage.addActor(titleLabel);
-
-        playerNameTextLabel = new Label(playerNameText, textLableStyle);
-        playerNameTextLabel.setAlignment(Align.topLeft);
-        playerNameTextLabel.setWrap(true);
-        stage.addActor(playerNameTextLabel);
+        mainTable.add(AssetManager.screenTitle(Color.FOREST, "Operation Briefing...")).align(Align.center);
+        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth());
+        mainTable.add(playerTable).align(Align.center);
+        mainTable.row().height(100);
+        mainTable.add(buttonTable);
     }
 }
