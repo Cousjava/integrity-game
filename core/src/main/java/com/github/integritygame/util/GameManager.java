@@ -3,6 +3,7 @@ package com.github.integritygame.util;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.integritygame.objects.BulletsController;
+import com.github.integritygame.objects.Hud;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.objects.UserTurn;
 
@@ -20,6 +21,8 @@ public class GameManager {
     private UserTurn userB;
 
     private BulletsController bullets;
+
+    private Hud hud;
 
     /**
      * Create a game manager
@@ -44,6 +47,8 @@ public class GameManager {
         //This will create an input manager for each user
         userA.setInputManager(InputManager.CONTROL.LEFT, turnManager);
         userB.setInputManager(InputManager.CONTROL.RIGHT, turnManager);
+
+        hud = new Hud(graphicsWidth, graphicsHeight);
     }
 
     /**
@@ -64,6 +69,8 @@ public class GameManager {
         //Also render the line from each tank to fire
         userA.getTank().renderShape(shapeRenderer);
         userB.getTank().renderShape(shapeRenderer);
+
+        hud.render(shapeRenderer, spriteBatch);
     }
 
     public void setTankTextures(){
