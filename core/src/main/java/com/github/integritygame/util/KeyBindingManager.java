@@ -18,6 +18,7 @@ public class KeyBindingManager {
     private static int RIGHT_AIM_DOWN_KEY;
     private static int FIRE_KEY;
 
+    //fixed keys - can not be changed
     private final static int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
 
     public KeyBindingManager() {

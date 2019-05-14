@@ -1,6 +1,7 @@
 package com.github.integritygame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.github.integritygame.MyGdxGame;
+import com.github.integritygame.util.AssetManager;
+import com.github.integritygame.util.KeyBindingManager;
 
 public class SettingsMenuScreen extends AbstractScreen {
 
@@ -23,14 +27,13 @@ public class SettingsMenuScreen extends AbstractScreen {
     Skin skinButton;
     TextureAtlas buttonAtlas;
 
-    Label titleLabel;
-    Label settingsTextLabel;
-
     TextButton menuButton;
 
     Table mainTable;
+    Table keyBindingsTable;
 
-    String settingsText = "In construction. I mean, you can't have everything you want.";
+    //used to configure key mappings
+    private static KeyBindingManager keyManager = MyGdxGame.keyManager;
 
     public SettingsMenuScreen() {
         stage = new Stage();
@@ -54,7 +57,6 @@ public class SettingsMenuScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         createAndConfigureButtons();
-        defineLabelStyle();
         createAndConfigureTableForMenu();
 
         //add table to stage
@@ -115,43 +117,63 @@ public class SettingsMenuScreen extends AbstractScreen {
      * Method to create and configure the main table used for the menu buttons.
      */
     private void createAndConfigureTableForMenu() {
-        //add buttons to table
-        int tableWidthScalar = 8;
-        int tableHeightScalar = 10;
+
+        keyBindingsTable = new Table();
+        keyBindingsTable.row().height(70);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Define custom keyboard layouts."));
+
+        keyBindingsTable.row().height(50);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Player 1 Controls")).align(Align.left);
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Left: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getLeftLeftMoveKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Right: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getLeftRightMoveKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Up: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getLeftAimUpKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Down: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getLeftAimDownKey())));
+
+        keyBindingsTable.row().height(50);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Player 2 Controls")).align(Align.left);
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Left: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getRightLeftMoveKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Right: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getRightRightMoveKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Up: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getRightAimUpKey())));
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Down: ")).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getRightAimDownKey())));
+
+        keyBindingsTable.row().height(50);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Fire (both players):")).width(150).align(Align.left);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.getFireKey())));
+
 
         mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.top();
 
-        mainTable.add(titleLabel);
-        mainTable.row();
-        mainTable.add(settingsTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
-        mainTable.row();
-        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
-    }
-
-    /**
-     * Method to define look and feel of labels
-     */
-    private void defineLabelStyle() {
-        int rowHeight = Gdx.graphics.getWidth()/2;
-        Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
-        titleLabelStyle.font = titleFont;
-        titleLabelStyle.fontColor = Color.FOREST;
-
-        Label.LabelStyle textLableStyle = new Label.LabelStyle();
-        textLableStyle.fontColor = Color.WHITE;
-        textLableStyle.font = font;
-
-        titleLabel = new Label("Settings", titleLabelStyle);
-        titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
-        titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
-        titleLabel.setAlignment(Align.center);
-        stage.addActor(titleLabel);
-
-        settingsTextLabel = new Label(settingsText, textLableStyle);
-        settingsTextLabel.setAlignment(Align.topLeft);
-        settingsTextLabel.setWrap(true);
-        stage.addActor(settingsTextLabel);
+        mainTable.add(AssetManager.screenTitle(Color.FOREST, "Settings"));
+        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth()-50);
+        mainTable.add(keyBindingsTable);
+        mainTable.row().height(30);
+        mainTable.add(menuButton).width(200).height(100).align(Align.bottomLeft);
     }
 }
