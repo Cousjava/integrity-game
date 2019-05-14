@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.github.integritygame.objects.BulletsController;
 import com.github.integritygame.objects.Tank;
+import com.github.integritygame.screens.ScreenManager;
 
 public class InputManager {
 
@@ -26,6 +27,9 @@ public class InputManager {
      * Defines how the player should move depending on what side they are
      */
     public void move(){
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
+        }
         if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.A))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.LEFT))){
             tank.updateX(false);
         }

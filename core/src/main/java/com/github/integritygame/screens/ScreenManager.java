@@ -49,13 +49,15 @@ public class ScreenManager {
      * @return AbstractScreen of the screen wanted
      */
     private AbstractScreen getScreen(Screens screen){
+        //Ensures there is a new game every time if the game is exited
+        if(screen.equals(Screens.MAIN_GAME)){
+            screens.put(Screens.MAIN_GAME, new MainGameScreen());
+            }
+
         if(!screens.containsKey(screen)) {
             switch (screen) {
                 case GAME_INFO:
                     screens.put(Screens.GAME_INFO, new GameInfoScreen());
-                    break;
-                case MAIN_GAME:
-                    screens.put(Screens.MAIN_GAME, new MainGameScreen());
                     break;
                 case MAIN_MENU:
                     screens.put(Screens.MAIN_MENU, new MainMenuScreen());
