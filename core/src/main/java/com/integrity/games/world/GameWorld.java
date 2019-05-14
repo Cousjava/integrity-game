@@ -77,9 +77,15 @@ public class GameWorld {
         
     }
     
+    public Body addBullet() {
+        
+    }
+    
     public void update(float delta) {
         world.step(delta, 1, 1);
     }
+    
+    
     
     
     
