@@ -37,8 +37,8 @@ public class GameManager {
 
         bullets = new BulletsController(graphicsWidth, graphicsHeight);
 
-        userA = new UserTurn(new Tank(30, 180,80,35));
-        userB = new UserTurn(new Tank(graphicsWidth - 110,180,80,35));
+        userA = new UserTurn(new Tank(30, 100,80,35, false));
+        userB = new UserTurn(new Tank(graphicsWidth - 110,100,80,35, true));
         setTankTextures();
 
         //This will register the different objects that will need to tanke turns
@@ -67,14 +67,14 @@ public class GameManager {
         spriteBatch.end();
 
         //Also render the line from each tank to fire
-        userA.getTank().renderShape(shapeRenderer);
-        userB.getTank().renderShape(shapeRenderer);
+        //userA.getTank().renderShape(shapeRenderer);
+        //userB.getTank().renderShape(shapeRenderer);
 
         hud.render(shapeRenderer, spriteBatch);
     }
 
     public void setTankTextures(){
-        userB.getTank().setTexture("tanks/DesertColourTankLeft.png");
+        userB.getTank().setTexture("tanks/GreenTankRightBody.png","tanks/GreenTankRightTurret.png");
     }
 
 }
