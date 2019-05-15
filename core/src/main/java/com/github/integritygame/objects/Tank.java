@@ -39,6 +39,8 @@ public class Tank {
     private float toleranceRotation = 1;
 
     private boolean side;
+    
+    private int damage = 100;
 
     /**
      * This creates a tank with a default texture and the following parameters
@@ -169,7 +171,30 @@ public class Tank {
     }
     
     public void setTankBody(Body tankBody) {
+        tankBody.setUserData(this);
         this.tankBody = tankBody;
+    }
+    
+    
+    //Return true if dead
+    public boolean toggleByValue(boolean increase, int value){
+        if(increase){
+            damage = Math.min(Math.max(damage + value, 0), 100);
+        }else{
+            damage = Math.min(Math.max(damage - value, 0), 100);
+        }
+        if(damage <= 0){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isDead() {
+        return damage <= 0;
+    }
+
+    int getDamage() {
+        return damage;
     }
 
 }

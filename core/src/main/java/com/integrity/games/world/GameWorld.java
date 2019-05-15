@@ -1,10 +1,13 @@
 package com.integrity.games.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,8 +20,6 @@ import com.integrity.games.util.PolarVector;
  */
 public class GameWorld {
     
-    private static final int worldHeight = 120;
-    
     World world;
     
     /**
@@ -27,7 +28,7 @@ public class GameWorld {
      */
     public GameWorld(EdgeShape terrain) {
         
-        world = new World(new PolarVector(50, (float) Math.PI/2), true);
+        world = new World(new Vector2(0, -5), true);
         Body terrainBody = world.createBody(new BodyDef());
         //terrainBody.setLinearDamping(1);
         terrainBody.createFixture(terrain, 0);
@@ -77,8 +78,11 @@ public class GameWorld {
         Body bulletBody = world.createBody(bulletDef);
         PolygonShape bulletShape = new PolygonShape();
         bulletShape.setAsBox(1, 1);
-        bulletBody.createFixture(bulletShape, 0.001f);
-        bulletShape.dispose();
+        Fixture bulletFixture = bulletBody.createFixture(bulletShape, 0.001f);
+        Filter bulletFilter = bulletFixture.getFilterData();
+        bulletFilter.categoryBits = 4;
+        bulletFilter.maskBits = 3;
+        //bulletShape.dispose();
         return bulletBody;
     }
     

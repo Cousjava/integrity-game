@@ -51,10 +51,10 @@ public class Bullet {
     public BodyDef getBodyDef() {
         BodyDef bulletDef = new BodyDef();
         bulletDef.bullet = true;
-        //bulletDef.linearVelocity.x = heading.x;
-        //bulletDef.linearVelocity.y = heading.y;
-        bulletDef.gravityScale = 5000;
-        bulletDef.type = BodyDef.BodyType.KinematicBody;
+        bulletDef.linearVelocity.x = heading.x * 5;
+        bulletDef.linearVelocity.y = heading.y * 5;
+        bulletDef.gravityScale = 1;
+        bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;
         
@@ -63,7 +63,7 @@ public class Bullet {
 
     void setBody(Body bulletBody) {
         body = bulletBody;
-        body.setLinearVelocity(heading);
+        //body.setLinearVelocity(heading);
     }
     
 }

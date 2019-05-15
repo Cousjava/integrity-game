@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.integritygame.util.AssetManager;
 import com.github.integritygame.util.GameManager;
-import com.github.integritygame.util.InputManager;
 import com.github.integritygame.util.VariableManager;
 
 public class MainGameScreen extends AbstractScreen {

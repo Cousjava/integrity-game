@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.github.integritygame.objects.BulletsController;
 import com.github.integritygame.objects.Hud;
+import com.github.integritygame.objects.PlayerHud;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.objects.UserTurn;
 import com.integrity.games.world.GameWorld;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GameManager {
 
@@ -27,7 +29,7 @@ public class GameManager {
     private GameWorld game;
 
     //TODO: Be able to calculate this from background
-    private static final int START_HEIGHT = 120;
+    private static final int START_HEIGHT = 100;
 
     private Hud hud;
 
@@ -59,12 +61,15 @@ public class GameManager {
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         
         game = new GameWorld(terrain);
-        userATank.setTankBody(game.addTank(30, START_HEIGHT, userATank));
-        userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT, userBTank));
+        userATank.setTankBody(game.addTank(30, START_HEIGHT + 1, userATank));
+        userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userBTank));
         
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
 
         hud = new Hud(graphicsWidth, graphicsHeight);
+        List<PlayerHud> players = hud.getPlayerHuds();
+        players.get(0).setTank(userATank);
+        players.get(1).setTank(userBTank);
     }
 
     /**
