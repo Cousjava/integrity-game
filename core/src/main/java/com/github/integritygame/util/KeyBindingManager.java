@@ -76,7 +76,7 @@ public class KeyBindingManager {
         tempKeyMap.replace(keyName, keyCode);
 
         if (checkForDuplicateKeys(tempKeyMap, keyCode)) {
-            System.out.println("ERROR - no change made");
+            System.out.println("ERROR - Duplicate key found - no change will be made");
         } else {
             keyMap = tempKeyMap;
         }
