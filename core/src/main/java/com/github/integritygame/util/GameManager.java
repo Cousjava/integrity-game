@@ -88,6 +88,9 @@ public class GameManager {
         //userB.getTank().renderShape(shapeRenderer);
 
         hud.render(shapeRenderer, spriteBatch);
+        
+        //Cleanup unseen bullets
+        bullets.cleanOutsideBullets();
     }
 
     public void setTankTextures(){

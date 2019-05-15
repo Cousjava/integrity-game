@@ -35,6 +35,15 @@ public class BulletsController {
 
         }
     }
+    
+    /**
+     * Removes all bullets that are outside the playing area
+     */
+    public void cleanOutsideBullets() {
+        for (Bullet toRemove: outside) {
+            bullets.remove(toRemove);
+        }
+    }
 
     /**
      * Creates a new bullet and adds it to the screen
