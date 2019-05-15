@@ -46,13 +46,19 @@ public class AssetManager {
     public static TextButton.TextButtonStyle preGameScreenButtons(){
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = new BitmapFont();
-        TextureAtlas buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
+        TextureAtlas buttonAtlas = new TextureAtlas("buttons/menuButton/simpleButton.txt");
         Skin skinButton = new Skin();
         skinButton.addRegions(buttonAtlas);
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
         return buttonStyle;
+    }
+
+    public static TextButton settingsTextButton(String buttonText){
+        TextButton button = new TextButton(buttonText, skin);
+
+        return button;
     }
 
     public static Texture background(Background backgrounds){
