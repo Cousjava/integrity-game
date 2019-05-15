@@ -102,9 +102,9 @@ public class Tank {
      */
     public void rotate(boolean clockwise){
         if(clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, 0), 180);
+            rotation = Math.min(Math.max(rotation - toleranceRotation, 0), 45);
         }else{
-            rotation = Math.min(Math.max(rotation + toleranceRotation, 0), 180);
+            rotation = Math.min(Math.max(rotation + toleranceRotation, 0), 45);
         }
     }
 
