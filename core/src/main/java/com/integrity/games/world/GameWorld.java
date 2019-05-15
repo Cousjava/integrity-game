@@ -8,11 +8,9 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.github.integritygame.objects.Tank;
-import com.integrity.games.util.PolarVector;
 
 /**
  *
@@ -82,7 +80,7 @@ public class GameWorld {
         Filter bulletFilter = bulletFixture.getFilterData();
         bulletFilter.categoryBits = 4;
         bulletFilter.maskBits = 3;
-        //bulletShape.dispose();
+        bulletShape.dispose();
         return bulletBody;
     }
     

@@ -75,7 +75,11 @@ public class Bullet {
      * tank on impact
      */
     public int getDamage() {
-        return damage;
+        if (!impacted) {
+            return damage;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -92,6 +96,9 @@ public class Bullet {
      */
     public void setImpacted(boolean impacted) {
         this.impacted = impacted;
+        if (impacted) {
+            //body.setActive(false);
+        }
     }
     
     

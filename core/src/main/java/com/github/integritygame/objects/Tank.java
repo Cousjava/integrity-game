@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.integrity.games.util.PolarVector;
 
 /**
  * This create a tank that can be moved around the screen
@@ -41,6 +42,8 @@ public class Tank {
     private boolean side;
     
     private int damage = 100;
+    
+    private static final int BARREL_LENGTH = 30;
 
     /**
      * This creates a tank with a default texture and the following parameters
@@ -60,7 +63,7 @@ public class Tank {
         
         tankFixture = new FixtureDef();
         tankFixture.shape = setTankShape(width, height);
-        tankFixture.density = 1f;
+        tankFixture.density = 2f;
         tankFixture.filter.categoryBits = 2;
         tankBodyDef = new BodyDef();
         tankBodyDef.fixedRotation = true;
@@ -91,9 +94,11 @@ public class Tank {
      * @param batch This will be the SpriteBatch object that will render the object
      */
     public void renderSprite (SpriteBatch batch) {
-        position = tankBody.getPosition();
-        Vector2 localCenter = new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
-        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, 30, 5,1,1,rotation);
+        position = tankBody.getPosition().cpy();
+        position.x -= width / 2;
+        position.y -= height / 2;
+        Vector2 localCenter = getLocalCenter();
+        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, BARREL_LENGTH, 5,1,1,rotation);
         batch.draw(texture, position.x, position.y, width, height);
     }
 
@@ -110,32 +115,24 @@ public class Tank {
     }
 
     /**
-     * This will render an aim for the tank
-     * @param shapeRenderer This will be the ShapeRenderer object that will render the object
-     */
-    public void renderShape(ShapeRenderer shapeRenderer) {
-        position = tankBody.getPosition();
-        
-        //This ensures that its drew from the center of the tank instead of the bottom left corner
-        Vector2 localCenter = new Vector2(position.x + (width / 2), position.y + (height / 2));
-
-        //Calculate the other point based on the angle
-        float radians = (float)Math.toRadians(rotation);
-        float x = (float)(Math.cos(radians) * 25) + localCenter.x;
-        float y = (float)(Math.sin(radians) * 25) + localCenter.y;
-
-        //Render the line
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(localCenter.x, localCenter.y, x, y);
-        shapeRenderer.end();
-    }
-
-    /**
      * Gets the current position of the tank (This is the center of the tank)
      * @return Vector2 The position at the center of the tank
      */
     public Vector2 getCurrentPosition() {
+        return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
+    }
+    
+    /**
+     * Gets the end of the barrel of the tank's gun
+     */
+    public Vector2 getBarrelEnd() {
+        Vector2 localCenter = getLocalCenter();
+        localCenter.y += 2.5f;
+        Vector2 barrel = new PolarVector(BARREL_LENGTH * BARREL_LENGTH, (float) (rotation * Math.PI / 180));
+        return localCenter.add(barrel);
+    }
+    
+    private Vector2 getLocalCenter() {
         return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
 

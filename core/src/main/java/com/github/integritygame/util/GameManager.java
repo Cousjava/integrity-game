@@ -29,7 +29,7 @@ public class GameManager {
     private GameWorld game;
 
     //TODO: Be able to calculate this from background
-    private static final int START_HEIGHT = 90;
+    private static final int START_HEIGHT = 100;
 
     private Hud hud;
 
@@ -87,10 +87,6 @@ public class GameManager {
             userB.getTank().renderSprite(spriteBatch);
             bullets.render(spriteBatch);
         spriteBatch.end();
-
-        //Also render the line from each tank to fire
-        //userA.getTank().renderShape(shapeRenderer);
-        //userB.getTank().renderShape(shapeRenderer);
 
         hud.render(shapeRenderer, spriteBatch);
         

@@ -27,7 +27,7 @@ public class BulletsController {
 
     public void render(SpriteBatch spriteBatch){
         for (Bullet bullet: bullets) {
-            if (bullet.isImpacted() || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
+            if (bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
                 outside.add(bullet);
             } else {
                 spriteBatch.draw(bullet.getTexture(), bullet.getX()-(bullet.getTextureWidth()/2), bullet.getY()-(bullet.getTextureHeight()/2), bullet.getTextureWidth(), bullet.getTextureHeight());

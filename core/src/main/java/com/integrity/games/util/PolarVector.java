@@ -19,6 +19,6 @@ public class PolarVector extends Vector2 {
         this.y = 1;
         //then modify it
         this.setAngleRad(angle);
-        this.setLength2(length2);        
+        this.setLength2(length2);
     }
 }
