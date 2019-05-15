@@ -16,6 +16,8 @@ public class Bullet {
     private Vector2 heading;
     private Body body;
     
+    private boolean impacted = false;
+    
     private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
 
     /**
@@ -63,7 +65,26 @@ public class Bullet {
 
     void setBody(Body bulletBody) {
         body = bulletBody;
-        //body.setLinearVelocity(heading);
+        body.setUserData(this);
+
     }
+
+    /**
+     * Whether the bullet has hit another object
+     * @return 
+     */
+    public boolean isImpacted() {
+        return impacted;
+    }
+
+    /**
+     * Sets whether the bullet has hit something
+     * @param impacted 
+     */
+    public void setImpacted(boolean impacted) {
+        this.impacted = impacted;
+    }
+    
+    
     
 }

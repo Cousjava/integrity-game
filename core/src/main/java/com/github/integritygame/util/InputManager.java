@@ -50,6 +50,7 @@ public class InputManager {
      * @param bullets The bullet to be fired
      */
     public void tankFire(BulletsController bullets) {
+        if(Gdx.input.isKeyJustPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))){
             Vector2 bullet = new Vector2(1, 1).setLength2(1000f);
             bullet.setAngle(tank.getRotation());
             bullets.addBullet(tank.getCurrentPosition(), bullet);

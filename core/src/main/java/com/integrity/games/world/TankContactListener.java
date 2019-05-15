@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
 
 /**
@@ -20,25 +21,25 @@ public class TankContactListener implements ContactListener {
         
         if (fixtureA == null || fixtureB == null) { return; }
         
-        System.out.println(fixtureA.getBody().getUserData());
-        System.out.println(fixtureB.getBody().getUserData());
+        Object fixtureAData = fixtureA.getBody().getUserData();
+        Object fixtureBData = fixtureB.getBody().getUserData();
         
-      Tank tank = null;
-        if (fixtureA.getBody().getUserData() instanceof Tank) {
-            tank = (Tank) fixtureA.getBody().getUserData();
+        Tank tank = null;
+        if (fixtureAData instanceof Tank && fixtureBData instanceof Tank) {
+            tankCollision((Tank) fixtureAData, (Tank) fixtureBData);
+            return;
         }
-        if (fixtureB.getBody().getUserData() instanceof Tank) {
-            if (tank == null) {
-                tank = (Tank) fixtureB.getBody().getUserData();
-            } else {
-                //both are tanks
-                tankCollision(tank, (Tank) fixtureB.getBody().getUserData());
-                return;
-            }
+        if (fixtureAData instanceof Tank && fixtureBData instanceof Bullet) {
+            bulletCollision((Tank) fixtureAData);
         }
-        if (tank != null) {
-            //One is tank, the other is bullet
-            bulletCollision(tank);
+        if (fixtureBData instanceof Tank && fixtureAData instanceof Bullet) {
+            bulletCollision((Tank) fixtureBData);
+        }
+        if (fixtureAData instanceof Bullet) {
+            ((Bullet) fixtureAData).setImpacted(true);
+        }
+        if (fixtureBData instanceof Bullet) {
+            ((Bullet) fixtureBData).setImpacted(true);
         }
         
     }
