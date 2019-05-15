@@ -1,13 +1,10 @@
 package com.github.integritygame.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.integritygame.util.VariableManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Hud {
@@ -38,18 +35,14 @@ public class Hud {
         }
     }
 
-    //Returns true if deads
-    public boolean setPlayerTankDamage(boolean increase, int tankNumber, int damage){
-        if(tankNumber <= hBar.size()){
-            return hBar.get(tankNumber).toggleByValue(increase, damage);
-        }
-        return false;
-    }
-
     public void setTankName(int tankNumber, String name){
         if(tankNumber <= hBar.size()){
             hBar.get(tankNumber).setName(name);
         }
+    }
+    
+    public List<PlayerHud> getPlayerHuds() {
+        return hBar;
     }
 
 }

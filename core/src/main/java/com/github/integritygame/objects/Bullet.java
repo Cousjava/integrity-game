@@ -3,6 +3,8 @@ package com.github.integritygame.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 /**
  * A class to hold information on a bullet
@@ -12,6 +14,10 @@ public class Bullet {
     
     private Vector2 location;
     private Vector2 heading;
+    private Body body;
+    
+    private boolean impacted = false;
+    private int damage = 5;
     
     private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
 
@@ -26,15 +32,11 @@ public class Bullet {
     }
 
     public float getX() {
-        return location.x;
+        return body.getPosition().x;
     }
 
     public float getY() {
-        return location.y;
-    }
-    
-    public void update() {
-        location.add(heading);
+        return body.getPosition().y;
     }
     
     public Texture getTexture() {
@@ -48,5 +50,56 @@ public class Bullet {
     public int getTextureHeight(){
         return  4;
     }
+    
+    public BodyDef getBodyDef() {
+        BodyDef bulletDef = new BodyDef();
+        bulletDef.bullet = true;
+        bulletDef.linearVelocity.x = heading.x * 5;
+        bulletDef.linearVelocity.y = heading.y * 5;
+        bulletDef.gravityScale = 1;
+        bulletDef.type = BodyDef.BodyType.DynamicBody;
+        bulletDef.position.x = location.x;
+        bulletDef.position.y = location.y;
+        
+        return bulletDef;
+    }
+
+    void setBody(Body bulletBody) {
+        body = bulletBody;
+        body.setUserData(this);
+
+    }
+    
+    /**
+     * Returns the amount of damage that is dealt to a
+     * tank on impact
+     */
+    public int getDamage() {
+        if (!impacted) {
+            return damage;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Whether the bullet has hit another object
+     * @return 
+     */
+    public boolean isImpacted() {
+        return impacted;
+    }
+
+    /**
+     * Sets whether the bullet has hit something
+     * @param impacted 
+     */
+    public void setImpacted(boolean impacted) {
+        this.impacted = impacted;
+    }
+
+    void sleep() {
+        body.setActive(false);
+    }    
     
 }

@@ -1,12 +1,16 @@
 package com.github.integritygame.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.integrity.games.util.PolarVector;
 
 /**
  * This create a tank that can be moved around the screen
@@ -14,21 +18,27 @@ import com.badlogic.gdx.math.Vector2;
 public class Tank {
 
     private Vector2 position;
+    private final int width;
+    private final int height;
     private Texture texture;
+    
+    private BodyDef tankBodyDef;
+    private FixtureDef tankFixture;
+    private Body tankBody;
+
+    /**Specify the default rotation */
+    private float rotation = 90;
     private Texture turret;
-    private int width;
-    private int height;
-    private int graphicsWidth;
 
-    //Specify the default rotation
-    private float rotation = 0;
-
-    //Specify the tolerance for how fast the tank moves and the rotation interval
+    /** Specify the tolerance for how fast the tank moves and the rotation interval */
     private float toleranceMove = 0.5f;
     private float toleranceRotation = 1;
 
     private boolean side;
-
+    
+    private int damage = 100;
+    
+    private static final int BARREL_LENGTH = 30;
 
     /**
      * This creates a tank with a default texture and the following parameters
@@ -45,10 +55,18 @@ public class Tank {
         this.position = new Vector2(x, y);
         this.width = width;
         this.height = height;
+        
+        tankFixture = new FixtureDef();
+        tankFixture.shape = setTankShape(width, height);
+        tankFixture.density = 2f;
+        tankFixture.filter.categoryBits = 2;
+        tankBodyDef = new BodyDef();
+        tankBodyDef.fixedRotation = true;
+        tankBodyDef.type = BodyDef.BodyType.DynamicBody;
+        tankBodyDef.position.set(x, y);
+
         this.texture = new Texture(Gdx.files.internal("tanks/BlueTankLeftBody.png"));
         this.turret = new Texture(Gdx.files.internal("tanks/BlueTankLeftTurret.png"));
-        //Sets the width of the screen so the tank cant go past this
-        this.graphicsWidth = Gdx.graphics.getWidth();
     }
 
     /**
@@ -56,10 +74,11 @@ public class Tank {
      * @param positive If true move right on the X else move left
      */
     public void updateX(boolean positive){
+        tankBody.applyForceToCenter(position, true);
         if(positive){
-            position.x = Math.min(Math.max(position.x + toleranceMove, 0), graphicsWidth - width);
+            tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
         }else{
-            position.x = Math.min(Math.max(position.x - toleranceMove, 0), graphicsWidth - width);
+            tankBody.applyForceToCenter(new Vector2(-1000000, 0), true);
         }
     }
 
@@ -68,8 +87,11 @@ public class Tank {
      * @param batch This will be the SpriteBatch object that will render the object
      */
     public void renderSprite (SpriteBatch batch) {
-        Vector2 localCenter = new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
-        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, 30, 5,1,1,rotation);
+        position = tankBody.getPosition().cpy();
+        position.x -= width / 2;
+        position.y -= height / 2;
+        Vector2 localCenter = getLocalCenter();
+        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, BARREL_LENGTH, 5,1,1,rotation);
         batch.draw(texture, position.x, position.y, width, height);
     }
 
@@ -92,6 +114,23 @@ public class Tank {
     public Vector2 getCurrentPosition() {
         return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
+    
+    /**
+     * Gets the end of the barrel of the tank's gun
+     */
+    public Vector2 getBarrelEnd() {
+        Vector2 localCenter = getLocalCenter();
+        localCenter.y += 2.5f;
+        Vector2 barrel = new PolarVector(BARREL_LENGTH * BARREL_LENGTH, (float) (rotation * Math.PI / 180));
+        return localCenter.add(barrel);
+    }
+    
+    /**
+     * Gets the center of the tank
+     */
+    private Vector2 getLocalCenter() {
+        return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
+    }
 
     /**
      * Gets the rotation of the turret of the tank
@@ -108,6 +147,53 @@ public class Tank {
     public void setTexture(String body, String turret){
         this.texture = new Texture(Gdx.files.internal(body));
         this.turret = new Texture(Gdx.files.internal(turret));
+    }
+    
+    public FixtureDef getTankFixtureDef() {
+        return tankFixture;
+    }
+    
+    public BodyDef getTankBodyDef() {
+        return tankBodyDef;
+    }
+    
+    private Shape setTankShape(float width, float height) {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2, height / 2);
+        return shape;
+    }
+    
+    public void setTankBody(Body tankBody) {
+        tankBody.setUserData(this);
+        this.tankBody = tankBody;
+    }
+    
+    
+    /**
+     * @return true if dead 
+     */
+    public boolean toggleByValue(boolean increase, int value){
+        if(increase){
+            damage = Math.min(Math.max(damage + value, 0), 100);
+        }else{
+            damage = Math.min(Math.max(damage - value, 0), 100);
+        }
+        if(damage <= 0){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isDead() {
+        return damage <= 0;
+    }
+
+    /**
+     * Returns how damage the tank is
+     * @return 0 = dead, 100 = start
+     */
+    int getDamage() {
+        return damage;
     }
 
 }
