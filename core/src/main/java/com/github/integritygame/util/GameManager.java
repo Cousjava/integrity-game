@@ -26,8 +26,8 @@ public class GameManager {
     
     private GameWorld game;
 
-    @Deprecated
-    private static final int START_HEIGHT = 200;
+    //TODO: Be able to calculate this from background
+    private static final int START_HEIGHT = 120;
 
     private Hud hud;
 

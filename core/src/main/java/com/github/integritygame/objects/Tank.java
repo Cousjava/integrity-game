@@ -89,6 +89,7 @@ public class Tank {
      * @param batch This will be the SpriteBatch object that will render the object
      */
     public void renderSprite (SpriteBatch batch) {
+        position = tankBody.getPosition();
         Vector2 localCenter = new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
         batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, 30, 5,1,1,rotation);
         batch.draw(texture, position.x, position.y, width, height);

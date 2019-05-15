@@ -17,7 +17,7 @@ import com.integrity.games.util.PolarVector;
  */
 public class GameWorld {
     
-    private static final int worldHeight = 180;
+    private static final int worldHeight = 120;
     
     World world;
     
@@ -27,26 +27,13 @@ public class GameWorld {
      */
     public GameWorld(EdgeShape terrain) {
         
-        world = new World(new PolarVector(1, 0), true);
+        world = new World(new PolarVector(50, (float) Math.PI/2), true);
         Body terrainBody = world.createBody(new BodyDef());
         //terrainBody.setLinearDamping(1);
         terrainBody.createFixture(terrain, 0);
         
         world.setContactListener(new TankContactListener());
         worldEdges();
-    }
-    
-    public GameWorld() {
-        EdgeShape terrain = new EdgeShape();
-        terrain.set(0, 180, 1000, 180);
-        world = new World(new PolarVector(1, 0), true);
-        Body terrainBody = world.createBody(new BodyDef());
-        terrainBody.createFixture(terrain, 0);
-        
-        world.setContactListener(new TankContactListener());
-        worldEdges();
-        
-        terrain.dispose();
     }
     
     /**
@@ -96,7 +83,7 @@ public class GameWorld {
     }
     
     public void update(float delta) {
-        world.step(delta, 1, 1);
+        world.step(delta, 10, 10);
     }
     
 }
