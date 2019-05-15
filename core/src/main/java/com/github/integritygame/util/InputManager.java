@@ -31,16 +31,16 @@ public class InputManager {
         if(Gdx.input.isKeyPressed(keyManager.getMainGameExit())){
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.getLeftLeftMoveKey()))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.getRightLeftMoveKey()))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))){
             tank.updateX(false);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.getLeftRightMoveKey()))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.getRightRightMoveKey()))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))){
             tank.updateX(true);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.getLeftAimUpKey()))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.getRightAimUpKey()))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))){
             tank.rotate(true);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.getLeftAimDownKey()))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.getRightAimDownKey()))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN)))){
             tank.rotate(false);
         }
     }
@@ -50,7 +50,7 @@ public class InputManager {
      * @param bullets The bullet to be fired
      */
     public void tankFire(BulletsController bullets) {
-        if(Gdx.input.isKeyJustPressed(keyManager.getFireKey())){
+        if(Gdx.input.isKeyJustPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))){
             Vector2 bullet = new Vector2(1, 1).setLength2(1f);
             bullet.setAngle(tank.getRotation());
             bullets.addBullet(tank.getCurrentPosition(), bullet);

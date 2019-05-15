@@ -2,21 +2,25 @@ package com.github.integritygame.util;
 
 import com.badlogic.gdx.Input;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 
 public class KeyBindingManager {
 
-    private static int LEFT_LEFT_MOVE_KEY;
-    private static int LEFT_RIGHT_MOVE_KEY;
-    private static int LEFT_AIM_UP_KEY;
-    private static int LEFT_AIM_DOWN_KEY;
-    private static int RIGHT_LEFT_MOVE_KEY;
-    private static int RIGHT_RIGHT_MOVE_KEY;
-    private static int RIGHT_AIM_UP_KEY;
-    private static int RIGHT_AIM_DOWN_KEY;
-    private static int FIRE_KEY;
+    public enum ConfigurableKeys {
+        LEFT_LEFT_MOVE, LEFT_RIGHT_MOVE, LEFT_AIM_UP, LEFT_AIM_DOWN, RIGHT_LEFT_MOVE, RIGHT_RIGHT_MOVE, RIGHT_AIM_UP, RIGHT_AIM_DOWN, FIRE
+    }
+
+    private static int DEFAULT_LEFT_LEFT_MOVE_KEY = Input.Keys.A;
+    private static int DEFAULT_LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
+    private static int DEFAULT_LEFT_AIM_UP_KEY = Input.Keys.S;
+    private static int DEFAULT_LEFT_AIM_DOWN_KEY = Input.Keys.W;
+    private static int DEFAULT_RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
+    private static int DEFAULT_RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
+    private static int DEFAULT_RIGHT_AIM_UP_KEY = Input.Keys.UP;
+    private static int DEFAULT_RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
+    private static int DEFAULT_FIRE_KEY = Input.Keys.SPACE;
+
+    public static HashMap<ConfigurableKeys, Integer> keyMap = new HashMap<>();
 
     //fixed keys - can not be changed
     private final static int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
@@ -29,124 +33,59 @@ public class KeyBindingManager {
      * Method to set the control keys back to default
      */
     public static void resetDefaultKeys() {
-        LEFT_LEFT_MOVE_KEY = Input.Keys.A;
-        LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
-        LEFT_AIM_UP_KEY = Input.Keys.W;
-        LEFT_AIM_DOWN_KEY = Input.Keys.S;
-        RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
-        RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
-        RIGHT_AIM_UP_KEY = Input.Keys.UP;
-        RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
-        FIRE_KEY = Input.Keys.SPACE;
+        keyMap.put(ConfigurableKeys.LEFT_LEFT_MOVE, DEFAULT_LEFT_LEFT_MOVE_KEY);
+        keyMap.put(ConfigurableKeys.LEFT_RIGHT_MOVE, DEFAULT_LEFT_RIGHT_MOVE_KEY);
+        keyMap.put(ConfigurableKeys.LEFT_AIM_UP, DEFAULT_LEFT_AIM_UP_KEY);
+        keyMap.put(ConfigurableKeys.LEFT_AIM_DOWN, DEFAULT_LEFT_AIM_DOWN_KEY);
+        keyMap.put(ConfigurableKeys.RIGHT_LEFT_MOVE, DEFAULT_RIGHT_LEFT_MOVE_KEY);
+        keyMap.put(ConfigurableKeys.RIGHT_RIGHT_MOVE, DEFAULT_RIGHT_RIGHT_MOVE_KEY);
+        keyMap.put(ConfigurableKeys.RIGHT_AIM_UP, DEFAULT_RIGHT_AIM_UP_KEY);
+        keyMap.put(ConfigurableKeys.RIGHT_AIM_DOWN, DEFAULT_RIGHT_AIM_DOWN_KEY);
+        keyMap.put(ConfigurableKeys.FIRE, DEFAULT_FIRE_KEY);
     }
 
     /**
-     * Checks whether duplicate keys have been configured.
+     * Checks whether duplicate keys have been configured in a temporary Map.
      * Will return true if there is a duplicate.
      *
-     * @return duplicateKeyStatus
+     * @param tempKeyMap the temporary map that is checked for duplicates
+     * @param keyCode the integer value of the key to check for in map
+     *
+     * @return duplicateKeyStatus true if duplicates are detected
      */
-    public static boolean checkForDuplicateKeys() {
+    public static boolean checkForDuplicateKeys(HashMap<ConfigurableKeys, Integer> tempKeyMap, int keyCode) {
         boolean duplicateKeyStatus = false;
-        List<Integer> keyArray = new ArrayList<>();
 
-        keyArray.add(LEFT_LEFT_MOVE_KEY);
-        keyArray.add(LEFT_RIGHT_MOVE_KEY);
-        keyArray.add(LEFT_AIM_UP_KEY);
-        keyArray.add(LEFT_AIM_DOWN_KEY);
-        keyArray.add(RIGHT_LEFT_MOVE_KEY);
-        keyArray.add(RIGHT_RIGHT_MOVE_KEY);
-        keyArray.add(RIGHT_AIM_UP_KEY);
-        keyArray.add(RIGHT_AIM_DOWN_KEY);
-        keyArray.add(FIRE_KEY);
+        long count = tempKeyMap.values().stream().filter(v -> v.equals(keyCode)).count();
 
-        for (int key : keyArray) {
-            if (Collections.frequency(keyArray, key) > 1) {
-                duplicateKeyStatus = true;
-            }
+        if (count > 1) {
+            duplicateKeyStatus = true;
         }
 
         return duplicateKeyStatus;
     }
 
+    /**
+     * Used to set a key from the settings menu
+     * @param keyName which configurable key to set
+     * @param keyCode the value to set
+     */
+    public static void setKey(ConfigurableKeys keyName, int keyCode){
+        HashMap<ConfigurableKeys, Integer> tempKeyMap = new HashMap<>(keyMap);
+
+        tempKeyMap.replace(keyName, keyCode);
+
+        if (checkForDuplicateKeys(tempKeyMap, keyCode)) {
+            System.out.println("ERROR - no change made");
+        } else {
+            keyMap = tempKeyMap;
+        }
+    }
 
     /**
-     * Getters and setter methods below
-     *
+     * getter method for fixed Exit key
+     * @return Integer for exit key
      */
-
-    public static int getLeftLeftMoveKey() {
-        return LEFT_LEFT_MOVE_KEY;
-    }
-
-    public static void setLeftLeftMoveKey(int leftLeftMoveKey) {
-        LEFT_LEFT_MOVE_KEY = leftLeftMoveKey;
-    }
-
-    public static int getLeftRightMoveKey() {
-        return LEFT_RIGHT_MOVE_KEY;
-    }
-
-    public static void setLeftRightMoveKey(int leftRightMoveKey) {
-        LEFT_RIGHT_MOVE_KEY = leftRightMoveKey;
-    }
-
-    public static int getLeftAimUpKey() {
-        return LEFT_AIM_UP_KEY;
-    }
-
-    public static void setLeftAimUpKey(int leftAimUpKey) {
-        LEFT_AIM_UP_KEY = leftAimUpKey;
-    }
-
-    public static int getLeftAimDownKey() {
-        return LEFT_AIM_DOWN_KEY;
-    }
-
-    public static void setLeftAimDownKey(int leftAimDownKey) {
-        LEFT_AIM_DOWN_KEY = leftAimDownKey;
-    }
-
-    public static int getRightLeftMoveKey() {
-        return RIGHT_LEFT_MOVE_KEY;
-    }
-
-    public static void setRightLeftMoveKey(int rightLeftMoveKey) {
-        RIGHT_LEFT_MOVE_KEY = rightLeftMoveKey;
-    }
-
-    public static int getRightRightMoveKey() {
-        return RIGHT_RIGHT_MOVE_KEY;
-    }
-
-    public static void setRightRightMoveKey(int rightRightMoveKey) {
-        RIGHT_RIGHT_MOVE_KEY = rightRightMoveKey;
-    }
-
-    public static int getRightAimUpKey() {
-        return RIGHT_AIM_UP_KEY;
-    }
-
-    public static void setRightAimUpKey(int rightAimUpKey) {
-        RIGHT_AIM_UP_KEY = rightAimUpKey;
-    }
-
-    public static int getRightAimDownKey() {
-        return RIGHT_AIM_DOWN_KEY;
-    }
-
-    public static void setRightAimDownKey(int rightAimDownKey) {
-        RIGHT_AIM_DOWN_KEY = rightAimDownKey;
-    }
-
-    public static int getFireKey() {
-        return FIRE_KEY;
-    }
-
-    public static void setFireKey(int fireKey) {
-        FIRE_KEY = fireKey;
-    }
-
     public static int getMainGameExit() {
         return MAIN_GAME_EXIT;
     }
