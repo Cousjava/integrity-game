@@ -1,5 +1,7 @@
 package com.github.integritygame.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -51,8 +53,9 @@ public class BulletsController {
      * @param vector The direction in which the bullet is fired
      * @return the created bullet
      */
-    public Bullet addBullet(Vector2 positon, Vector2 vector){
-        Bullet bullet = new Bullet(positon, vector);
+    public Bullet addBullet(Vector2 positon, Vector2 vector,Tank firingTank, BulletData bulletData){
+        Bullet bullet;
+        bullet = new Bullet(positon, vector, firingTank, bulletData);
         bullets.add(bullet);
         Body bulletBody = gameWorld.addBullet(bullet.getBodyDef());
         bullet.setBody(bulletBody);

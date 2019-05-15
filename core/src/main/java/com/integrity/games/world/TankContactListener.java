@@ -58,7 +58,8 @@ public class TankContactListener implements ContactListener {
      * A bullet has hit the tank
      */
     private void bulletCollision(Tank tank, Bullet bullet) {
-        tank.toggleByValue(false, bullet.getDamage());
+        tank.toggleByValue(false, bullet.getBulletData().getBulletData().damage);
+        bullet.getFiringTank().changeMoney(true, bullet.getBulletData().getBulletData().moneyIfHit);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.github.integritygame.util.AssetManager;
 
 /**
  * A class to hold information on a bullet
@@ -18,17 +19,21 @@ public class Bullet {
     
     private boolean impacted = false;
     private int damage = 5;
-    
-    private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
+
+    private Tank firingTank;
+
+    private BulletData bulletData;
 
     /**
      * This will create a bullet
      * @param position
      * @param vector
      */
-    public Bullet(Vector2 position, Vector2 vector) {
+    public Bullet(Vector2 position, Vector2 vector, Tank firingTank, BulletData bulletData) {
         location = position;
         this.heading = vector;
+        this.firingTank = firingTank;
+        this.bulletData = bulletData;
     }
 
     public float getX() {
@@ -40,7 +45,7 @@ public class Bullet {
     }
     
     public Texture getTexture() {
-        return texture;
+        return AssetManager.bullet(bulletData);
     }
 
     public int getTextureWidth(){
@@ -82,6 +87,10 @@ public class Bullet {
         }
     }
 
+    public void setDamage(int damage){
+        this.damage = damage;
+    }
+
     /**
      * Whether the bullet has hit another object
      * @return 
@@ -100,6 +109,14 @@ public class Bullet {
 
     void sleep() {
         body.setActive(false);
-    }    
+    }
+
+    public Tank getFiringTank(){
+        return firingTank;
+    }
+
+    public BulletData getBulletData(){
+        return bulletData;
+    }
     
 }
