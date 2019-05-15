@@ -172,16 +172,12 @@ public class Tank {
     /**
      * @return true if dead 
      */
-    public boolean toggleByValue(boolean increase, int value){
+    public void toggleByValue(boolean increase, int value){
         if(increase){
             damage = Math.min(Math.max(damage + value, 0), 100);
         }else{
             damage = Math.min(Math.max(damage - value, 0), 100);
         }
-        if(damage <= 0){
-            return true;
-        }
-        return false;
     }
     
     public boolean isDead() {

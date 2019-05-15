@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
+import com.github.integritygame.screens.ScreenManager;
 
 /**
  * When collisions occur between bullets and/or tanks
@@ -59,6 +60,9 @@ public class TankContactListener implements ContactListener {
      */
     private void bulletCollision(Tank tank, Bullet bullet) {
         tank.toggleByValue(false, bullet.getDamage());
+        if (tank.isDead()) {
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
+        }
     }
 
     @Override

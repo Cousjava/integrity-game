@@ -18,6 +18,9 @@ import com.github.integritygame.MyGdxGame;
 import com.github.integritygame.util.AssetManager;
 import com.github.integritygame.util.KeyBindingManager;
 
+/**
+ * Setting menu screen to configure keyboard layout and other options
+ */
 public class SettingsMenuScreen extends AbstractScreen {
 
     protected Stage stage;
