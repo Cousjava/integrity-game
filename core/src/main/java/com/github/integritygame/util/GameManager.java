@@ -38,8 +38,6 @@ public class GameManager {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
 
-        bullets = new BulletsController(graphicsWidth, graphicsHeight);
-
         Tank userATank = new Tank(30, 180,80,35);
         Tank userBTank = new Tank(graphicsWidth - 110,180,80,35);
         userA = new UserTurn(userATank);
@@ -59,6 +57,8 @@ public class GameManager {
         game = new GameWorld(terrain);
         userATank.setTankBody(game.addTank(30, START_HEIGHT, userATank));
         userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT, userBTank));
+        
+        bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
     }
 
     /**

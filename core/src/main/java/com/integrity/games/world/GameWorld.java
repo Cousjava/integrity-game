@@ -3,7 +3,10 @@ package com.integrity.games.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.github.integritygame.objects.Tank;
 import com.integrity.games.util.PolarVector;
@@ -42,6 +45,8 @@ public class GameWorld {
         
         world.setContactListener(new TankContactListener());
         worldEdges();
+        
+        terrain.dispose();
     }
     
     /**
@@ -55,8 +60,12 @@ public class GameWorld {
         rightEdge.set(Gdx.graphics.getWidth(), 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         Body edgeBody = world.createBody(new BodyDef());
+        edgeBody.setType(BodyDef.BodyType.StaticBody);
         edgeBody.createFixture(leftEdge, 0);
         edgeBody.createFixture(rightEdge, 0);
+        
+        leftEdge.dispose();
+        rightEdge.dispose();
     }
     
     /**
@@ -77,16 +86,17 @@ public class GameWorld {
         
     }
     
-    public Body addBullet() {
-        
+    public Body addBullet(BodyDef bulletDef) {        
+        Body bulletBody = world.createBody(bulletDef);
+        PolygonShape bulletShape = new PolygonShape();
+        bulletShape.setAsBox(1, 1);
+        bulletBody.createFixture(bulletShape, 0.001f);
+        bulletShape.dispose();
+        return bulletBody;
     }
     
     public void update(float delta) {
         world.step(delta, 1, 1);
     }
-    
-    
-    
-    
     
 }

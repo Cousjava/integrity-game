@@ -3,6 +3,7 @@ package com.github.integritygame.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 /**
@@ -13,9 +14,9 @@ public class Bullet {
     
     private Vector2 location;
     private Vector2 heading;
+    private Body body;
     
     private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
-    private static BodyDef BULLET_DEF = null;
 
     /**
      * This will create a bullet
@@ -28,15 +29,11 @@ public class Bullet {
     }
 
     public float getX() {
-        return location.x;
+        return body.getPosition().x;
     }
 
     public float getY() {
-        return location.y;
-    }
-    
-    public void update() {
-        location.add(heading);
+        return body.getPosition().y;
     }
     
     public Texture getTexture() {
@@ -51,12 +48,22 @@ public class Bullet {
         return  4;
     }
     
-    public static BodyDef getBodyDef() {
-        if (BULLET_DEF == null) {
-            BULLET_DEF = new BodyDef();
-            BULLET_DEF.bullet = true;
-        }
-        return BULLET_DEF;
+    public BodyDef getBodyDef() {
+        BodyDef bulletDef = new BodyDef();
+        bulletDef.bullet = true;
+        //bulletDef.linearVelocity.x = heading.x;
+        //bulletDef.linearVelocity.y = heading.y;
+        bulletDef.gravityScale = 5000;
+        bulletDef.type = BodyDef.BodyType.KinematicBody;
+        bulletDef.position.x = location.x;
+        bulletDef.position.y = location.y;
+        
+        return bulletDef;
+    }
+
+    void setBody(Body bulletBody) {
+        body = bulletBody;
+        body.setLinearVelocity(heading);
     }
     
 }

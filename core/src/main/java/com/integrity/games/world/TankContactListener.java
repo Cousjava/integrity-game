@@ -20,6 +20,19 @@ public class TankContactListener implements ContactListener {
         if (fixtureA == null || fixtureB == null) { return; }
         
         
+        
+        
+    }
+    
+    /**
+     * 
+     */
+    private void tankCollision() {
+        
+    }
+    
+    private void bulletCollision() {
+        
     }
 
     @Override
