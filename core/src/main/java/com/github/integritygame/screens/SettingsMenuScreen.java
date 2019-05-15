@@ -39,6 +39,7 @@ public class SettingsMenuScreen extends AbstractScreen {
     TextButton changeKeyButtonRightUp;
     TextButton changeKeyButtonRightDown;
     TextButton changeKeyButtonFire;
+    TextButton resetControls;
 
     Table mainTable;
     Table keyBindingsTable;
@@ -117,6 +118,7 @@ public class SettingsMenuScreen extends AbstractScreen {
         changeKeyButtonRightUp = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonRightDown = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonFire = AssetManager.settingsTextButton("Configure...");
+        resetControls = AssetManager.settingsTextButton("Restore Defaults");
 
         //add listeners to each button
         menuButton.addListener(new ClickListener(){
@@ -251,6 +253,14 @@ public class SettingsMenuScreen extends AbstractScreen {
                 });
             }
         });
+
+        resetControls.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                keyManager.resetDefaultKeys();
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.SETTINGS_MENU);
+            }
+        });
     }
 
     /**
@@ -322,6 +332,9 @@ public class SettingsMenuScreen extends AbstractScreen {
         keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))));
         keyBindingsTable.add().width(10);
         keyBindingsTable.add(changeKeyButtonFire).width(100).height(20);
+
+        keyBindingsTable.row().height(50);
+        keyBindingsTable.add(resetControls).width(130).height(20).align(Align.left);
 
 
         mainTable = new Table();
