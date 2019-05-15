@@ -3,7 +3,9 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,40 +15,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.github.integritygame.util.AssetManager;
 
 public class MainMenuScreen extends AbstractScreen {
 
-    protected Stage stage;
-    private  TextButton.TextButtonStyle buttonStyle;
-    BitmapFont buttonFont;
-    BitmapFont titleFont;
-    Skin skinButton;
-    TextureAtlas buttonAtlas;
+    private Stage stage;
 
-    Label titleLabel;
-    Label.LabelStyle labelStyle;
+    private SpriteBatch spriteBatch;
 
-    TextButton playButton;
-    TextButton exitButton;
-    TextButton helpButton;
-    TextButton settingsButton;
+    private TextButton playButton;
+    private TextButton exitButton;
+    private TextButton helpButton;
+    private TextButton settingsButton;
+    private Table mainTable;
 
-    Table mainTable;
+
 
     public MainMenuScreen() {
         stage = new Stage();
-
-        buttonFont = new BitmapFont();
-        titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
-        skinButton = new Skin();
-        buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
-        skinButton.addRegions(buttonAtlas);
-        buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = buttonFont;
-
-        buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
+        spriteBatch = new SpriteBatch();
     }
 
     @Override
@@ -54,7 +41,6 @@ public class MainMenuScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         createAndConfigureButtons();
-        defineLabelStyle();
         createAndConfigureTableForMenu();
 
         //add table to stage
@@ -65,6 +51,10 @@ public class MainMenuScreen extends AbstractScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor( 0, 0, 0, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
+        spriteBatch.begin();
+            spriteBatch.draw(AssetManager.background(AssetManager.Background.HOME),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.end();
 
         stage.act();
         stage.draw();
@@ -96,8 +86,6 @@ public class MainMenuScreen extends AbstractScreen {
     //called on exit
     @Override
     public void dispose() {
-        skinButton.dispose();
-        buttonAtlas.dispose();
         stage.dispose();
     }
 
@@ -105,16 +93,16 @@ public class MainMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        playButton = new TextButton("Play", buttonStyle);
-        exitButton = new TextButton("Exit", buttonStyle);
-        helpButton = new TextButton("Help", buttonStyle);
-        settingsButton = new TextButton("Settings", buttonStyle);
+        playButton = new TextButton("Play", AssetManager.preGameScreenButtons());
+        exitButton = new TextButton("Exit", AssetManager.preGameScreenButtons());
+        helpButton = new TextButton("Help", AssetManager.preGameScreenButtons());
+        settingsButton = new TextButton("Settings", AssetManager.preGameScreenButtons());
 
         //add listeners to each button
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
+                ScreenManager.getInstance().changeScreen(ScreenManager.Screens.PRE_GAME_SCREEN);
             }
         });
 
@@ -148,34 +136,22 @@ public class MainMenuScreen extends AbstractScreen {
         int tableWidthScalar = 8;
         int tableHeightScalar = 10;
 
+        int width = Gdx.graphics.getWidth()/tableWidthScalar;
+        int height = Gdx.graphics.getHeight()/tableHeightScalar;
+
         mainTable = new Table();
         mainTable.setFillParent(true);
+        mainTable.setDebug(false);
         mainTable.top();
 
-        mainTable.add(titleLabel);
+        mainTable.add(AssetManager.screenTitle(Color.BLACK, "Tanks"));
         mainTable.row();
-        mainTable.add(playButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(playButton).width(width).height(height);
         mainTable.row();
-        mainTable.add(settingsButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(settingsButton).width(width).height(height);
         mainTable.row();
-        mainTable.add(helpButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
+        mainTable.add(helpButton).width(width).height(height);
         mainTable.row();
-        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar);
-    }
-
-    /**
-     * Method to define look and feel of labels
-     */
-    private void defineLabelStyle() {
-        int rowHeight = Gdx.graphics.getWidth()/2;
-        labelStyle = new Label.LabelStyle();
-        labelStyle.font = titleFont;
-        labelStyle.fontColor = Color.FOREST;
-
-        titleLabel = new Label("TANKS", labelStyle);
-        titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
-        titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
-        titleLabel.setAlignment(Align.center);
-        stage.addActor(titleLabel);
+        mainTable.add(exitButton).width(width).height(height);
     }
 }

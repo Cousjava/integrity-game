@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.github.integritygame.objects.BulletsController;
+import com.github.integritygame.objects.Hud;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.objects.UserTurn;
 import com.integrity.games.world.GameWorld;
@@ -25,8 +26,11 @@ public class GameManager {
     
     private GameWorld game;
 
+    @Deprecated
     private static final int START_HEIGHT = 200;
-    
+
+    private Hud hud;
+
     /**
      * Create a game manager
      * @param graphicsWidth Width of the screen
@@ -38,8 +42,8 @@ public class GameManager {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
 
-        Tank userATank = new Tank(30, 180,80,35);
-        Tank userBTank = new Tank(graphicsWidth - 110,180,80,35);
+        Tank userATank = new Tank(30, 180,80,35, false);
+        Tank userBTank = new Tank(graphicsWidth - 110,180,80,35, true);
         userA = new UserTurn(userATank);
         userB = new UserTurn(userBTank);
         setTankTextures();
@@ -59,6 +63,8 @@ public class GameManager {
         userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT, userBTank));
         
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
+
+        hud = new Hud(graphicsWidth, graphicsHeight);
     }
 
     /**
@@ -78,12 +84,14 @@ public class GameManager {
         spriteBatch.end();
 
         //Also render the line from each tank to fire
-        userA.getTank().renderShape(shapeRenderer);
-        userB.getTank().renderShape(shapeRenderer);
+        //userA.getTank().renderShape(shapeRenderer);
+        //userB.getTank().renderShape(shapeRenderer);
+
+        hud.render(shapeRenderer, spriteBatch);
     }
 
     public void setTankTextures(){
-        userB.getTank().setTexture("tanks/DesertColourTankLeft.png");
+        userB.getTank().setTexture("tanks/GreenTankRightBody.png","tanks/GreenTankRightTurret.png");
     }
 
 }

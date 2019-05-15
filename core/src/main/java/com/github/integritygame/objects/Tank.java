@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -31,11 +32,13 @@ public class Tank {
 
     /**Specify the default rotation */
     private float rotation = 90;
+    private Texture turret;
 
     /** Specify the tolerance for how fast the tank moves and the rotation interval */
     private float toleranceMove = 0.5f;
     private float toleranceRotation = 1;
 
+    private boolean side;
 
     /**
      * This creates a tank with a default texture and the following parameters
@@ -44,11 +47,14 @@ public class Tank {
      * @param width Width the tank should be
      * @param height Height thee tank should be
      */
-    public Tank(float x, float y, int width, int height){
+    public Tank(float x, float y, int width, int height, boolean side){
+        this.side = side;
+        if(side){
+            rotation = 180;
+        }
         this.position = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.texture = new Texture(Gdx.files.internal("tanks/DesertColourTankRight.png"));
         
         tankFixture = new FixtureDef();
         tankFixture.shape = setTankShape(width, height);
@@ -59,6 +65,8 @@ public class Tank {
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
         tankBodyDef.position.set(x, y);
 
+        this.texture = new Texture(Gdx.files.internal("tanks/BlueTankLeftBody.png"));
+        this.turret = new Texture(Gdx.files.internal("tanks/BlueTankLeftTurret.png"));
         //Sets the width of the screen so the tank cant go past this
         this.graphicsWidth = Gdx.graphics.getWidth();
     }
@@ -81,7 +89,9 @@ public class Tank {
      * @param batch This will be the SpriteBatch object that will render the object
      */
     public void renderSprite (SpriteBatch batch) {
-        batch.draw(texture, tankBody.getPosition().x, tankBody.getPosition().y, width, height);
+        Vector2 localCenter = new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
+        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, 30, 5,1,1,rotation);
+        batch.draw(texture, position.x, position.y, width, height);
     }
 
     /**
@@ -123,7 +133,7 @@ public class Tank {
      * @return Vector2 The position at the center of the tank
      */
     public Vector2 getCurrentPosition() {
-        return new Vector2(position.x + (width / 2), position.y + (height / 2));
+        return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
 
     /**
@@ -136,10 +146,11 @@ public class Tank {
 
     /**
      * This sets the texture of the tank to something other than the default
-     * @param location The location of the texture in the assets folder
+     * @param  The location of the texture in the assets folder
      */
-    public void setTexture(String location){
-        texture = new Texture(Gdx.files.internal(location));
+    public void setTexture(String body, String turret){
+        this.texture = new Texture(Gdx.files.internal(body));
+        this.turret = new Texture(Gdx.files.internal(turret));
     }
     
     public FixtureDef getTankFixtureDef() {

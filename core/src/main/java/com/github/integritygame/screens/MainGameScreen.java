@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.github.integritygame.util.AssetManager;
 import com.github.integritygame.util.GameManager;
+import com.github.integritygame.util.InputManager;
+import com.github.integritygame.util.VariableManager;
 
 public class MainGameScreen extends AbstractScreen {
 
@@ -31,13 +34,13 @@ public class MainGameScreen extends AbstractScreen {
         shapeRenderer = new ShapeRenderer();
 
         gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer);
-
         configBackground();
     }
 
     private void configBackground(){
-        backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
+        //backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
         
+        backgroundTexture = AssetManager.background(VariableManager.getInstance().getString("Background").equals("Grass") ? AssetManager.Background.GRASS: AssetManager.Background.DESERT);
     }
 
     @Override

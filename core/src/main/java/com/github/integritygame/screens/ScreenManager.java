@@ -18,7 +18,7 @@ public class ScreenManager {
      * Defines the different types of screens available
      */
     public enum Screens {
-        GAME_INFO, MAIN_GAME, MAIN_MENU, SETTINGS_MENU, HELP_MENU
+        GAME_INFO, MAIN_GAME, MAIN_MENU, SETTINGS_MENU, HELP_MENU, PRE_GAME_SCREEN
     }
 
     private ScreenManager() {
@@ -49,13 +49,15 @@ public class ScreenManager {
      * @return AbstractScreen of the screen wanted
      */
     private AbstractScreen getScreen(Screens screen){
+        //Ensures there is a new game every time if the game is exited
+        if(screen.equals(Screens.MAIN_GAME)){
+            screens.put(Screens.MAIN_GAME, new MainGameScreen());
+            }
+
         if(!screens.containsKey(screen)) {
             switch (screen) {
                 case GAME_INFO:
                     screens.put(Screens.GAME_INFO, new GameInfoScreen());
-                    break;
-                case MAIN_GAME:
-                    screens.put(Screens.MAIN_GAME, new MainGameScreen());
                     break;
                 case MAIN_MENU:
                     screens.put(Screens.MAIN_MENU, new MainMenuScreen());
@@ -65,6 +67,9 @@ public class ScreenManager {
                     break;
                 case HELP_MENU:
                     screens.put(Screens.HELP_MENU, new HelpMenuScreen());
+                    break;
+                case PRE_GAME_SCREEN:
+                    screens.put(Screens.PRE_GAME_SCREEN, new PreGameScreen());
                     break;
             }
         }
