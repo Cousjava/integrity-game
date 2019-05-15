@@ -1,6 +1,13 @@
-Tanks is a 2D side view strategy game where each player will have to use their strategy, skill and wit to eliminate the other before they eliminate you. What happens if I simply keep typing until I am off screen? Does it wrap around nicely or just disappear? I know what my bets are on!
+Tanks is a 2D side view strategy game where each player will have to use their strategy, skill and wit to eliminate the other before they eliminate you. You will start with a fund but be careful, firing each bullet costs. Not only will you need to avoid damage but also avoid running out of money. If you lose your health or run out of money, you will lose.
+
+Bullet Types
+
+Small       5 Damage    £10 to fire     £5 returned for successful shot
+Medium    8 Damage    £15 to fire     £5 returned for successful shot
+Large       10 Damage   £20 to fire     £5 returned for successful shot
 
 How To Play
+
 Player 1
 A/D - Move
 W/S - Aim
@@ -9,4 +16,9 @@ Player 2
 Left Arrow/Right Arrow - Move
 Up Arrow/Down Arrow - Aim
 
-Both Players use Space bar to fire
+Both Players use Space bar to fire and use T to toggle between bullet types.
+
+The default key layout can be changed in the Settings menu.
+
+
+Now stop reading this and start a war!
