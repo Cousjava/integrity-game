@@ -20,19 +20,19 @@ public class TankContactListener implements ContactListener {
         
         if (fixtureA == null || fixtureB == null) { return; }
         
-        System.out.println(fixtureA.getUserData());
-        System.out.println(fixtureB.getUserData());
+        System.out.println(fixtureA.getBody().getUserData());
+        System.out.println(fixtureB.getBody().getUserData());
         
       Tank tank = null;
-        if (fixtureA.getUserData() instanceof Tank) {
-            tank = (Tank) fixtureA.getUserData();
+        if (fixtureA.getBody().getUserData() instanceof Tank) {
+            tank = (Tank) fixtureA.getBody().getUserData();
         }
-        if (fixtureB.getUserData() instanceof Tank) {
+        if (fixtureB.getBody().getUserData() instanceof Tank) {
             if (tank == null) {
-                tank = (Tank) fixtureB.getUserData();
+                tank = (Tank) fixtureB.getBody().getUserData();
             } else {
                 //both are tanks
-                tankCollision(tank, (Tank) fixtureB.getUserData());
+                tankCollision(tank, (Tank) fixtureB.getBody().getUserData());
                 return;
             }
         }

@@ -2,6 +2,7 @@ package com.github.integritygame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,6 +19,8 @@ public class MainGameScreen extends AbstractScreen {
 
     private int graphicsWidth;
     private int graphicsHeight;
+    
+    private OrthographicCamera camera;
 
     /**
      * Create a main game screen and initialise gamemanager to handle most the stuff
@@ -33,6 +36,8 @@ public class MainGameScreen extends AbstractScreen {
         shapeRenderer = new ShapeRenderer();
 
         gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer);
+        camera = new OrthographicCamera(graphicsWidth, graphicsHeight);
+        
         configBackground();
     }
 
