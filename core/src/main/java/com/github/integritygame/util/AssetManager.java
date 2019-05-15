@@ -46,7 +46,7 @@ public class AssetManager {
     public static TextButton.TextButtonStyle preGameScreenButtons(){
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = new BitmapFont();
-        TextureAtlas buttonAtlas = new TextureAtlas("buttons/menuButton/simpleButton.txt");
+        TextureAtlas buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
         Skin skinButton = new Skin();
         skinButton.addRegions(buttonAtlas);
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");

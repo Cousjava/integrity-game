@@ -53,7 +53,7 @@ public class SettingsMenuScreen extends AbstractScreen {
         font = new BitmapFont();
         titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
         skinButton = new Skin();
-        buttonAtlas = new TextureAtlas("buttons/menuButton/simpleButton.txt");
+        buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
         skinButton.addRegions(buttonAtlas);
     }
 
