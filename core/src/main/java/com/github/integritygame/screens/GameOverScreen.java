@@ -112,7 +112,6 @@ public class GameOverScreen extends AbstractScreen {
 
         summaryTable = new Table();
         summaryTable.setDebug(false);
-        summaryTable.add(AssetManager.labelSimpleWhiteText("The winner was :")).width(150).height(40);
         summaryTable.row();
         summaryTable.add(AssetManager.labelSimpleWhiteText("Proceed to debriefing.")).width(150).height(40);
 
