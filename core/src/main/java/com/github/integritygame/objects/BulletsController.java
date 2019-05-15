@@ -58,5 +58,13 @@ public class BulletsController {
         bullet.setBody(bulletBody);
         return bullet;
     }
+    
+    /**
+     * Gets the current number of bullets active in the game
+     * @return number of bullets
+     */
+    public int getBullets() {
+        return bullets.size();
+    }
 
 }

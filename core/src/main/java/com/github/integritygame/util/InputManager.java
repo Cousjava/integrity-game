@@ -26,16 +26,19 @@ public class InputManager {
 
     /**
      * Defines how the player should move depending on what side they are
+     * @param canTraverse true if the tank is allowed to move left or right
      */
-    public void move(){
+    public void move(boolean canTraverse){
         if(Gdx.input.isKeyPressed(keyManager.getMainGameExit())){
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))){
-            tank.updateX(false);
-        }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))){
-            tank.updateX(true);
+        if (canTraverse) {
+            if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
+                tank.updateX(false);
+            }
+            if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
+                tank.updateX(true);
+            }
         }
         if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))){
             tank.rotate(true);
