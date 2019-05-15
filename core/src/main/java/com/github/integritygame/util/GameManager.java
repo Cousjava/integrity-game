@@ -8,6 +8,7 @@ import com.github.integritygame.objects.Hud;
 import com.github.integritygame.objects.PlayerHud;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.objects.UserTurn;
+import com.github.integritygame.screens.ScreenManager;
 import com.integrity.games.world.GameWorld;
 
 import java.util.Arrays;
@@ -89,6 +90,10 @@ public class GameManager {
         spriteBatch.end();
 
         hud.render(shapeRenderer, spriteBatch);
+
+        if (userA.getTank().isBankrupt()||userB.getTank().isBankrupt()) {
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
+        }
         
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
