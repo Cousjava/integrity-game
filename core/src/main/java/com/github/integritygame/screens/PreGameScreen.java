@@ -124,14 +124,14 @@ public class PreGameScreen extends AbstractScreen {
             if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find()) {
                 if(explicit){
                     playerTable.row().height(30);
-                    playerTable.add(AssetManager.preGameScreenPlayerName("Explicit Names Not Allowed")).colspan(3);
+                    playerTable.add(AssetManager.labelSimpleWhiteText("Explicit Names Not Allowed")).colspan(3);
                 }
                 explicit = false;
             }
             if(nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20){
                 if(name){
                     playerTable.row().height(30);
-                    playerTable.add(AssetManager.preGameScreenPlayerName("Name must be between 3 - 20 characters")).colspan(3);
+                    playerTable.add(AssetManager.labelSimpleWhiteText("Name must be between 3 - 20 characters")).colspan(3);
                 }
                 name = false;
             }
@@ -146,8 +146,8 @@ public class PreGameScreen extends AbstractScreen {
      * Method to create and configure the main table used for the menu buttons.
      */
     private void createAndConfigureTableForMenu() {
-        nameOne = AssetManager.preGameScreenPlayerInput();
-        nameTwo = AssetManager.preGameScreenPlayerInput();
+        nameOne = AssetManager.skinnedTextField();
+        nameTwo = AssetManager.skinnedTextField();
 
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -156,11 +156,11 @@ public class PreGameScreen extends AbstractScreen {
         playerTable = new Table();
         //playerTable.setFillParent(true);
         playerTable.setDebug(false);
-        playerTable.add(AssetManager.preGameScreenPlayerName("Player 1 Name: ")).width(150).height(40);
+        playerTable.add(AssetManager.labelSimpleWhiteText("Player 1 Name: ")).width(150).height(40);
         playerTable.add().width(10);
         playerTable.add(nameOne).width(150);
         playerTable.row();
-        playerTable.add(AssetManager.preGameScreenPlayerName("Player 2 Name: ")).width(150).height(40);
+        playerTable.add(AssetManager.labelSimpleWhiteText("Player 2 Name: ")).width(150).height(40);
         playerTable.add().width(10);
         playerTable.add(nameTwo).width(150);
 
