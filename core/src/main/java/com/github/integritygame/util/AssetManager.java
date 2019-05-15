@@ -28,14 +28,14 @@ public class AssetManager {
         return new Label(text, titleLabelStyle);
     }
 
-    public static Label preGameScreenPlayerName(String name){
+    public static Label labelSimpleWhiteText(String name){
         Label.LabelStyle textLableStyle = new Label.LabelStyle();
         textLableStyle.fontColor = Color.WHITE;
         textLableStyle.font = new BitmapFont();
         return new Label(name, textLableStyle);
     }
 
-    public static TextField preGameScreenPlayerInput(){
+    public static TextField skinnedTextField(){
         return new TextField("", skin);
     }
 
@@ -53,6 +53,12 @@ public class AssetManager {
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
         return buttonStyle;
+    }
+
+    public static TextButton settingsTextButton(String buttonText){
+        TextButton button = new TextButton(buttonText, skin);
+
+        return button;
     }
 
     public static Texture background(Background backgrounds){

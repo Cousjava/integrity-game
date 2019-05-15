@@ -1,8 +1,8 @@
 package com.github.integritygame.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.github.integritygame.MyGdxGame;
 import com.github.integritygame.objects.BulletsController;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.screens.ScreenManager;
@@ -16,6 +16,7 @@ public class InputManager {
     private CONTROL control;
     private Tank tank;
     private TurnManager turnManager;
+    private static KeyBindingManager keyManager = MyGdxGame.keyManager;
 
     public InputManager(CONTROL control, Tank tank, TurnManager turnManager){
         this.control = control;
@@ -27,19 +28,19 @@ public class InputManager {
      * Defines how the player should move depending on what side they are
      */
     public void move(){
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+        if(Gdx.input.isKeyPressed(keyManager.getMainGameExit())){
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.A))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.LEFT))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))){
             tank.updateX(false);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.D))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.RIGHT))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))){
             tank.updateX(true);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.W))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.UP))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))){
             tank.rotate(true);
         }
-        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(Input.Keys.S))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.DOWN))){
+        if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN)))){
             tank.rotate(false);
         }
     }
@@ -49,7 +50,6 @@ public class InputManager {
      * @param bullets The bullet to be fired
      */
     public void tankFire(BulletsController bullets) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             Vector2 bullet = new Vector2(1, 1).setLength2(1000f);
             bullet.setAngle(tank.getRotation());
             bullets.addBullet(tank.getCurrentPosition(), bullet);
