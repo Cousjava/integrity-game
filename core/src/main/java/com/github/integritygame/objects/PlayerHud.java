@@ -4,10 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class PlayerHud {
 
@@ -16,6 +12,8 @@ public class PlayerHud {
     private int damage = 100;
     private String name;
     private BitmapFont font;
+    
+    private Tank tank;
 
     public PlayerHud(int x, int y){
         this.x = x;
@@ -28,6 +26,7 @@ public class PlayerHud {
     }
 
     public void renderText(SpriteBatch spriteBatch){
+        damage = tank.getDamage();
         spriteBatch.begin();
         font.setColor(Color.BLACK);
         font.draw(spriteBatch, "Tank Damage: " + damage + "%", x, y + 45);
@@ -36,6 +35,7 @@ public class PlayerHud {
     }
 
     public void render(ShapeRenderer shapeRenderer){
+        damage = tank.getDamage();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1,1,1,1);
         shapeRenderer.rect(x, y, 200, 25);
@@ -47,17 +47,8 @@ public class PlayerHud {
         shapeRenderer.end();
     }
 
-    //Return true if dead
-    public boolean toggleByValue(boolean increase, int value){
-        if(increase){
-            damage = Math.min(Math.max(damage + value, 0), 100);
-        }else{
-            damage = Math.min(Math.max(damage - value, 0), 100);
-        }
-        if(damage <= 0){
-            return true;
-        }
-        return false;
+    public void setTank(Tank tank) {
+        this.tank = tank;
     }
 
 }
