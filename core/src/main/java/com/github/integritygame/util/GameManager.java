@@ -29,7 +29,7 @@ public class GameManager {
     private GameWorld game;
 
     //TODO: Be able to calculate this from background
-    private static final int START_HEIGHT = 95;
+    private static final int START_HEIGHT = 90;
 
     private Hud hud;
 

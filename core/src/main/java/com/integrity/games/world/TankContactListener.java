@@ -13,6 +13,8 @@ import com.github.integritygame.objects.Tank;
  * @author jonathan cosutick
  */
 public class TankContactListener implements ContactListener {
+    
+    private static final int TANK_COLLISION_DAMAGE = 5;
 
     @Override
     public void beginContact(Contact contact) {
@@ -24,16 +26,15 @@ public class TankContactListener implements ContactListener {
         Object fixtureAData = fixtureA.getBody().getUserData();
         Object fixtureBData = fixtureB.getBody().getUserData();
         
-        Tank tank = null;
         if (fixtureAData instanceof Tank && fixtureBData instanceof Tank) {
             tankCollision((Tank) fixtureAData, (Tank) fixtureBData);
             return;
         }
         if (fixtureAData instanceof Tank && fixtureBData instanceof Bullet) {
-            bulletCollision((Tank) fixtureAData);
+            bulletCollision((Tank) fixtureAData, (Bullet) fixtureBData);
         }
         if (fixtureBData instanceof Tank && fixtureAData instanceof Bullet) {
-            bulletCollision((Tank) fixtureBData);
+            bulletCollision((Tank) fixtureBData, (Bullet) fixtureAData);
         }
         if (fixtureAData instanceof Bullet) {
             ((Bullet) fixtureAData).setImpacted(true);
@@ -45,15 +46,18 @@ public class TankContactListener implements ContactListener {
     }
     
     /**
-     * 
+     * Both tanks collide with each other
      */
     private void tankCollision(Tank tankA, Tank tankB) {
-        tankA.toggleByValue(false, 5);
-        tankB.toggleByValue(false, 5);
+        tankA.toggleByValue(false, TANK_COLLISION_DAMAGE);
+        tankB.toggleByValue(false, TANK_COLLISION_DAMAGE);
     }
     
-    private void bulletCollision(Tank tank) {
-        tank.toggleByValue(false, 10);
+    /**
+     * A bullet has hit the tank
+     */
+    private void bulletCollision(Tank tank, Bullet bullet) {
+        tank.toggleByValue(false, bullet.getDamage());
     }
 
     @Override
@@ -68,7 +72,7 @@ public class TankContactListener implements ContactListener {
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-        // TODO: Impact damage on tank
+        // no-op
     }
     
 }

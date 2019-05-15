@@ -17,6 +17,7 @@ public class Bullet {
     private Body body;
     
     private boolean impacted = false;
+    private int damage = 5;
     
     private static Texture texture = new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
 
@@ -67,6 +68,14 @@ public class Bullet {
         body = bulletBody;
         body.setUserData(this);
 
+    }
+    
+    /**
+     * Returns the amount of damage that is dealt to a
+     * tank on impact
+     */
+    public int getDamage() {
+        return damage;
     }
 
     /**
