@@ -102,10 +102,14 @@ public class Tank {
      */
     public void rotate(boolean clockwise){
         if(clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, 0), 45);
+            rotation = Math.min(Math.max(rotation - toleranceRotation, side ? 135:0), side ? 180:45);
         }else{
-            rotation = Math.min(Math.max(rotation + toleranceRotation, 0), 45);
+            rotation = Math.min(Math.max(rotation + toleranceRotation, side ? 135:0), side ? 180:45);
         }
+    }
+
+    public void stopTank(){
+        tankBody.setLinearVelocity(0,0);
     }
 
     /**
@@ -181,7 +185,6 @@ public class Tank {
     }
 
     public void changeMoney(boolean increase, int value){
-        System.out.println(money);
         if(increase){
             money = money + value;
         }else{

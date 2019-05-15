@@ -30,9 +30,6 @@ public class InputManager {
      * Defines how the player should move depending on what side they are
      */
     public void move(){
-        if(Gdx.input.isKeyPressed(keyManager.getMainGameExit())){
-            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
-        }
         if((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE)))||(control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))){
             tank.updateX(false);
         }
@@ -55,6 +52,12 @@ public class InputManager {
             }
 
 
+        }
+    }
+
+    public void escapeGame() {
+        if(Gdx.input.isKeyPressed(keyManager.getMainGameExit())){
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
         }
     }
 

@@ -79,8 +79,15 @@ public class GameManager {
     public void render(float delta){
         game.update(delta);
         //Ensure this is called every frame so the user can move and fire during every frame
-        turnManager.getTurnId().getInputManager().move();
-        turnManager.getTurnId().getInputManager().tankFire(bullets);
+        if(!bullets.isOnScreen()){
+            turnManager.getTurnId().getInputManager().move();
+            turnManager.getTurnId().getInputManager().tankFire(bullets);
+        }else{
+            userA.getTank().stopTank();
+            userB.getTank().stopTank();
+        }
+
+        turnManager.getTurnId().getInputManager().escapeGame();
 
         //Render the users tanks and bullets
         spriteBatch.begin();

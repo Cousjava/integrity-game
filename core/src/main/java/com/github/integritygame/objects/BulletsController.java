@@ -47,6 +47,10 @@ public class BulletsController {
         }
     }
 
+    public boolean isOnScreen(){
+        return bullets.size() >= 1;
+    }
+
     /**
      * Creates a new bullet and adds it to the screen
      * @param positon Starting location of bullet
