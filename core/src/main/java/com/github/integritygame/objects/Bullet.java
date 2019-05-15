@@ -100,7 +100,9 @@ public class Bullet {
             //body.setActive(false);
         }
     }
-    
-    
+
+    void sleep() {
+        body.setActive(false);
+    }    
     
 }

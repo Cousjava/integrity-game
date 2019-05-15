@@ -3,7 +3,6 @@ package com.github.integritygame.objects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import com.integrity.games.world.GameWorld;
 
@@ -27,7 +26,7 @@ public class BulletsController {
 
     public void render(SpriteBatch spriteBatch){
         for (Bullet bullet: bullets) {
-            if (bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
+            if (bullet.isImpacted() || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
                 outside.add(bullet);
             } else {
                 spriteBatch.draw(bullet.getTexture(), bullet.getX()-(bullet.getTextureWidth()/2), bullet.getY()-(bullet.getTextureHeight()/2), bullet.getTextureWidth(), bullet.getTextureHeight());
@@ -42,6 +41,7 @@ public class BulletsController {
     public void cleanOutsideBullets() {
         for (Bullet toRemove: outside) {
             bullets.remove(toRemove);
+            toRemove.sleep();
         }
     }
 
