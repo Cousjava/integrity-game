@@ -9,7 +9,8 @@ import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
 
 /**
- *
+ * When collisions occur between bullets and/or tanks
+ * this determines what happens
  * @author jonathan cosutick
  */
 public class TankContactListener implements ContactListener {

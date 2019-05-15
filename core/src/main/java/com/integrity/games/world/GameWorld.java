@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -13,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.github.integritygame.objects.Tank;
 
 /**
- *
+ * The world of the game and contains the physics stuff for it
  * @author jonathan
  */
 public class GameWorld {
@@ -28,7 +27,6 @@ public class GameWorld {
         
         world = new World(new Vector2(0, -5), true);
         Body terrainBody = world.createBody(new BodyDef());
-        //terrainBody.setLinearDamping(1);
         terrainBody.createFixture(terrain, 0);
         
         world.setContactListener(new TankContactListener());
@@ -72,6 +70,9 @@ public class GameWorld {
         
     }
     
+    /**
+     * Creates a bullet and adds it to the world
+     */
     public Body addBullet(BodyDef bulletDef) {        
         Body bulletBody = world.createBody(bulletDef);
         PolygonShape bulletShape = new PolygonShape();
@@ -84,6 +85,10 @@ public class GameWorld {
         return bulletBody;
     }
     
+    /**
+     * Update the world and run the simulation
+     * @param delta 
+     */
     public void update(float delta) {
         world.step(delta, 10, 10);
     }

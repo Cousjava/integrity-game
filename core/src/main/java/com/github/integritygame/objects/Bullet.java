@@ -96,9 +96,6 @@ public class Bullet {
      */
     public void setImpacted(boolean impacted) {
         this.impacted = impacted;
-        if (impacted) {
-            //body.setActive(false);
-        }
     }
 
     void sleep() {

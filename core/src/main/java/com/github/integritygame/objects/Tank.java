@@ -1,11 +1,9 @@
 package com.github.integritygame.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,8 +16,6 @@ import com.integrity.games.util.PolarVector;
  * This create a tank that can be moved around the screen
  */
 public class Tank {
-        
-    public static final int MASS = 100;
 
     private Vector2 position;
     private final int width;
@@ -29,7 +25,6 @@ public class Tank {
     private BodyDef tankBodyDef;
     private FixtureDef tankFixture;
     private Body tankBody;
-    private int graphicsWidth;
 
     /**Specify the default rotation */
     private float rotation = 90;
@@ -72,8 +67,6 @@ public class Tank {
 
         this.texture = new Texture(Gdx.files.internal("tanks/BlueTankLeftBody.png"));
         this.turret = new Texture(Gdx.files.internal("tanks/BlueTankLeftTurret.png"));
-        //Sets the width of the screen so the tank cant go past this
-        this.graphicsWidth = Gdx.graphics.getWidth();
     }
 
     /**
@@ -132,6 +125,9 @@ public class Tank {
         return localCenter.add(barrel);
     }
     
+    /**
+     * Gets the center of the tank
+     */
     private Vector2 getLocalCenter() {
         return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
@@ -173,7 +169,9 @@ public class Tank {
     }
     
     
-    //Return true if dead
+    /**
+     * @return true if dead 
+     */
     public boolean toggleByValue(boolean increase, int value){
         if(increase){
             damage = Math.min(Math.max(damage + value, 0), 100);
@@ -190,6 +188,10 @@ public class Tank {
         return damage <= 0;
     }
 
+    /**
+     * Returns how damage the tank is
+     * @return 0 = dead, 100 = start
+     */
     int getDamage() {
         return damage;
     }

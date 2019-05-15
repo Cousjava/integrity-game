@@ -19,8 +19,6 @@ public class MainGameScreen extends AbstractScreen {
 
     private int graphicsWidth;
     private int graphicsHeight;
-    
-    private OrthographicCamera camera;
 
     /**
      * Create a main game screen and initialise gamemanager to handle most the stuff
@@ -36,7 +34,6 @@ public class MainGameScreen extends AbstractScreen {
         shapeRenderer = new ShapeRenderer();
 
         gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer);
-        camera = new OrthographicCamera(graphicsWidth, graphicsHeight);
         
         configBackground();
     }
