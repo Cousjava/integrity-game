@@ -27,7 +27,7 @@ public class Tank {
     private Body tankBody;
 
     /**Specify the default rotation */
-    private float rotation = 90;
+    private float rotation = 0;
     private Texture turret;
 
     /** Specify the tolerance for how fast the tank moves and the rotation interval */
@@ -37,6 +37,7 @@ public class Tank {
     private boolean side;
     
     private int damage = 100;
+    private int money = 100;
     
     private static final int BARREL_LENGTH = 30;
 
@@ -101,10 +102,14 @@ public class Tank {
      */
     public void rotate(boolean clockwise){
         if(clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, 0), 180);
+            rotation = Math.min(Math.max(rotation - toleranceRotation, side ? 135:0), side ? 180:45);
         }else{
-            rotation = Math.min(Math.max(rotation + toleranceRotation, 0), 180);
+            rotation = Math.min(Math.max(rotation + toleranceRotation, side ? 135:0), side ? 180:45);
         }
+    }
+
+    public void stopTank(){
+        tankBody.setLinearVelocity(0,0);
     }
 
     /**
@@ -142,7 +147,6 @@ public class Tank {
 
     /**
      * This sets the texture of the tank to something other than the default
-     * @param  The location of the texture in the assets folder
      */
     public void setTexture(String body, String turret){
         this.texture = new Texture(Gdx.files.internal(body));
@@ -179,9 +183,21 @@ public class Tank {
             damage = Math.min(Math.max(damage - value, 0), 100);
         }
     }
+
+    public void changeMoney(boolean increase, int value){
+        if(increase){
+            money = money + value;
+        }else{
+            money = money - value;
+        }
+    }
     
     public boolean isDead() {
         return damage <= 0;
+    }
+
+    public boolean isBankrupt(){
+        return money <= 0;
     }
 
     /**
@@ -190,6 +206,10 @@ public class Tank {
      */
     int getDamage() {
         return damage;
+    }
+
+    int getMoney() {
+        return money;
     }
 
 }

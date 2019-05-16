@@ -51,13 +51,13 @@ public class HelpMenuScreen extends AbstractScreen {
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
 
-        try {
+        /*try {
             File helpTextFile = new File(Gdx.files.internal("text/helpText.txt").toString());
             helpText = FileUtils.readFileToString(helpTextFile);
         } catch (Exception ex) {
             System.out.println("ERROR: " + ex.getMessage() + ex.getStackTrace());
             Gdx.app.exit();
-        }
+        }*/
     }
 
     @Override
@@ -162,7 +162,30 @@ public class HelpMenuScreen extends AbstractScreen {
         titleLabel.setAlignment(Align.center);
         stage.addActor(titleLabel);
 
-        helpTextLabel = new Label(helpText, textLableStyle);
+        helpTextLabel = new Label("Tanks is a 2D side view strategy game where each player will have to use their strategy, skill and wit to eliminate the other before they eliminate you. You will start with a fund but be careful, firing each bullet costs. Not only will you need to avoid damage but also avoid running out of money. If you lose your health or run out of money, you will lose.\n" +
+                "\n" +
+                "Bullet Types\n" +
+                "\n" +
+                "Small       5 Damage    £10 to fire     £5 returned for successful shot\n" +
+                "Medium    8 Damage    £15 to fire     £5 returned for successful shot\n" +
+                "Large       10 Damage   £20 to fire     £5 returned for successful shot\n" +
+                "\n" +
+                "How To Play\n" +
+                "\n" +
+                "Player 1\n" +
+                "A/D - Move\n" +
+                "W/S - Aim\n" +
+                "\n" +
+                "Player 2\n" +
+                "Left Arrow/Right Arrow - Move\n" +
+                "Up Arrow/Down Arrow - Aim\n" +
+                "\n" +
+                "Both Players use Space bar to fire and use T to toggle between bullet types.\n" +
+                "\n" +
+                "The default key layout can be changed in the Settings menu.\n" +
+                "\n" +
+                "\n" +
+                "Now stop reading this and start a war!", textLableStyle);
         helpTextLabel.setAlignment(Align.topLeft);
         helpTextLabel.setWrap(true);
         stage.addActor(helpTextLabel);

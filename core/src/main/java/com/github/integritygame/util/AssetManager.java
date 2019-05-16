@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.github.integritygame.objects.BulletData;
 
 public class AssetManager {
 
@@ -59,6 +60,15 @@ public class AssetManager {
         TextButton button = new TextButton(buttonText, skin);
 
         return button;
+    }
+
+    public static Texture bullet(BulletData bulletData){
+        if(BulletData.BulletName.SMALL == bulletData.getBulletData()){
+            return new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
+        }else if(BulletData.BulletName.MEDIUM == bulletData.getBulletData()){
+            return new Texture(Gdx.files.internal("projectiles/ProjectileBlackGreen.png"));
+        }
+        return new Texture(Gdx.files.internal("projectiles/ProjectileWhiteGreen.png"));
     }
 
     public static Texture background(Background backgrounds){
