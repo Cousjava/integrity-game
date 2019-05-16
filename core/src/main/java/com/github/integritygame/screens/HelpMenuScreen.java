@@ -32,6 +32,9 @@ public class HelpMenuScreen extends AbstractScreen {
 
     String helpText;
 
+    /**
+     * Initialises the Help Menu screen, loads all of the helper text, and the font files.
+     */
     public HelpMenuScreen() {
         stage = new Stage();
 
@@ -51,6 +54,9 @@ public class HelpMenuScreen extends AbstractScreen {
         helpText = Gdx.files.internal("text/helpText.txt").readString();
     }
 
+    /**
+     * Creates buttons, defines label styles, and shows the Help screen
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -63,6 +69,10 @@ public class HelpMenuScreen extends AbstractScreen {
         stage.addActor(mainTable);
     }
 
+    /**
+     * Renders the screen with an opacity of 100%
+     * @param delta Time between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);

@@ -29,11 +29,17 @@ public class GameOverScreen extends AbstractScreen {
     private boolean explicit;
     private boolean name;
 
+    /**
+     * Initialises the Game Over screen with a Stage and an instance of the VariableManager
+     */
     public GameOverScreen() {
         stage = new Stage();
         variableManager = VariableManager.getInstance();
     }
 
+    /**
+     * Shows the game over screen
+     */
     @Override
     public void show() {
         explicit = true;
@@ -46,6 +52,10 @@ public class GameOverScreen extends AbstractScreen {
         stage.addActor(mainTable);
     }
 
+    /**
+     * Renders the screen with 100% opacity
+     * @param delta Timings between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
