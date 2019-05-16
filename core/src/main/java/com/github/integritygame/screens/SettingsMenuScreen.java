@@ -43,6 +43,7 @@ public class SettingsMenuScreen extends AbstractScreen {
     TextButton changeKeyButtonRightDown;
     TextButton changeKeyButtonFire;
     TextButton resetControls;
+    TextButton changeKeyToggleBullet;
 
     Table mainTable;
     Table keyBindingsTable;
@@ -121,7 +122,9 @@ public class SettingsMenuScreen extends AbstractScreen {
         changeKeyButtonRightUp = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonRightDown = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonFire = AssetManager.settingsTextButton("Configure...");
+        changeKeyToggleBullet = AssetManager.settingsTextButton("Configure...");
         resetControls = AssetManager.settingsTextButton("Restore Defaults");
+
 
         //add listeners to each button
         menuButton.addListener(new ClickListener(){
@@ -257,6 +260,20 @@ public class SettingsMenuScreen extends AbstractScreen {
             }
         });
 
+        changeKeyToggleBullet.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.input.setInputProcessor(new InputAdapter() {
+                    @Override
+                    public boolean keyDown(int keycode) {
+                        keyManager.setKey(KeyBindingManager.ConfigurableKeys.BULLET_TOGGLE, keycode);
+                        ScreenManager.getInstance().changeScreen(ScreenManager.Screens.SETTINGS_MENU);
+                        return false;
+                    }
+                });
+            }
+        });
+
         resetControls.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -330,11 +347,19 @@ public class SettingsMenuScreen extends AbstractScreen {
         keyBindingsTable.add(changeKeyButtonRightDown).width(100).height(20);
 
         keyBindingsTable.row().height(50);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Fire (both players):")).width(150).align(Align.left);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Shared Controls")).align(Align.left);
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Fire:")).width(150).align(Align.left);
         keyBindingsTable.add().width(10);
         keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))));
         keyBindingsTable.add().width(10);
         keyBindingsTable.add(changeKeyButtonFire).width(100).height(20);
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Toggle Bullet Type:")).width(150).align(Align.left);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.BULLET_TOGGLE))));
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(changeKeyToggleBullet).width(100).height(20);
 
         keyBindingsTable.row().height(50);
         keyBindingsTable.add(resetControls).width(130).height(20).align(Align.left);

@@ -10,6 +10,7 @@ import java.util.List;
 public class Hud {
 
     private List<PlayerHud> hBar;
+    private GeneralHud generalHud;
     private int width;
     private int height;
 
@@ -21,13 +22,16 @@ public class Hud {
         hBar.add(new PlayerHud(width - 210,height - 90));
         hBar.get(0).setName(VariableManager.getInstance().getString("PlayerOneName"));
         hBar.get(1).setName(VariableManager.getInstance().getString("PlayerTwoName"));
+        generalHud = new GeneralHud(width/2, height - 90);
     }
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(121/255f,121/255f,121/255f,1);
-        shapeRenderer.rect(0, height - 100, width, 100);
+        shapeRenderer.rect(0, height - 110, width, 110);
         shapeRenderer.end();
+
+        generalHud.render(spriteBatch);
 
         for(PlayerHud hud : hBar){
             hud.render(shapeRenderer);
