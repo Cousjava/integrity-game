@@ -37,7 +37,7 @@ public class Tank {
     private boolean side;
     
     private int damage = 100;
-    private int money = 100;
+    private int money = 250;
     
     private static final int BARREL_LENGTH = 30;
 

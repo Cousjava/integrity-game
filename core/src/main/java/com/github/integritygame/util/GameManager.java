@@ -98,7 +98,7 @@ public class GameManager {
 
         hud.render(shapeRenderer, spriteBatch);
 
-        if (userA.getTank().isBankrupt()||userB.getTank().isBankrupt()) {
+        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt()||userB.getTank().isBankrupt())) {
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
         }
         
