@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.github.integritygame.util.AssetManager;
@@ -50,8 +52,8 @@ public class PreGameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.act();
         stage.draw();
@@ -92,7 +94,7 @@ public class PreGameScreen extends AbstractScreen {
         playButtonDesert = new TextButton("Play Desert", AssetManager.preGameScreenButtons());
 
         //add listeners to each button
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 variableManager.setString("PlayerOneName", nameOne.getText());
@@ -101,7 +103,7 @@ public class PreGameScreen extends AbstractScreen {
             }
         });
 
-        playButtonGrass.addListener(new ClickListener(){
+        playButtonGrass.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 variableManager.setString("Background", "Grass");
@@ -109,7 +111,7 @@ public class PreGameScreen extends AbstractScreen {
             }
         });
 
-        playButtonDesert.addListener(new ClickListener(){
+        playButtonDesert.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 variableManager.setString("Background", "Desert");
@@ -118,18 +120,18 @@ public class PreGameScreen extends AbstractScreen {
         });
     }
 
-    public void init(){
+    public void init() {
         Pattern pattern = Pattern.compile("(?i)fuck|shit|wanker|twat");
-        if(pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find() || nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20){
+        if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find() || nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20) {
             if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find()) {
-                if(explicit){
+                if (explicit) {
                     playerTable.row().height(30);
                     playerTable.add(AssetManager.labelSimpleWhiteText("Explicit Names Not Allowed")).colspan(3);
                 }
                 explicit = false;
             }
-            if(nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20){
-                if(name){
+            if (nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20) {
+                if (name) {
                     playerTable.row().height(30);
                     playerTable.add(AssetManager.labelSimpleWhiteText("Name must be between 3 - 20 characters")).colspan(3);
                 }
@@ -173,7 +175,7 @@ public class PreGameScreen extends AbstractScreen {
         buttonTable.add(playButtonDesert).width(200).height(100);
 
         mainTable.add(AssetManager.screenTitle(Color.FOREST, "Operation Briefing...")).align(Align.center);
-        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth());
+        mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth());
         mainTable.add(playerTable).align(Align.center);
         mainTable.row().height(100);
         mainTable.add(buttonTable);

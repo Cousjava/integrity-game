@@ -51,8 +51,7 @@ public class KeyBindingManager {
      * Will return true if there is a duplicate.
      *
      * @param tempKeyMap the temporary map that is checked for duplicates
-     * @param keyCode the integer value of the key to check for in map
-     *
+     * @param keyCode    the integer value of the key to check for in map
      * @return duplicateKeyStatus true if duplicates are detected
      */
     public static boolean checkForDuplicateKeys(HashMap<ConfigurableKeys, Integer> tempKeyMap, int keyCode) {
@@ -69,10 +68,11 @@ public class KeyBindingManager {
 
     /**
      * Used to set a key from the settings menu
+     *
      * @param keyName which configurable key to set
      * @param keyCode the value to set
      */
-    public static void setKey(ConfigurableKeys keyName, int keyCode){
+    public static void setKey(ConfigurableKeys keyName, int keyCode) {
         HashMap<ConfigurableKeys, Integer> tempKeyMap = new HashMap<>(keyMap);
 
         tempKeyMap.replace(keyName, keyCode);
@@ -86,6 +86,7 @@ public class KeyBindingManager {
 
     /**
      * getter method for fixed Exit key
+     *
      * @return Integer for exit key
      */
     public static int getMainGameExit() {

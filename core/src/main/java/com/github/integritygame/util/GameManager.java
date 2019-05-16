@@ -3,11 +3,7 @@ package com.github.integritygame.util;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.github.integritygame.objects.BulletsController;
-import com.github.integritygame.objects.Hud;
-import com.github.integritygame.objects.PlayerHud;
-import com.github.integritygame.objects.Tank;
-import com.github.integritygame.objects.UserTurn;
+import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
 import com.integrity.games.world.GameWorld;
 
@@ -26,7 +22,7 @@ public class GameManager {
     private UserTurn userB;
 
     private BulletsController bullets;
-    
+
     private GameWorld game;
 
     //TODO: Be able to calculate this from background
@@ -36,17 +32,18 @@ public class GameManager {
 
     /**
      * Create a game manager
-     * @param graphicsWidth Width of the screen
+     *
+     * @param graphicsWidth  Width of the screen
      * @param graphicsHeight Height of the screen
-     * @param spriteBatch SpriteBatch so we can render them instead of creating a new one
-     * @param shapeRenderer ShapeRenderer so we can render them instead of creating a new one
+     * @param spriteBatch    SpriteBatch so we can render them instead of creating a new one
+     * @param shapeRenderer  ShapeRenderer so we can render them instead of creating a new one
      */
-    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer){
+    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
 
-        Tank userATank = new Tank(30, 180,80,35, false);
-        Tank userBTank = new Tank(graphicsWidth - 110,180,80,35, true);
+        Tank userATank = new Tank(30, 180, 80, 35, false);
+        Tank userBTank = new Tank(graphicsWidth - 110, 180, 80, 35, true);
         userA = new UserTurn(userATank);
         userB = new UserTurn(userBTank);
         setTankTextures();
@@ -57,14 +54,14 @@ public class GameManager {
         //This will create an input manager for each user
         userA.setInputManager(InputManager.CONTROL.LEFT, turnManager);
         userB.setInputManager(InputManager.CONTROL.RIGHT, turnManager);
-        
+
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
-        
+
         game = new GameWorld(terrain);
         userATank.setTankBody(game.addTank(30, START_HEIGHT + 1, userATank));
         userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userBTank));
-        
+
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
 
         hud = new Hud(graphicsWidth, graphicsHeight);
@@ -76,13 +73,13 @@ public class GameManager {
     /**
      * This will render everything on screen along with executing code that should be done with every frame
      */
-    public void render(float delta){
+    public void render(float delta) {
         game.update(delta);
         //Ensure this is called every frame so the user can move and fire during every frame
-        if(!bullets.isOnScreen()){
+        if (!bullets.isOnScreen()) {
             turnManager.getTurnId().getInputManager().move();
             turnManager.getTurnId().getInputManager().tankFire(bullets);
-        }else{
+        } else {
             userA.getTank().stopTank();
             userB.getTank().stopTank();
         }
@@ -91,23 +88,23 @@ public class GameManager {
 
         //Render the users tanks and bullets
         spriteBatch.begin();
-            userA.getTank().renderSprite(spriteBatch);
-            userB.getTank().renderSprite(spriteBatch);
-            bullets.render(spriteBatch);
+        userA.getTank().renderSprite(spriteBatch);
+        userB.getTank().renderSprite(spriteBatch);
+        bullets.render(spriteBatch);
         spriteBatch.end();
 
         hud.render(shapeRenderer, spriteBatch);
 
-        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt()||userB.getTank().isBankrupt())) {
+        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt() || userB.getTank().isBankrupt())) {
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
         }
-        
+
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
     }
 
-    public void setTankTextures(){
-        userB.getTank().setTexture("tanks/GreenTankRightBody.png","tanks/GreenTankRightTurret.png");
+    public void setTankTextures() {
+        userB.getTank().setTexture("tanks/GreenTankRightBody.png", "tanks/GreenTankRightTurret.png");
     }
 
 }

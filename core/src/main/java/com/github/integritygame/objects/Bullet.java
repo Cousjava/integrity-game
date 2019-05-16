@@ -1,6 +1,5 @@
 package com.github.integritygame.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,14 +8,15 @@ import com.github.integritygame.util.AssetManager;
 
 /**
  * A class to hold information on a bullet
+ *
  * @author jonathan coustick
  */
 public class Bullet {
-    
+
     private Vector2 location;
     private Vector2 heading;
     private Body body;
-    
+
     private boolean impacted = false;
     private int damage = 5;
 
@@ -26,6 +26,7 @@ public class Bullet {
 
     /**
      * This will create a bullet
+     *
      * @param position
      * @param vector
      */
@@ -43,19 +44,19 @@ public class Bullet {
     public float getY() {
         return body.getPosition().y;
     }
-    
+
     public Texture getTexture() {
         return AssetManager.bullet(bulletData);
     }
 
-    public int getTextureWidth(){
+    public int getTextureWidth() {
         return 4;
     }
 
-    public int getTextureHeight(){
-        return  4;
+    public int getTextureHeight() {
+        return 4;
     }
-    
+
     public BodyDef getBodyDef() {
         BodyDef bulletDef = new BodyDef();
         bulletDef.bullet = true;
@@ -65,7 +66,7 @@ public class Bullet {
         bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;
-        
+
         return bulletDef;
     }
 
@@ -74,7 +75,7 @@ public class Bullet {
         body.setUserData(this);
 
     }
-    
+
     /**
      * Returns the amount of damage that is dealt to a
      * tank on impact
@@ -87,13 +88,14 @@ public class Bullet {
         }
     }
 
-    public void setDamage(int damage){
+    public void setDamage(int damage) {
         this.damage = damage;
     }
 
     /**
      * Whether the bullet has hit another object
-     * @return 
+     *
+     * @return
      */
     public boolean isImpacted() {
         return impacted;
@@ -101,7 +103,8 @@ public class Bullet {
 
     /**
      * Sets whether the bullet has hit something
-     * @param impacted 
+     *
+     * @param impacted
      */
     public void setImpacted(boolean impacted) {
         this.impacted = impacted;
@@ -111,12 +114,12 @@ public class Bullet {
         body.setActive(false);
     }
 
-    public Tank getFiringTank(){
+    public Tank getFiringTank() {
         return firingTank;
     }
 
-    public BulletData getBulletData(){
+    public BulletData getBulletData() {
         return bulletData;
     }
-    
+
 }

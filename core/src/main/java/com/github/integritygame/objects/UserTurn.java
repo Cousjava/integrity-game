@@ -8,19 +8,19 @@ public class UserTurn {
     private InputManager inputManager;
     private Tank tank;
 
-    public UserTurn(Tank tank){
+    public UserTurn(Tank tank) {
         this.tank = tank;
     }
 
-    public void setInputManager(InputManager.CONTROL control, TurnManager<UserTurn> userTurnManager){
+    public void setInputManager(InputManager.CONTROL control, TurnManager<UserTurn> userTurnManager) {
         this.inputManager = new InputManager(control, tank, userTurnManager);
     }
 
-    public Tank getTank(){
+    public Tank getTank() {
         return tank;
     }
 
-    public InputManager getInputManager(){
+    public InputManager getInputManager() {
         return inputManager;
     }
 

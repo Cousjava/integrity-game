@@ -27,7 +27,6 @@ public class MainMenuScreen extends AbstractScreen {
     private Texture texture;
 
 
-
     public MainMenuScreen() {
         stage = new Stage();
         spriteBatch = new SpriteBatch();
@@ -48,12 +47,12 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 
         spriteBatch.begin();
-        spriteBatch.draw(texture,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act();
@@ -99,28 +98,28 @@ public class MainMenuScreen extends AbstractScreen {
         settingsButton = new TextButton("Settings", AssetManager.preGameScreenButtons());
 
         //add listeners to each button
-        playButton.addListener(new ClickListener(){
+        playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.PRE_GAME);
             }
         });
 
-        helpButton.addListener(new ClickListener(){
+        helpButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.HELP_MENU);
             }
         });
 
-        settingsButton.addListener(new ClickListener(){
+        settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.SETTINGS_MENU);
             }
         });
 
-        exitButton.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
@@ -136,8 +135,8 @@ public class MainMenuScreen extends AbstractScreen {
         int tableWidthScalar = 8;
         int tableHeightScalar = 10;
 
-        int width = Gdx.graphics.getWidth()/tableWidthScalar;
-        int height = Gdx.graphics.getHeight()/tableHeightScalar;
+        int width = Gdx.graphics.getWidth() / tableWidthScalar;
+        int height = Gdx.graphics.getHeight() / tableHeightScalar;
 
         mainTable = new Table();
         mainTable.setFillParent(true);

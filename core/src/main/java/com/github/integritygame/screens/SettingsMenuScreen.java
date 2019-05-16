@@ -24,7 +24,7 @@ import com.github.integritygame.util.KeyBindingManager;
 public class SettingsMenuScreen extends AbstractScreen {
 
     protected Stage stage;
-    private  TextButton.TextButtonStyle buttonStyle;
+    private TextButton.TextButtonStyle buttonStyle;
     private TextButton.TextButtonStyle keyButtonStyle;
     BitmapFont font;
     BitmapFont titleFont;
@@ -75,8 +75,8 @@ public class SettingsMenuScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.act();
         stage.draw();
@@ -112,7 +112,7 @@ public class SettingsMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        menuButton = new TextButton("Menu",AssetManager.preGameScreenButtons());
+        menuButton = new TextButton("Menu", AssetManager.preGameScreenButtons());
         changeKeyButtonLeftLeft = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonLeftRight = AssetManager.settingsTextButton("Configure...");
         changeKeyButtonLeftUp = AssetManager.settingsTextButton("Configure...");
@@ -127,7 +127,7 @@ public class SettingsMenuScreen extends AbstractScreen {
 
 
         //add listeners to each button
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
@@ -370,7 +370,7 @@ public class SettingsMenuScreen extends AbstractScreen {
         mainTable.top();
 
         mainTable.add(AssetManager.screenTitle(Color.FOREST, "Settings"));
-        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth()-50);
+        mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth() - 50);
         mainTable.add(keyBindingsTable);
         mainTable.row().height(30);
         mainTable.add(menuButton).width(200).height(100).align(Align.bottomLeft);

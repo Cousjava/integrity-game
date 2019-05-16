@@ -1,10 +1,6 @@
 package com.integrity.games.world;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
 import com.github.integritygame.screens.ScreenManager;
@@ -12,22 +8,25 @@ import com.github.integritygame.screens.ScreenManager;
 /**
  * When collisions occur between bullets and/or tanks
  * this determines what happens
+ *
  * @author jonathan cosutick
  */
 public class TankContactListener implements ContactListener {
-    
+
     private static final int TANK_COLLISION_DAMAGE = 5;
 
     @Override
     public void beginContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        
-        if (fixtureA == null || fixtureB == null) { return; }
-        
+
+        if (fixtureA == null || fixtureB == null) {
+            return;
+        }
+
         Object fixtureAData = fixtureA.getBody().getUserData();
         Object fixtureBData = fixtureB.getBody().getUserData();
-        
+
         if (fixtureAData instanceof Tank && fixtureBData instanceof Tank) {
             tankCollision((Tank) fixtureAData, (Tank) fixtureBData);
             return;
@@ -44,9 +43,9 @@ public class TankContactListener implements ContactListener {
         if (fixtureBData instanceof Bullet) {
             ((Bullet) fixtureBData).setImpacted(true);
         }
-        
+
     }
-    
+
     /**
      * Both tanks collide with each other
      */
@@ -54,7 +53,7 @@ public class TankContactListener implements ContactListener {
         tankA.toggleByValue(false, TANK_COLLISION_DAMAGE);
         tankB.toggleByValue(false, TANK_COLLISION_DAMAGE);
     }
-    
+
     /**
      * A bullet has hit the tank
      */
@@ -80,5 +79,5 @@ public class TankContactListener implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
         // no-op
     }
-    
+
 }

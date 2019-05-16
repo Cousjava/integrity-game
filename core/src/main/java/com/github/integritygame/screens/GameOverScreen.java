@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.github.integritygame.util.AssetManager;
@@ -46,8 +48,8 @@ public class GameOverScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.act();
         stage.draw();
@@ -86,14 +88,14 @@ public class GameOverScreen extends AbstractScreen {
         replayButton = new TextButton("Play Again", AssetManager.preGameScreenButtons());
 
         //add listeners to each button
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
             }
         });
 
-        replayButton.addListener(new ClickListener(){
+        replayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.PRE_GAME);
@@ -122,7 +124,7 @@ public class GameOverScreen extends AbstractScreen {
         buttonTable.add(replayButton).width(200).height(100);
 
         mainTable.add(AssetManager.screenTitle(Color.FOREST, "Game Over!")).align(Align.center);
-        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth());
+        mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth());
         mainTable.add(summaryTable).align(Align.center);
         mainTable.row().height(100);
         mainTable.add(buttonTable);
