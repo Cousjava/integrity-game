@@ -17,12 +17,24 @@ public class BulletsController {
     private int graphicsHeight;
     private GameWorld gameWorld;
 
+    /**
+     * Initializes the bullet controller
+     *
+     * @param graphicsWidth  Height of the screen
+     * @param graphicsHeight Width of the screen
+     * @param gameWorld      Current game world
+     */
     public BulletsController(int graphicsWidth, int graphicsHeight, GameWorld gameWorld) {
         this.graphicsWidth = graphicsWidth;
         this.graphicsHeight = graphicsHeight;
         this.gameWorld = gameWorld;
     }
 
+    /**
+     * Renders the bullet list on the screen
+     *
+     * @param spriteBatch Target medium to draw on
+     */
     public void render(SpriteBatch spriteBatch) {
         for (Bullet bullet : bullets) {
             if (bullet.isImpacted() || bullet.getY() < 0 || bullet.getY() > graphicsHeight) {
@@ -44,6 +56,11 @@ public class BulletsController {
         }
     }
 
+    /**
+     * Determines if there are any bullets present
+     *
+     * @return True if the number of bullets is >= 1, False otherwise.
+     */
     public boolean isOnScreen() {
         return bullets.size() >= 1;
     }

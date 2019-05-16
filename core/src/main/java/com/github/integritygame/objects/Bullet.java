@@ -16,6 +16,7 @@ public class Bullet {
     private Vector2 location;
     private Vector2 heading;
     private Body body;
+    private BodyDef def;
 
     private boolean impacted = false;
     private int damage = 5;
@@ -37,39 +38,75 @@ public class Bullet {
         this.bulletData = bulletData;
     }
 
+    /**
+     * Returns the X coordinate of the current bullet
+     *
+     * @return Bullet's X coordinate
+     */
     public float getX() {
         return body.getPosition().x;
     }
 
+    /**
+     * Returns the Y coordinate of the current bullet
+     *
+     * @return Bullet's Y coordinate
+     */
     public float getY() {
         return body.getPosition().y;
     }
 
+    /**
+     * Returns the bullet texture
+     *
+     * @return Bullet's texture
+     */
     public Texture getTexture() {
         return AssetManager.bullet(bulletData);
     }
 
+    /**
+     * Returns the texture's width
+     *
+     * @return Bullet texture's width
+     */
     public int getTextureWidth() {
         return 4;
     }
 
+    /**
+     * Returns the texture's height
+     *
+     * @return Bullet texture's height
+     */
     public int getTextureHeight() {
         return 4;
     }
 
+    /**
+     * Returns the Bullets characteristics.
+     *
+     * @return Bullet characteristic definition
+     */
     public BodyDef getBodyDef() {
-        BodyDef bulletDef = new BodyDef();
-        bulletDef.bullet = true;
-        bulletDef.linearVelocity.x = heading.x * 5;
-        bulletDef.linearVelocity.y = heading.y * 5;
-        bulletDef.gravityScale = 1;
-        bulletDef.type = BodyDef.BodyType.DynamicBody;
-        bulletDef.position.x = location.x;
-        bulletDef.position.y = location.y;
-
-        return bulletDef;
+        if (def == null) {
+            def = new BodyDef();
+            def.bullet = true;
+            def.linearVelocity.x = heading.x * 5;
+            def.linearVelocity.y = heading.y * 5;
+            def.gravityScale = 1;
+            def.type = BodyDef.BodyType.DynamicBody;
+            def.position.x = location.x;
+            def.position.y = location.y;
+        }
+        return def;
     }
 
+    /**
+     * Sets the bullets body
+     *
+     * @param bulletBody
+     */
     void setBody(Body bulletBody) {
         body = bulletBody;
         body.setUserData(this);
@@ -81,13 +118,15 @@ public class Bullet {
      * tank on impact
      */
     public int getDamage() {
-        if (!impacted) {
-            return damage;
-        } else {
-            return 0;
-        }
+        return impacted ? 0 : damage;
     }
 
+    /**
+     * Sets the amount of damage that is dealt to a
+     * tank on impact
+     *
+     * @param damage Damage dealt
+     */
     public void setDamage(int damage) {
         this.damage = damage;
     }
@@ -95,7 +134,7 @@ public class Bullet {
     /**
      * Whether the bullet has hit another object
      *
-     * @return
+     * @return True if the bullet has hit another object, False otherwise
      */
     public boolean isImpacted() {
         return impacted;
@@ -110,14 +149,27 @@ public class Bullet {
         this.impacted = impacted;
     }
 
+    /**
+     * Forces the bullet to "deactivate"
+     */
     void sleep() {
         body.setActive(false);
     }
 
+    /**
+     * Returns the tank who fired this bullet
+     *
+     * @return Origin tank
+     */
     public Tank getFiringTank() {
         return firingTank;
     }
 
+    /**
+     * Returns the current bullets data
+     *
+     * @return Bullet data
+     */
     public BulletData getBulletData() {
         return bulletData;
     }

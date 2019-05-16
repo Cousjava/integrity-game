@@ -14,6 +14,12 @@ public class Hud {
     private int width;
     private int height;
 
+    /**
+     * Initializes the Heads-Up-Display given the current width and height of the game client
+     *
+     * @param width  Client width
+     * @param height Client height
+     */
     public Hud(int width, int height) {
         this.width = width;
         this.height = height;
@@ -25,6 +31,12 @@ public class Hud {
         generalHud = new GeneralHud(width / 2, height - 90);
     }
 
+    /**
+     * Renders the HUD elements
+     *
+     * @param shapeRenderer Rendering engine
+     * @param spriteBatch   Rendered content
+     */
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(121 / 255f, 121 / 255f, 121 / 255f, 1);
@@ -39,12 +51,23 @@ public class Hud {
         }
     }
 
+    /**
+     * Sets the name linked to the tank
+     *
+     * @param tankNumber Player 1 or Player 2
+     * @param name       Name of person operating the tank
+     */
     public void setTankName(int tankNumber, String name) {
         if (tankNumber <= hBar.size()) {
             hBar.get(tankNumber).setName(name);
         }
     }
 
+    /**
+     * Returns all the HUD elements in the bar
+     *
+     * @return HUD elements
+     */
     public List<PlayerHud> getPlayerHuds() {
         return hBar;
     }

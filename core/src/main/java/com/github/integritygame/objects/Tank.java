@@ -32,7 +32,6 @@ public class Tank {
      * Specify the tolerance for how fast the tank moves and the rotation interval
      */
     private float toleranceMove = 0.5f;
-    private float toleranceRotation = 1;
 
     private boolean side;
 
@@ -105,11 +104,9 @@ public class Tank {
      * @param clockwise This will specify if the tank aim should move clockwise or anti clockwise
      */
     public void rotate(boolean clockwise) {
-        if (clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, side ? 135 : 0), side ? 180 : 45);
-        } else {
-            rotation = Math.min(Math.max(rotation + toleranceRotation, side ? 135 : 0), side ? 180 : 45);
-        }
+        float toleranceRotation = 1;
+        rotation = clockwise ? Math.min(Math.max(rotation - toleranceRotation, side ? 135 : 0), side ? 180 : 45)
+                : Math.min(Math.max(rotation + toleranceRotation, side ? 135 : 0), side ? 180 : 45);
     }
 
     public void stopTank() {
@@ -159,20 +156,42 @@ public class Tank {
         this.turret = new Texture(Gdx.files.internal(turret));
     }
 
+    /**
+     * Returns the tank fixture definition
+     *
+     * @return Tank fixture definition
+     */
     public FixtureDef getTankFixtureDef() {
         return tankFixture;
     }
 
+    /**
+     * Returns the tank body definition
+     *
+     * @return Tank body definition
+     */
     public BodyDef getTankBodyDef() {
         return tankBodyDef;
     }
 
+    /**
+     * Sets the tank shape given a height and width
+     *
+     * @param width  Tank width
+     * @param height Tank height
+     * @return New Tank Shape as a Polygon
+     */
     private Shape setTankShape(float width, float height) {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2, height / 2);
         return shape;
     }
 
+    /**
+     * Sets the tank body with the given Body
+     *
+     * @param tankBody New tank body
+     */
     public void setTankBody(Body tankBody) {
         tankBody.setUserData(this);
         this.tankBody = tankBody;
@@ -180,41 +199,61 @@ public class Tank {
 
 
     /**
-     * @return true if dead
+     * Alters the damage by a given value
+     *
+     * @param increase True increments the damage, False reduces the damage
+     * @param value    Amount to alter by
      */
     public void toggleByValue(boolean increase, int value) {
-        if (increase) {
-            damage = Math.min(Math.max(damage + value, 0), 100);
-        } else {
-            damage = Math.min(Math.max(damage - value, 0), 100);
-        }
+        damage = increase
+                ? Math.min(Math.max(damage + value, 0), 100)
+                : Math.min(Math.max(damage - value, 0), 100);
     }
 
+    /**
+     * Alerts the money by a given value
+     *
+     * @param increase True increments the money, False reduces the money
+     * @param value    Amount to alter by
+     */
     public void changeMoney(boolean increase, int value) {
-        if (increase) {
-            money = money + value;
-        } else {
-            money = money - value;
-        }
+        money = increase
+                ? money + value
+                : money - value;
     }
 
+    /**
+     * Returns if the health of the tank is less than or equal to 0
+     *
+     * @return True if the tank is dead
+     */
     public boolean isDead() {
         return damage <= 0;
     }
 
+    /**
+     * Returns if the user has ran out of money
+     *
+     * @return True if the wallet is empty
+     */
     public boolean isBankrupt() {
         return money <= 0;
     }
 
     /**
-     * Returns how damage the tank is
+     * Returns how damaged the tank is
      *
-     * @return 0 = dead, 100 = start
+     * @return Damage the tank can take before being destroyed
      */
     int getDamage() {
         return damage;
     }
 
+    /**
+     * Returns how much money the user has in their wallet
+     *
+     * @return Wallet contents
+     */
     int getMoney() {
         return money;
     }
