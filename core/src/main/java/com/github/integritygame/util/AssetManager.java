@@ -17,8 +17,6 @@ public class AssetManager {
         DESERT, GRASS, HOME
     }
 
-    ;
-
     private static Skin skin = new Skin(Gdx.files.internal("visui/assets/uiskin.json"));
 
     public AssetManager() {
@@ -42,10 +40,6 @@ public class AssetManager {
         return new TextField("", skin);
     }
 
-    public static Skin skin() {
-        return skin;
-    }
-
     public static TextButton.TextButtonStyle preGameScreenButtons() {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = new BitmapFont();
@@ -59,9 +53,7 @@ public class AssetManager {
     }
 
     public static TextButton settingsTextButton(String buttonText) {
-        TextButton button = new TextButton(buttonText, skin);
-
-        return button;
+        return new TextButton(buttonText, skin);
     }
 
     public static Texture bullet(BulletData bulletData) {

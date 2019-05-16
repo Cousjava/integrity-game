@@ -20,7 +20,7 @@ public class MainGameScreen extends AbstractScreen {
     private int graphicsHeight;
 
     /**
-     * Create a main game screen and initialise gamemanager to handle most the stuff
+     * Create a main game screen and initialise the GameManager to handle most the stuff
      */
     public MainGameScreen() {
         spriteBatch = new SpriteBatch();
@@ -37,9 +37,10 @@ public class MainGameScreen extends AbstractScreen {
         configBackground();
     }
 
+    /**
+     * Load the background texture from local files and cache it
+     */
     private void configBackground() {
-        //backgroundTexture = new Texture(Gdx.files.internal("backgrounds/Background1.jpg"));
-
         backgroundTexture = AssetManager.background(VariableManager.getInstance().getString("Background").equals("Grass") ? AssetManager.Background.GRASS : AssetManager.Background.DESERT);
     }
 
@@ -49,6 +50,10 @@ public class MainGameScreen extends AbstractScreen {
     }
 
 
+    /**
+     * Render the screen into the window
+     * @param delta Delay between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -18,19 +18,19 @@ public class HelpMenuScreen extends AbstractScreen {
 
     protected Stage stage;
     private TextButton.TextButtonStyle buttonStyle;
-    BitmapFont font;
-    BitmapFont titleFont;
-    Skin skinButton;
-    TextureAtlas buttonAtlas;
+    private BitmapFont font;
+    private BitmapFont titleFont;
+    private Skin skinButton;
+    private TextureAtlas buttonAtlas;
 
-    Label titleLabel;
-    Label helpTextLabel;
+    private Label titleLabel;
+    private Label helpTextLabel;
 
-    TextButton menuButton;
+    private TextButton menuButton;
 
-    Table mainTable;
+    private Table mainTable;
 
-    String helpText;
+    private String helpText;
 
     /**
      * Initialises the Help Menu screen, loads all of the helper text, and the font files.

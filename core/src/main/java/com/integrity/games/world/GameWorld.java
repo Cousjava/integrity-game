@@ -83,7 +83,7 @@ public class GameWorld {
     /**
      * Update the world and run the simulation
      *
-     * @param delta
+     * @param delta Delay between actions
      */
     public void update(float delta) {
         world.step(delta, 10, 10);

@@ -32,12 +32,18 @@ public class PreGameScreen extends AbstractScreen {
     private boolean explicit;
     private boolean name;
 
-
+    /**
+     * Initializes the pre-game screen
+     */
     public PreGameScreen() {
         stage = new Stage();
         variableManager = VariableManager.getInstance();
     }
 
+    /**
+     * Creates and configures buttons and tables as well as populating the
+     * name labels with the usernames given previously
+     */
     @Override
     public void show() {
         explicit = true;
@@ -50,6 +56,10 @@ public class PreGameScreen extends AbstractScreen {
         stage.addActor(mainTable);
     }
 
+    /**
+     * Renders page elements onto the screen medium
+     * @param delta Delay between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -120,6 +130,9 @@ public class PreGameScreen extends AbstractScreen {
         });
     }
 
+    /**
+     * Initialises the service to record the username and verify it
+     */
     public void init() {
         Pattern pattern = Pattern.compile("(?i)fuck|shit|wanker|twat");
         if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find() || nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20) {
