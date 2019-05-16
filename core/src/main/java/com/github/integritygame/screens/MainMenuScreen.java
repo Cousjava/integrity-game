@@ -3,6 +3,7 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,11 +24,14 @@ public class MainMenuScreen extends AbstractScreen {
     private TextButton settingsButton;
     private Table mainTable;
 
+    private Texture texture;
+
 
 
     public MainMenuScreen() {
         stage = new Stage();
         spriteBatch = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg"));
     }
 
     @Override
@@ -43,11 +47,13 @@ public class MainMenuScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor( 0, 0, 0, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
+
         spriteBatch.begin();
-            spriteBatch.draw(AssetManager.background(AssetManager.Background.HOME),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(texture,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act();
