@@ -2,9 +2,9 @@ Tanks is a 2D side view strategy game where each player will have to use their s
 
 Bullet Types
 
-Small       5 Damage    £10 to fire     £5 returned for successful shot
-Medium    8 Damage    £15 to fire     £5 returned for successful shot
-Large       10 Damage   £20 to fire     £5 returned for successful shot
+Small       15 Damage    £10 to fire     £5 returned for successful shot
+Medium    30 Damage    £20 to fire     £10 returned for successful shot
+Large       50 Damage   £50 to fire     £15 returned for successful shot
 
 How To Play
 
