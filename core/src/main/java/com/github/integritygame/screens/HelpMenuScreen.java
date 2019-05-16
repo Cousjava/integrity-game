@@ -14,9 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-import java.io.File;
-import org.apache.commons.io.FileUtils;
-
 public class HelpMenuScreen extends AbstractScreen {
 
     protected Stage stage;
@@ -52,8 +49,7 @@ public class HelpMenuScreen extends AbstractScreen {
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
 
         try {
-            File helpTextFile = new File(Gdx.files.internal("text/helpText.txt").toString());
-            helpText = FileUtils.readFileToString(helpTextFile);
+            helpText = Gdx.files.internal("text/helpText.txt").readString();
         } catch (Exception ex) {
             System.out.println("ERROR: " + ex.getMessage() + ex.getStackTrace());
             Gdx.app.exit();
