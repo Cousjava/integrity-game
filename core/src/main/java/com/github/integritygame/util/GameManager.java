@@ -17,8 +17,6 @@ import java.util.List;
 
 public class GameManager {
 
-    private TurnManager<UserTurn> turnManager;
-
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
 
@@ -26,13 +24,15 @@ public class GameManager {
     private UserTurn userB;
 
     private BulletsController bullets;
-    
-    private GameWorld game;
+    private TurnManager<UserTurn> turnManager;
+    private Hud hud;
 
     //TODO: Be able to calculate this from background
+    private GameWorld game;
     private static final int START_HEIGHT = 100;
 
-    private Hud hud;
+    private int graphicsWidth;
+    private int graphicsHeight;
 
     /**
      * Create a game manager
@@ -44,33 +44,40 @@ public class GameManager {
     public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer){
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
+        this.graphicsWidth = graphicsWidth;
+        this.graphicsHeight = graphicsHeight;
 
-        Tank userATank = new Tank(30, 180,80,35, false);
-        Tank userBTank = new Tank(graphicsWidth - 110,180,80,35, true);
-        userA = new UserTurn(userATank);
-        userB = new UserTurn(userBTank);
-        setTankTextures();
+        configureTanksAndUserTurn();
+        configureHud();
+        configureGameWorld();
 
-        //This will register the different objects that will need to tanke turns
+    }
+
+    private void configureTanksAndUserTurn(){
+        userA = new UserTurn(new Tank(30, 180), InputManager.Control.LEFT);
+        userB = new UserTurn(new Tank(graphicsWidth - 110,180), InputManager.Control.RIGHT);
+        userB.getTank().setTexture(AssetManager.TankStyles.LIGHT_GREEN_TANK);
+
         turnManager = new TurnManager<>(new LinkedList<>(Arrays.asList(userA, userB)));
+        userA.setInputManager(turnManager);
+        userB.setInputManager(turnManager);
 
-        //This will create an input manager for each user
-        userA.setInputManager(InputManager.CONTROL.LEFT, turnManager);
-        userB.setInputManager(InputManager.CONTROL.RIGHT, turnManager);
-        
-        EdgeShape terrain = new EdgeShape();
-        terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
-        
-        game = new GameWorld(terrain);
-        userATank.setTankBody(game.addTank(30, START_HEIGHT + 1, userATank));
-        userBTank.setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userBTank));
-        
-        bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
+    }
 
+    private void configureHud(){
         hud = new Hud(graphicsWidth, graphicsHeight);
         List<PlayerHud> players = hud.getPlayerHuds();
-        players.get(0).setTank(userATank);
-        players.get(1).setTank(userBTank);
+        players.get(0).setTank(userA.getTank());
+        players.get(1).setTank(userB.getTank());
+    }
+
+    private void configureGameWorld(){
+        EdgeShape terrain = new EdgeShape();
+        terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
+        game = new GameWorld(terrain);
+        userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
+        userB.getTank().setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userB.getTank()));
+        bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
     }
 
     /**
@@ -78,19 +85,21 @@ public class GameManager {
      */
     public void render(float delta){
         game.update(delta);
-        //Ensure this is called every frame so the user can move and fire during every frame
+
+        //Do logic when its a users turn else wait for next turn
         if(!bullets.isOnScreen()){
-            turnManager.getTurnId().getInputManager().move();
-            turnManager.getTurnId().getInputManager().tankFire(bullets);
+            turnManager.getTurnId().onTurn(bullets);
         }else{
             userA.getTank().stopTank();
             userB.getTank().stopTank();
         }
 
-        turnManager.getTurnId().getInputManager().escapeGame();
+        //Always do this logic even if its not the users turn
+        turnManager.getTurnId().always();
 
-        //Render the users tanks and bullets
+        //Render the users tanks and bullets and background
         spriteBatch.begin();
+            spriteBatch.draw(AssetManager.getInstance().getBackgrounds(AssetManager.Background.DESERT), 0 , 0, graphicsWidth, graphicsHeight);
             userA.getTank().renderSprite(spriteBatch);
             userB.getTank().renderSprite(spriteBatch);
             bullets.render(spriteBatch);
@@ -104,10 +113,6 @@ public class GameManager {
         
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
-    }
-
-    public void setTankTextures(){
-        userB.getTank().setTexture("tanks/GreenTankRightBody.png","tanks/GreenTankRightTurret.png");
     }
 
 }

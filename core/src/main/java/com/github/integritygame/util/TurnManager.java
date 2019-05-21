@@ -5,11 +5,11 @@ import java.util.ListIterator;
 
 public class TurnManager<e> {
 
-    public e turnId;
+    private e turnId;
 
-    public LinkedList<e> playersId;
+    private LinkedList<e> playersId;
 
-    public ListIterator<e> lis;
+    private ListIterator<e> lis;
 
     /**
      * This will take a list of items to take turnes

@@ -23,43 +23,28 @@ import com.github.integritygame.util.KeyBindingManager;
  */
 public class SettingsMenuScreen extends AbstractScreen {
 
-    protected Stage stage;
-    private  TextButton.TextButtonStyle buttonStyle;
-    private TextButton.TextButtonStyle keyButtonStyle;
-    BitmapFont font;
-    BitmapFont titleFont;
-    Skin skinButton;
-    TextureAtlas buttonAtlas;
+    private Stage stage;
+    private AssetManager assetManager;
 
-    TextButton menuButton;
-    TextButton changeKeyButtonLeftLeft;
-
-    TextButton changeKeyButtonLeftRight;
-    TextButton changeKeyButtonLeftUp;
-    TextButton changeKeyButtonLeftDown;
-    TextButton changeKeyButtonRightLeft;
-    TextButton changeKeyButtonRightRight;
-    TextButton changeKeyButtonRightUp;
-    TextButton changeKeyButtonRightDown;
-    TextButton changeKeyButtonFire;
-    TextButton resetControls;
-    TextButton changeKeyToggleBullet;
-
-    Table mainTable;
-    Table keyBindingsTable;
+    private TextButton menuButton;
+    private TextButton changeKeyButtonLeftLeft;
+    private TextButton changeKeyButtonLeftRight;
+    private TextButton changeKeyButtonLeftUp;
+    private TextButton changeKeyButtonLeftDown;
+    private TextButton changeKeyButtonRightLeft;
+    private TextButton changeKeyButtonRightRight;
+    private TextButton changeKeyButtonRightUp;
+    private TextButton changeKeyButtonRightDown;
+    private TextButton changeKeyButtonFire;
+    private TextButton resetControls;
+    private TextButton changeKeyToggleBullet;
 
     //used to configure key mappings
     private static KeyBindingManager keyManager = MyGdxGame.keyManager;
 
     public SettingsMenuScreen() {
         stage = new Stage();
-
-        //create button
-        font = new BitmapFont();
-        titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
-        skinButton = new Skin();
-        buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
-        skinButton.addRegions(buttonAtlas);
+        assetManager = AssetManager.getInstance();
     }
 
     @Override
@@ -68,9 +53,6 @@ public class SettingsMenuScreen extends AbstractScreen {
 
         createAndConfigureButtons();
         createAndConfigureTableForMenu();
-
-        //add table to stage
-        stage.addActor(mainTable);
     }
 
     @Override
@@ -112,18 +94,18 @@ public class SettingsMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        menuButton = new TextButton("Menu",AssetManager.preGameScreenButtons());
-        changeKeyButtonLeftLeft = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonLeftRight = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonLeftUp = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonLeftDown = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonRightLeft = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonRightRight = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonRightUp = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonRightDown = AssetManager.settingsTextButton("Configure...");
-        changeKeyButtonFire = AssetManager.settingsTextButton("Configure...");
-        changeKeyToggleBullet = AssetManager.settingsTextButton("Configure...");
-        resetControls = AssetManager.settingsTextButton("Restore Defaults");
+        menuButton = new TextButton("Menu", assetManager.getCustomTextButton());
+        changeKeyButtonLeftLeft = assetManager.getTextButton("Configure...");
+        changeKeyButtonLeftRight = assetManager.getTextButton("Configure...");
+        changeKeyButtonLeftUp = assetManager.getTextButton("Configure...");
+        changeKeyButtonLeftDown = assetManager.getTextButton("Configure...");
+        changeKeyButtonRightLeft = assetManager.getTextButton("Configure...");
+        changeKeyButtonRightRight = assetManager.getTextButton("Configure...");
+        changeKeyButtonRightUp = assetManager.getTextButton("Configure...");
+        changeKeyButtonRightDown = assetManager.getTextButton("Configure...");
+        changeKeyButtonFire = assetManager.getTextButton("Configure...");
+        changeKeyToggleBullet = assetManager.getTextButton("Configure...");
+        resetControls = assetManager.getTextButton("Restore Defaults");
 
 
         //add listeners to each button
@@ -288,91 +270,66 @@ public class SettingsMenuScreen extends AbstractScreen {
      */
     private void createAndConfigureTableForMenu() {
 
-        keyBindingsTable = new Table();
+        Table keyBindingsTable = new Table();
         keyBindingsTable.row().height(70);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Define custom keyboard layouts."));
-
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Define custom keyboard layouts."));
         keyBindingsTable.row().height(50);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Player 1 Controls")).align(Align.left);
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Player 1 Controls")).align(Align.left);
         keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Left: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonLeftLeft).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Right: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonLeftRight).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Up: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonLeftUp).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Down: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonLeftDown).width(100).height(20);
 
-        keyBindingsTable.row().height(50);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Player 2 Controls")).align(Align.left);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Left: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonRightLeft).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Move Right: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonRightRight).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Up: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonRightUp).width(100).height(20);
-        keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Aim Down: ")).width(150);
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN))));
-        keyBindingsTable.add().width(10);
-        keyBindingsTable.add(changeKeyButtonRightDown).width(100).height(20);
 
-        keyBindingsTable.row().height(50);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Shared Controls")).align(Align.left);
+        controlItem(keyBindingsTable, "Move Left: ", KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE, changeKeyButtonLeftLeft, 30);
+        controlItem(keyBindingsTable, "Move Right: ", KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE, changeKeyButtonLeftRight, 30);
+        controlItem(keyBindingsTable, "Aim Up: ", KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP, changeKeyButtonLeftUp, 30);
+        controlItem(keyBindingsTable, "Aim Down: ", KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN, changeKeyButtonLeftDown, 30);
+
+        keyBindingsTable.row().height(20);
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Player 2 Controls")).align(Align.left);
         keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Fire:")).width(150).align(Align.left);
+
+        controlItem(keyBindingsTable, "Move Left: ", KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE, changeKeyButtonRightLeft, 30);
+        controlItem(keyBindingsTable, "Move Right: ", KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE, changeKeyButtonRightRight, 30);
+        controlItem(keyBindingsTable, "Aim Up: ", KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP, changeKeyButtonRightUp, 30);
+        controlItem(keyBindingsTable, "Aim Down: ", KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN, changeKeyButtonRightDown, 50);
+
+
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Shared Controls")).align(Align.left);
+        keyBindingsTable.row().height(30);
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Fire:")).width(150).align(Align.left);
         keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))));
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))));
         keyBindingsTable.add().width(10);
         keyBindingsTable.add(changeKeyButtonFire).width(100).height(20);
         keyBindingsTable.row().height(30);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText("Toggle Bullet Type:")).width(150).align(Align.left);
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle("Toggle Bullet Type:")).width(150).align(Align.left);
         keyBindingsTable.add().width(10);
-        keyBindingsTable.add(AssetManager.labelSimpleWhiteText(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.BULLET_TOGGLE))));
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle(Input.Keys.toString(keyManager.keyMap.get(KeyBindingManager.ConfigurableKeys.BULLET_TOGGLE))));
         keyBindingsTable.add().width(10);
         keyBindingsTable.add(changeKeyToggleBullet).width(100).height(20);
-
         keyBindingsTable.row().height(50);
         keyBindingsTable.add(resetControls).width(130).height(20).align(Align.left);
 
 
-        mainTable = new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.top();
 
-        mainTable.add(AssetManager.screenTitle(Color.FOREST, "Settings"));
+        mainTable.add(assetManager.getText(Color.FOREST, "Settings", true));
         mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth()-50);
         mainTable.add(keyBindingsTable);
         mainTable.row().height(30);
         mainTable.add(menuButton).width(200).height(100).align(Align.bottomLeft);
+        stage.addActor(mainTable);
     }
+
+    private void controlItem(Table keyBindingsTable, String s, KeyBindingManager.ConfigurableKeys leftLeftMove, TextButton changeKeyButtonLeftLeft, int i) {
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle(s)).width(150);
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(assetManager.getTextAsWhiteNonTitle(Input.Keys.toString(keyManager.keyMap.get(leftLeftMove))));
+        keyBindingsTable.add().width(10);
+        keyBindingsTable.add(changeKeyButtonLeftLeft).width(100).height(20);
+        keyBindingsTable.row().height(i);
+    }
+
+
 }

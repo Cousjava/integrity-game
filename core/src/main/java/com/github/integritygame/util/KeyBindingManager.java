@@ -10,24 +10,24 @@ public class KeyBindingManager {
         BULLET_TOGGLE, LEFT_LEFT_MOVE, LEFT_RIGHT_MOVE, LEFT_AIM_UP, LEFT_AIM_DOWN, RIGHT_LEFT_MOVE, RIGHT_RIGHT_MOVE, RIGHT_AIM_UP, RIGHT_AIM_DOWN, FIRE
     }
 
-    private static int DEFAULT_LEFT_LEFT_MOVE_KEY = Input.Keys.A;
-    private static int DEFAULT_LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
-    private static int DEFAULT_LEFT_AIM_UP_KEY = Input.Keys.S;
-    private static int DEFAULT_LEFT_AIM_DOWN_KEY = Input.Keys.W;
-    private static int DEFAULT_RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
-    private static int DEFAULT_RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
-    private static int DEFAULT_RIGHT_AIM_UP_KEY = Input.Keys.UP;
-    private static int DEFAULT_RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
-    private static int DEFAULT_FIRE_KEY = Input.Keys.SPACE;
-    private static int DEFAULT_BULLET_TOGGLE = Input.Keys.T;
+    private static final int DEFAULT_LEFT_LEFT_MOVE_KEY = Input.Keys.A;
+    private static final int DEFAULT_LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
+    private static final int DEFAULT_LEFT_AIM_UP_KEY = Input.Keys.W;
+    private static final int DEFAULT_LEFT_AIM_DOWN_KEY = Input.Keys.S;
+    private static final int DEFAULT_RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
+    private static final int DEFAULT_RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
+    private static final int DEFAULT_RIGHT_AIM_UP_KEY = Input.Keys.UP;
+    private static final int DEFAULT_RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
+    private static final int DEFAULT_FIRE_KEY = Input.Keys.SPACE;
+    private static final int DEFAULT_BULLET_TOGGLE = Input.Keys.T;
 
     public static HashMap<ConfigurableKeys, Integer> keyMap = new HashMap<>();
 
     //fixed keys - can not be changed
-    private final static int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
+    private static final int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
 
     public KeyBindingManager() {
-        this.resetDefaultKeys();
+        resetDefaultKeys();
     }
 
     /**

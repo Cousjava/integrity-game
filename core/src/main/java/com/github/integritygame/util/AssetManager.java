@@ -10,78 +10,106 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.github.integritygame.objects.BulletData;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AssetManager {
 
-    public enum Background{
-        DESERT, GRASS, HOME
-    };
+    private static AssetManager instance;
 
-    private static Skin skin = new Skin(Gdx.files.internal("visui/assets/uiskin.json"));
+    public enum Background{DESERT, GRASS, HOME}
 
-    public AssetManager(){
+    public enum TankStyles{BLUE_TANK, GREEN_TANK, LIGHT_GREEN_TANK}
+
+    private Skin skin;
+    private Skin customButton;
+    private String helpText;
+    private BitmapFont titleFont;
+    private BitmapFont defaultFont;
+    private Map<Background, Texture> backgrounds;
+    private Map<BulletData.BulletName, Texture> bullets;
+    private Map<TankStyles, Texture[]> tankTextures;
+
+    private AssetManager(){
+        initAssets();
     }
 
-    public static Label screenTitle(Color color, String text){
-        Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
-        titleLabelStyle.font = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
-        titleLabelStyle.fontColor = color;
-        return new Label(text, titleLabelStyle);
+    private void initAssets(){
+        skin = new Skin(Gdx.files.internal("visui/assets/uiskin.json"));
+
+        helpText = Gdx.files.internal("text/helpText.txt").readString();
+
+        customButton = new Skin();
+        customButton.addRegions(new TextureAtlas("buttons/simpleButton.txt"));
+
+        titleFont = new BitmapFont(Gdx.files.internal("fonts/defused.fnt"));
+        defaultFont = new BitmapFont();
+
+        backgrounds = new HashMap<>();
+        backgrounds.put(Background.DESERT, new Texture(Gdx.files.internal("backgrounds/tank-desert-background.jpeg")));
+        backgrounds.put(Background.GRASS, new Texture(Gdx.files.internal("backgrounds/tank-grass-background.jpeg")));
+        backgrounds.put(Background.HOME, new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg")));
+
+        bullets = new HashMap<>();
+        bullets.put(BulletData.BulletName.SMALL, new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png")));
+        bullets.put(BulletData.BulletName.MEDIUM, new Texture(Gdx.files.internal("projectiles/ProjectileBlackGreen.png")));
+        bullets.put(BulletData.BulletName.LARGE, new Texture(Gdx.files.internal("projectiles/ProjectileWhiteGreen.png")));
+
+        tankTextures = new HashMap<>();
+        tankTextures.put(TankStyles.GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/GreenTankBody.png")),new Texture(Gdx.files.internal("tanks/GreenTankTurret.png"))});
+        tankTextures.put(TankStyles.BLUE_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/BlueTankBody.png")),new Texture(Gdx.files.internal("tanks/BlueTankTurret.png"))});
+        tankTextures.put(TankStyles.LIGHT_GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/LightGreenTankBody.png")),new Texture(Gdx.files.internal("tanks/LightGreenTankTurret.png"))});
+
     }
 
-    public static Label labelSimpleWhiteText(String name){
+    public static synchronized AssetManager getInstance(){
+        if(instance == null){
+            instance = new AssetManager();
+        }
+        return instance;
+    }
+
+    public Label getTextAsWhiteNonTitle(String text){
+        return getText(Color.WHITE, text, false);
+    }
+
+    public Label getText(Color color, String text, boolean title){
         Label.LabelStyle textLableStyle = new Label.LabelStyle();
-        textLableStyle.fontColor = Color.WHITE;
-        textLableStyle.font = new BitmapFont();
-        return new Label(name, textLableStyle);
+        textLableStyle.font = title ? titleFont : defaultFont;
+        textLableStyle.fontColor = color;
+        return new Label(text, textLableStyle);
     }
 
-    public static TextField skinnedTextField(){
+    public TextField getTextField(){
         return new TextField("", skin);
     }
 
-    public static Skin skin(){
-        return skin;
+    public TextButton getTextButton(String buttonText){
+        return new TextButton(buttonText, skin);
     }
 
-    public static TextButton.TextButtonStyle preGameScreenButtons(){
+    public TextButton.TextButtonStyle getCustomTextButton(){
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = new BitmapFont();
-        TextureAtlas buttonAtlas = new TextureAtlas("buttons/simpleButton.txt");
-        Skin skinButton = new Skin();
-        skinButton.addRegions(buttonAtlas);
-        buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
-        buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
+        buttonStyle.font = defaultFont;
+        buttonStyle.up = customButton.getDrawable("rounded_rectangle_button");
+        buttonStyle.down = customButton.getDrawable("rounded_rectangle_button");
+        buttonStyle.checked = customButton.getDrawable("rounded_rectangle_button");
         return buttonStyle;
     }
 
-    public static TextButton settingsTextButton(String buttonText){
-        TextButton button = new TextButton(buttonText, skin);
-
-        return button;
+    public Texture getBackgrounds(Background background) {
+        return backgrounds.get(background);
     }
 
-    public static Texture bullet(BulletData bulletData){
-        if(BulletData.BulletName.SMALL == bulletData.getBulletData()){
-            return new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png"));
-        }else if(BulletData.BulletName.MEDIUM == bulletData.getBulletData()){
-            return new Texture(Gdx.files.internal("projectiles/ProjectileBlackGreen.png"));
-        }
-        return new Texture(Gdx.files.internal("projectiles/ProjectileWhiteGreen.png"));
+    public Texture getBullets(BulletData.BulletName bullet) {
+        return bullets.get(bullet);
     }
 
-    public static Texture background(Background backgrounds){
-        if(Background.GRASS.equals(backgrounds)){
-            return new Texture(Gdx.files.internal("backgrounds/tank-grass-background.jpeg"));
-        }
-        if(Background.DESERT.equals(backgrounds)){
-            return new Texture(Gdx.files.internal("backgrounds/tank-desert-background.jpeg"));
-        }
-        if(Background.HOME.equals(backgrounds)){
-            return new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg"));
-        }
-        return null;
+    public String getHelpText() {
+        return helpText;
     }
 
+    public Texture[] getTankTexture(TankStyles tankStyles){
+        return tankTextures.get(tankStyles);
+    }
 }

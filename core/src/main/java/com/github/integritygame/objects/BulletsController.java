@@ -59,7 +59,7 @@ public class BulletsController {
      */
     public Bullet addBullet(Vector2 positon, Vector2 vector,Tank firingTank, BulletData bulletData){
         Bullet bullet;
-        bullet = new Bullet(positon, vector, firingTank, bulletData);
+        bullet = new Bullet(positon, vector, firingTank, bulletData.getBulletData());
         bullets.add(bullet);
         Body bulletBody = gameWorld.addBullet(bullet.getBodyDef());
         bullet.setBody(bulletBody);

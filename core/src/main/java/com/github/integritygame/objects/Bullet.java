@@ -22,14 +22,14 @@ public class Bullet {
 
     private Tank firingTank;
 
-    private BulletData bulletData;
+    private BulletData.BulletName bulletData;
 
     /**
      * This will create a bullet
      * @param position
      * @param vector
      */
-    public Bullet(Vector2 position, Vector2 vector, Tank firingTank, BulletData bulletData) {
+    public Bullet(Vector2 position, Vector2 vector, Tank firingTank, BulletData.BulletName bulletData) {
         location = position;
         this.heading = vector;
         this.firingTank = firingTank;
@@ -45,7 +45,7 @@ public class Bullet {
     }
     
     public Texture getTexture() {
-        return AssetManager.bullet(bulletData);
+        return AssetManager.getInstance().getBullets(bulletData);
     }
 
     public int getTextureWidth(){
@@ -115,7 +115,7 @@ public class Bullet {
         return firingTank;
     }
 
-    public BulletData getBulletData(){
+    public BulletData.BulletName getBulletData(){
         return bulletData;
     }
     

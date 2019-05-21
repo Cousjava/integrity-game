@@ -27,8 +27,8 @@ public class Hud {
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(121/255f,121/255f,121/255f,1);
-        shapeRenderer.rect(0, height - 110, width, 110);
+            shapeRenderer.setColor(121/255f,121/255f,121/255f,1);
+            shapeRenderer.rect(0, height - 110, width, 110);
         shapeRenderer.end();
 
         generalHud.render(spriteBatch);

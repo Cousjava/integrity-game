@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.github.integritygame.util.AssetManager;
+import com.github.integritygame.util.InputManager;
 import com.integrity.games.util.PolarVector;
 
 /**
@@ -20,26 +22,21 @@ public class Tank {
     private Vector2 position;
     private final int width;
     private final int height;
-    private Texture texture;
-    
+
+    private AssetManager assetManager;
+    private AssetManager.TankStyles tankStyles;
+
     private BodyDef tankBodyDef;
     private FixtureDef tankFixture;
     private Body tankBody;
 
-    /**Specify the default rotation */
-    private float rotation = 0;
-    private Texture turret;
-
-    /** Specify the tolerance for how fast the tank moves and the rotation interval */
-    private float toleranceMove = 0.5f;
+    private int barrelLength = 30;
     private float toleranceRotation = 1;
-
-    private boolean side;
-    
     private int damage = 100;
     private int money = 250;
-    
-    private static final int BARREL_LENGTH = 30;
+
+    private boolean rightSide;
+    private float rotation;
 
     /**
      * This creates a tank with a default texture and the following parameters
@@ -48,14 +45,12 @@ public class Tank {
      * @param width Width the tank should be
      * @param height Height thee tank should be
      */
-    public Tank(float x, float y, int width, int height, boolean side){
-        this.side = side;
-        if(side){
-            rotation = 180;
-        }
+    public Tank(float x, float y){
+        this.width = 80;
+        this.height = 35;
         this.position = new Vector2(x, y);
-        this.width = width;
-        this.height = height;
+        assetManager = AssetManager.getInstance();
+        tankStyles = AssetManager.TankStyles.GREEN_TANK;
         
         tankFixture = new FixtureDef();
         tankFixture.shape = setTankShape(width, height);
@@ -65,9 +60,11 @@ public class Tank {
         tankBodyDef.fixedRotation = true;
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
         tankBodyDef.position.set(x, y);
+    }
 
-        this.texture = new Texture(Gdx.files.internal("tanks/BlueTankLeftBody.png"));
-        this.turret = new Texture(Gdx.files.internal("tanks/BlueTankLeftTurret.png"));
+    public void registerTurn(UserTurn userTurn){
+        this.rightSide = userTurn.getControl().equals(InputManager.Control.RIGHT);
+        this.rotation = rightSide? 180 : 0;
     }
 
     /**
@@ -92,8 +89,10 @@ public class Tank {
         position.x -= width / 2;
         position.y -= height / 2;
         Vector2 localCenter = getLocalCenter();
-        batch.draw(new TextureRegion(turret, 0, 0, 24, 2), localCenter.x, localCenter.y,0,2.5f, BARREL_LENGTH, 5,1,1,rotation);
-        batch.draw(texture, position.x, position.y, width, height);
+        TextureRegion barrel = new TextureRegion(assetManager.getTankTexture(tankStyles)[1], 0, 0, 24, 2);
+        barrel.flip(false, rightSide);
+        batch.draw(barrel, localCenter.x, localCenter.y,0,2.5f, barrelLength, 5,1,1,rotation);
+        batch.draw(assetManager.getTankTexture(tankStyles)[0], position.x, position.y, width, height,0,0,58,24,rightSide,false);
     }
 
     /**
@@ -102,9 +101,9 @@ public class Tank {
      */
     public void rotate(boolean clockwise){
         if(clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, side ? 135:0), side ? 180:45);
+            rotation = Math.min(Math.max(rotation - toleranceRotation, rightSide ? 135:0), rightSide ? 180:45);
         }else{
-            rotation = Math.min(Math.max(rotation + toleranceRotation, side ? 135:0), side ? 180:45);
+            rotation = Math.min(Math.max(rotation + toleranceRotation, rightSide ? 135:0), rightSide ? 180:45);
         }
     }
 
@@ -117,7 +116,7 @@ public class Tank {
      * @return Vector2 The position at the center of the tank
      */
     public Vector2 getCurrentPosition() {
-        return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
+        return new Vector2((position.x + (width / 2) + (rightSide ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
     
     /**
@@ -126,7 +125,7 @@ public class Tank {
     public Vector2 getBarrelEnd() {
         Vector2 localCenter = getLocalCenter();
         localCenter.y += 2.5f;
-        Vector2 barrel = new PolarVector(BARREL_LENGTH * BARREL_LENGTH, (float) (rotation * Math.PI / 180));
+        Vector2 barrel = new PolarVector(barrelLength * barrelLength, (float) (rotation * Math.PI / 180));
         return localCenter.add(barrel);
     }
     
@@ -134,7 +133,7 @@ public class Tank {
      * Gets the center of the tank
      */
     private Vector2 getLocalCenter() {
-        return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
+        return new Vector2((position.x + (width / 2) + (rightSide ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
 
     /**
@@ -148,9 +147,8 @@ public class Tank {
     /**
      * This sets the texture of the tank to something other than the default
      */
-    public void setTexture(String body, String turret){
-        this.texture = new Texture(Gdx.files.internal(body));
-        this.turret = new Texture(Gdx.files.internal(turret));
+    public void setTexture(AssetManager.TankStyles texture){
+        this.tankStyles = texture;
     }
     
     public FixtureDef getTankFixtureDef() {
