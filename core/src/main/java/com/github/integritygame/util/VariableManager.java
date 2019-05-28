@@ -8,12 +8,12 @@ public class VariableManager {
 
     private HashMap<String, String> strings;
 
-    private VariableManager(){
+    private VariableManager() {
         strings = new HashMap<>();
     }
 
-    public static synchronized VariableManager getInstance(){
-        if(instance == null){
+    public static synchronized VariableManager getInstance() {
+        if (instance == null) {
             instance = new VariableManager();
         }
         return instance;

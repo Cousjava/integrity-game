@@ -5,17 +5,18 @@ import java.util.ListIterator;
 
 public class TurnManager<e> {
 
-    public e turnId;
+    private e turnId;
 
-    public LinkedList<e> playersId;
+    private LinkedList<e> playersId;
 
-    public ListIterator<e> lis;
+    private ListIterator<e> lis;
 
     /**
      * This will take a list of items to take turnes
-     * @param playersId
+     *
+     * @param playersId All players ID
      */
-    public TurnManager(LinkedList<e> playersId){
+    TurnManager(LinkedList<e> playersId) {
         this.playersId = playersId;
         lis = playersId.listIterator();
         turnId = lis.next();
@@ -23,17 +24,18 @@ public class TurnManager<e> {
 
     /**
      * Will get the current object whose turn it is
-     * @return
+     *
+     * @return Current users ID
      */
-    public e getTurnId(){
+    e getTurnId() {
         return turnId;
     }
 
     /**
      * Will set the next person in the queue to the person whose turn it is
      */
-    public void nextTurn(){
-        if(!lis.hasNext()){
+    void nextTurn() {
+        if (!lis.hasNext()) {
             lis = playersId.listIterator();
         }
         turnId = lis.next();

@@ -17,22 +17,25 @@ import com.badlogic.gdx.utils.Align;
 public class HelpMenuScreen extends AbstractScreen {
 
     protected Stage stage;
-    private  TextButton.TextButtonStyle buttonStyle;
-    BitmapFont font;
-    BitmapFont titleFont;
-    Skin skinButton;
-    TextureAtlas buttonAtlas;
+    private TextButton.TextButtonStyle buttonStyle;
+    private BitmapFont font;
+    private BitmapFont titleFont;
+    private Skin skinButton;
+    private TextureAtlas buttonAtlas;
 
-    Label titleLabel;
-    Label helpTextLabel;
+    private Label titleLabel;
+    private Label helpTextLabel;
 
-    TextButton menuButton;
+    private TextButton menuButton;
 
-    Table mainTable;
+    private Table mainTable;
 
-    String helpText;
+    private String helpText;
 
-    public HelpMenuScreen(){
+    /**
+     * Initialises the Help Menu screen, loads all of the helper text, and the font files.
+     */
+    public HelpMenuScreen() {
         stage = new Stage();
 
         //create button
@@ -47,10 +50,13 @@ public class HelpMenuScreen extends AbstractScreen {
         buttonStyle.up = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.down = skinButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = skinButton.getDrawable("rounded_rectangle_button");
-        
-          helpText = Gdx.files.internal("text/helpText.txt").readString();
+
+        helpText = Gdx.files.internal("text/helpText.txt").readString();
     }
 
+    /**
+     * Creates buttons, defines label styles, and shows the Help screen
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -63,10 +69,14 @@ public class HelpMenuScreen extends AbstractScreen {
         stage.addActor(mainTable);
     }
 
+    /**
+     * Renders the screen with an opacity of 100%
+     * @param delta Time between actions
+     */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.act();
         stage.draw();
@@ -107,7 +117,7 @@ public class HelpMenuScreen extends AbstractScreen {
         menuButton = new TextButton("Main Menu", buttonStyle);
 
         //add listeners to each button
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
@@ -129,16 +139,16 @@ public class HelpMenuScreen extends AbstractScreen {
 
         mainTable.add(titleLabel);
         mainTable.row();
-        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
+        mainTable.add(helpTextLabel).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight() - ((Gdx.graphics.getHeight() / tableHeightScalar) * 2));
         mainTable.row();
-        mainTable.add(menuButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar).align(Align.bottomLeft);
+        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
     }
 
     /**
      * Method to define look and feel of labels
      */
     private void defineLabelStyle() {
-        int rowHeight = Gdx.graphics.getWidth()/2;
+        int rowHeight = Gdx.graphics.getWidth() / 2;
         Label.LabelStyle titleLabelStyle = new Label.LabelStyle();
         titleLabelStyle.font = titleFont;
         titleLabelStyle.fontColor = Color.FOREST;
@@ -149,7 +159,7 @@ public class HelpMenuScreen extends AbstractScreen {
 
         titleLabel = new Label("HELP", titleLabelStyle);
         titleLabel.setSize(Gdx.graphics.getWidth(), rowHeight);
-        titleLabel.setPosition(0, Gdx.graphics.getHeight()-rowHeight*40);
+        titleLabel.setPosition(0, Gdx.graphics.getHeight() - rowHeight * 40);
         titleLabel.setAlignment(Align.center);
         stage.addActor(titleLabel);
 
