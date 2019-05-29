@@ -18,12 +18,12 @@ public class MainGameScreen extends AbstractScreen {
     private int graphicsHeight;
 
     /**
-     * Create a main game screen and initialise gamemanager to handle most the stuff
+     * Create a main game screen and initialise the GameManager to handle most the stuff
      */
-    public MainGameScreen(){
+    public MainGameScreen() {
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        
+
         graphicsWidth = Gdx.graphics.getWidth();
         graphicsHeight = Gdx.graphics.getHeight();
 
@@ -38,6 +38,10 @@ public class MainGameScreen extends AbstractScreen {
     }
 
 
+    /**
+     * Render the screen into the window
+     * @param delta Delay between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

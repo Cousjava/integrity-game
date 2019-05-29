@@ -3,11 +3,7 @@ package com.github.integritygame.util;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.github.integritygame.objects.BulletsController;
-import com.github.integritygame.objects.Hud;
-import com.github.integritygame.objects.PlayerHud;
-import com.github.integritygame.objects.Tank;
-import com.github.integritygame.objects.UserTurn;
+import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
 import com.integrity.games.world.GameWorld;
 
@@ -36,12 +32,13 @@ public class GameManager {
 
     /**
      * Create a game manager
-     * @param graphicsWidth Width of the screen
+     *
+     * @param graphicsWidth  Width of the screen
      * @param graphicsHeight Height of the screen
-     * @param spriteBatch SpriteBatch so we can render them instead of creating a new one
-     * @param shapeRenderer ShapeRenderer so we can render them instead of creating a new one
+     * @param spriteBatch    SpriteBatch so we can render them instead of creating a new one
+     * @param shapeRenderer  ShapeRenderer so we can render them instead of creating a new one
      */
-    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer){
+    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
         this.graphicsWidth = graphicsWidth;

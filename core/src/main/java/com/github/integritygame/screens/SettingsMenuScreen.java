@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -42,11 +43,17 @@ public class SettingsMenuScreen extends AbstractScreen {
     //used to configure key mappings
     private static KeyBindingManager keyManager = MyGdxGame.keyManager;
 
+    /**
+     * Initialises the Settings Menu screen
+     */
     public SettingsMenuScreen() {
         stage = new Stage();
         assetManager = AssetManager.getInstance();
     }
 
+    /**
+     * Creates and configures the buttons and tables
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -55,6 +62,10 @@ public class SettingsMenuScreen extends AbstractScreen {
         createAndConfigureTableForMenu();
     }
 
+    /**
+     * Renders the page elements to the screen medium
+     * @param delta Delay between actions
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor( 0, 0, 0, 1 );

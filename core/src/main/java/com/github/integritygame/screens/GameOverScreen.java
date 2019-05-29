@@ -19,11 +19,17 @@ public class GameOverScreen extends AbstractScreen {
     private TextButton menuButton;
     private TextButton replayButton;
 
+    /**
+     * Initialises the Game Over screen with a Stage and an instance of the VariableManager
+     */
     public GameOverScreen() {
         stage = new Stage();
         assetManager = AssetManager.getInstance();
     }
 
+    /**
+     * Shows the game over screen
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -32,10 +38,14 @@ public class GameOverScreen extends AbstractScreen {
         createAndConfigureTableForMenu();
     }
 
+    /**
+     * Renders the screen with 100% opacity
+     * @param delta Timings between actions
+     */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0, 0, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.act();
         stage.draw();
@@ -74,14 +84,14 @@ public class GameOverScreen extends AbstractScreen {
         replayButton = new TextButton("Play Again", assetManager.getCustomTextButton());
 
         //add listeners to each button
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
             }
         });
 
-        replayButton.addListener(new ClickListener(){
+        replayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.PRE_GAME);

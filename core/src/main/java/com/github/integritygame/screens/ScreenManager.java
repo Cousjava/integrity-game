@@ -1,6 +1,7 @@
 package com.github.integritygame.screens;
 
 import com.badlogic.gdx.Game;
+
 import java.util.HashMap;
 
 /**
@@ -28,16 +29,17 @@ public class ScreenManager {
     /**
      * This will allow you to add the parent Game to the class which allows us to change screens
      */
-    public void init(Game parent){
+    public void init(Game parent) {
         this.parent = parent;
     }
 
     /**
      * Retrieve the ScreenManager instance
+     *
      * @return ScreenManager singleton
      */
-    public static synchronized ScreenManager getInstance(){
-        if(instance == null){
+    public static synchronized ScreenManager getInstance() {
+        if (instance == null) {
             instance = new ScreenManager();
         }
         return instance;
@@ -45,16 +47,17 @@ public class ScreenManager {
 
     /**
      * Retrieve an AbstractScreen
+     *
      * @param screen Enum value for the screen wanted
      * @return AbstractScreen of the screen wanted
      */
-    private AbstractScreen getScreen(Screens screen){
+    private AbstractScreen getScreen(Screens screen) {
         //Ensures there is a new game every time if the game is exited
-        if(screen.equals(Screens.MAIN_GAME)){
+        if (screen.equals(Screens.MAIN_GAME)) {
             screens.put(Screens.MAIN_GAME, new MainGameScreen());
         }
 
-        if(!screens.containsKey(screen)) {
+        if (!screens.containsKey(screen)) {
             switch (screen) {
                 case MAIN_MENU:
                     screens.put(Screens.MAIN_MENU, new MainMenuScreen());
@@ -79,7 +82,7 @@ public class ScreenManager {
     /**
      * This takes a Screens enum value and allows us to set the screen
      */
-    public void changeScreen(Screens screen){
+    public void changeScreen(Screens screen) {
         System.out.println(getScreen(screen));
         parent.setScreen(getScreen(screen));
     }

@@ -16,17 +16,33 @@ public class PlayerHud {
     
     private Tank tank;
 
-    public PlayerHud(int x, int y){
+    /**
+     * Initialises the Player HUD between the given X and Y points
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
+    public PlayerHud(int x, int y) {
         this.x = x;
         this.y = y;
         this.font = new BitmapFont();
     }
 
-    public void setName(String name){
+    /**
+     * Sets the name of the Player this HUD relates to
+     *
+     * @param name HUD owner
+     */
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void renderText(SpriteBatch spriteBatch){
+    /**
+     * Renders the HUD owners' stats such as money and the amount of damage they have taken
+     *
+     * @param spriteBatch Rendering medium
+     */
+    public void renderText(SpriteBatch spriteBatch) {
         damage = tank.getDamage();
         money = tank.getMoney();
         spriteBatch.begin();
@@ -37,7 +53,12 @@ public class PlayerHud {
         spriteBatch.end();
     }
 
-    public void render(ShapeRenderer shapeRenderer){
+    /**
+     * Renders the shapes pertaining to the user details
+     *
+     * @param shapeRenderer Rendering engine
+     */
+    public void render(ShapeRenderer shapeRenderer) {
         damage = tank.getDamage();
         money = tank.getMoney();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -48,6 +69,11 @@ public class PlayerHud {
         shapeRenderer.end();
     }
 
+    /**
+     * Assigns this HUD a tank to read data from
+     *
+     * @param tank
+     */
     public void setTank(Tank tank) {
         this.tank = tank;
     }

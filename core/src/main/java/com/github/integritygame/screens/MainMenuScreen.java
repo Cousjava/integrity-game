@@ -29,6 +29,9 @@ public class MainMenuScreen extends AbstractScreen {
         assetManager = AssetManager.getInstance();
     }
 
+    /**
+     * Creates and configures button and tables for rendering
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -37,6 +40,10 @@ public class MainMenuScreen extends AbstractScreen {
         createAndConfigureTableForMenu();
     }
 
+    /**
+     * Renders page elements onto the screen medium
+     * @param delta Delay between actions
+     */
     @Override
     public void render(float delta) {
 
@@ -62,20 +69,26 @@ public class MainMenuScreen extends AbstractScreen {
 
     }
 
-    //called when switch back to this screen
+    /**
+     * Called when switch back to this screen
+     */
     @Override
     public void resume() {
         stage.act();
         stage.draw();
     }
 
-    //called when screens switch
+    /**
+     * Called when screens switch
+     */
     @Override
     public void hide() {
         stage.clear();
     }
 
-    //called on exit
+    /**
+     * Called on exit
+     */
     @Override
     public void dispose() {
         stage.dispose();
