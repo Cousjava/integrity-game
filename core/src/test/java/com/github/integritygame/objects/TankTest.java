@@ -6,59 +6,93 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import org.junit.Assert;
 
 public class TankTest extends GameTest {
+    
+    private static int OFFSET = 18;
+    private static int HEIGHT = 19;
 
     @Test
     public void testTankMovementPositive() {
+        int basex = 20 + OFFSET;
+        
         Tank tank = new Tank(0, 0, 40, 25, false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(20, 12)));
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
         tank.updateX(true);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(20.5f, 12)));
+        gameWorld.step(1, 1, 1);
+        Assert.assertTrue(approximateEquals(tank.getCurrentPosition(), new Vector2(basex + 2f, HEIGHT)));
         tank.updateX(true);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(21, 12)));
+        gameWorld.step(1, 1, 1);
+        Assert.assertTrue(approximateEquals(tank.getCurrentPosition(), new Vector2(basex + 4f, HEIGHT)));
     }
 
     @Test
     public void testTankMovementNegative() {
+        int basex = 20 + OFFSET;
+        
         Tank tank = new Tank(20, 0, 40, 25, false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(40, 12)));
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        basex += 20;
+        
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
         tank.updateX(false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(39.5f, 12)));
+        gameWorld.step(1, 1, 1);
+        Assert.assertTrue(tank.getCurrentPosition() + "not eqaul to " + (new Vector2(basex - 2f, HEIGHT)).toString(),
+                approximateEquals(tank.getCurrentPosition(), new Vector2(basex - 2f, HEIGHT)));
+        
         tank.updateX(false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(39, 12)));
+        gameWorld.step(1, 1, 1);
+         Assert.assertTrue(approximateEquals(tank.getCurrentPosition(), new Vector2(basex - 4f, HEIGHT)));
     }
 
     @Test
     public void testHittingEdgeOfScreenLeft() {
         Tank tank = new Tank(0, 0, 40, 25, false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(20, 12)));
+        int basex = 20 + OFFSET;
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
         tank.updateX(false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(20, 12)));
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
     }
 
     @Test
     public void testHittingEdgeOfScreenRight() {
+        int basex = 20 + OFFSET;
         Tank tank = new Tank(1240, 0, 40, 25, false);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(1260, 12)));
+        basex += 1240;
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
         tank.updateX(true);
-        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(1260, 12)));
+        assertThat(tank.getCurrentPosition(), equalTo(new Vector2(basex, HEIGHT)));
     }
 
     @Test
     public void rotatePositive() {
-        Tank tank = new Tank(0, 0, 40, 25, false);
-        assertThat(tank.getRotation(), equalTo(90f));
+        Tank tank = new Tank(0, 0, 40, 25, true);
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        assertThat(tank.getRotation(), equalTo(180f));
         tank.rotate(true);
-        assertThat(tank.getRotation(), equalTo(89f));
+        assertThat(tank.getRotation(), equalTo(179f));
     }
 
     @Test
     public void rotateNegative() {
         Tank tank = new Tank(0, 0, 40, 25, false);
-        assertThat(tank.getRotation(), equalTo(90f));
+        tank.setTankBody(gameWorld.createBody(tank.getTankBodyDef()));
+        assertThat(tank.getRotation(), equalTo(0f));
         tank.rotate(false);
-        assertThat(tank.getRotation(), equalTo(91f));
+        assertThat(tank.getRotation(), equalTo(1f));
+    }
+    
+    /**
+     * Returns true if two vectors are almost the same.
+     * This is because vectors are float-based and so arithmetic is not exact.
+     */
+    private boolean approximateEquals(Vector2 vector1, Vector2 vector2) {
+        return vector1.dst(vector2) < 0.1;
+        
     }
 
 }

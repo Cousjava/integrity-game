@@ -19,7 +19,7 @@ public class GameWorld {
      */
     public GameWorld(EdgeShape terrain) {
 
-        world = new World(new Vector2(0, -5), true);
+        world = new World(new Vector2(0, -10), true);
         Body terrainBody = world.createBody(new BodyDef());
         terrainBody.createFixture(terrain, 0);
 

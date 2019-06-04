@@ -54,7 +54,7 @@ public class KeyBindingManager {
      * @param keyCode    the integer value of the key to check for in map
      * @return duplicateKeyStatus true if duplicates are detected
      */
-    public static boolean checkForDuplicateKeys(HashMap<ConfigurableKeys, Integer> tempKeyMap, int keyCode) {
+    static boolean checkForDuplicateKeys(HashMap<ConfigurableKeys, Integer> tempKeyMap, int keyCode) {
         return tempKeyMap.values().stream().filter(v -> v.equals(keyCode)).count() > 1;
     }
 
@@ -63,16 +63,19 @@ public class KeyBindingManager {
      *
      * @param keyName which configurable key to set
      * @param keyCode the value to set
+     * @return true if operation succeeded, false otherwise
      */
-    public static void setKey(ConfigurableKeys keyName, int keyCode) {
+    public static boolean setKey(ConfigurableKeys keyName, int keyCode) {
         HashMap<ConfigurableKeys, Integer> tempKeyMap = new HashMap<>(keyMap);
 
         tempKeyMap.replace(keyName, keyCode);
 
         if (checkForDuplicateKeys(tempKeyMap, keyCode)) {
             System.out.println("ERROR - Duplicate key found - no change will be made");
+            return false;
         } else {
             keyMap = tempKeyMap;
+            return true;
         }
     }
 

@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.mockito.Mockito;
@@ -13,6 +16,8 @@ import org.mockito.Mockito;
 public class GameTest {
 
     private static Application application;
+    
+    protected static World gameWorld;
 
     @BeforeClass
     public static void init() {
@@ -25,6 +30,8 @@ public class GameTest {
         application = new LwjglApplication(new ApplicationListener() {
             @Override
             public void create() {
+                SharedLibraryLoader libraryLoader = new SharedLibraryLoader();
+                libraryLoader.load("gdx-box2d");
             }
 
             @Override
@@ -50,11 +57,14 @@ public class GameTest {
 
         Gdx.gl20 = Mockito.mock(GL20.class);
         Gdx.gl = Gdx.gl20;
+        
+        gameWorld = new World(new Vector2(), false);gameWorld.step(0, 0, 0);
+        gameWorld.setContinuousPhysics(true);
+        gameWorld.setWarmStarting(true);
     }
 
     @AfterClass
     public static void cleanUp() {
-        application.exit();
-        application = null;
+        Gdx.app.exit();
     }
 }

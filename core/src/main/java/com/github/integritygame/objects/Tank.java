@@ -119,6 +119,7 @@ public class Tank {
      * @return Vector2 The position at the center of the tank
      */
     public Vector2 getCurrentPosition() {
+        position = tankBody.getPosition().cpy();
         return new Vector2((position.x + (width / 2) + (side ? -18 : +18)), (position.y + (height / 2)) + 7);
     }
 
