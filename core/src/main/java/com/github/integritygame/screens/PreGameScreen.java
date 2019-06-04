@@ -114,7 +114,7 @@ public class PreGameScreen extends AbstractScreen {
         playButtonGrass.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                variableManager.setString("Background", "Grass");
+                variableManager.setBackground(AssetManager.Background.GRASS);
                 initGame();
             }
         });
@@ -122,7 +122,7 @@ public class PreGameScreen extends AbstractScreen {
         playButtonDesert.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                variableManager.setString("Background", "Desert");
+                variableManager.setBackground(AssetManager.Background.DESERT);
                 initGame();
             }
         });

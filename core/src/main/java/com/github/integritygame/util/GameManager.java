@@ -96,7 +96,7 @@ public class GameManager {
 
         //Render the users tanks and bullets and background
         spriteBatch.begin();
-            spriteBatch.draw(AssetManager.getInstance().getBackgrounds(AssetManager.Background.DESERT), 0 , 0, graphicsWidth, graphicsHeight);
+            spriteBatch.draw(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()), 0 , 0, graphicsWidth, graphicsHeight);
             userA.getTank().renderSprite(spriteBatch);
             userB.getTank().renderSprite(spriteBatch);
             bullets.render(spriteBatch);
