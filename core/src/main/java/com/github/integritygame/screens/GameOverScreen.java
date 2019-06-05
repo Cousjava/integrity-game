@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.github.integritygame.util.AssetManager;
-import com.github.integritygame.util.VariableManager;
 
 public class GameOverScreen extends AbstractScreen {
 
@@ -40,6 +40,7 @@ public class GameOverScreen extends AbstractScreen {
 
     /**
      * Renders the screen with 100% opacity
+     *
      * @param delta Timings between actions
      */
     @Override
@@ -120,7 +121,7 @@ public class GameOverScreen extends AbstractScreen {
         buttonTable.add(replayButton).width(200).height(100);
 
         mainTable.add(assetManager.getText(Color.FOREST, "Game Over!", true)).align(Align.center);
-        mainTable.row().height(Gdx.graphics.getHeight()/1.3f).width(Gdx.graphics.getWidth());
+        mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth());
         mainTable.add(summaryTable).align(Align.center);
         mainTable.row().height(100);
         mainTable.add(buttonTable);

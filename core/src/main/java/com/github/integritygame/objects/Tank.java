@@ -1,15 +1,9 @@
 package com.github.integritygame.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.github.integritygame.util.AssetManager;
 import com.github.integritygame.util.InputManager;
 import com.integrity.games.util.PolarVector;
@@ -46,13 +40,13 @@ public class Tank {
      * @param width  Width the tank should be
      * @param height Height thee tank should be
      */
-    public Tank(float x, float y){
+    public Tank(float x, float y) {
         this.width = 80;
         this.height = 35;
         this.position = new Vector2(x, y);
         assetManager = AssetManager.getInstance();
         tankStyles = AssetManager.TankStyles.GREEN_TANK;
-        
+
         tankFixture = new FixtureDef();
         tankFixture.shape = setTankShape(width, height);
         tankFixture.density = 2f;
@@ -63,9 +57,9 @@ public class Tank {
         tankBodyDef.position.set(x, y);
     }
 
-    public void registerTurn(UserTurn userTurn){
+    public void registerTurn(UserTurn userTurn) {
         this.rightSide = userTurn.getControl().equals(InputManager.Control.RIGHT);
-        this.rotation = rightSide? 180 : 0;
+        this.rotation = rightSide ? 180 : 0;
     }
 
     /**
@@ -73,11 +67,11 @@ public class Tank {
      *
      * @param positive If true move right on the X else move left
      */
-    public void updateX(boolean positive){
+    public void updateX(boolean positive) {
         tankBody.applyForceToCenter(position, true);
-        if(positive){
+        if (positive) {
             tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
-        }else{
+        } else {
             tankBody.applyForceToCenter(new Vector2(-1000000, 0), true);
         }
     }
@@ -87,15 +81,15 @@ public class Tank {
      *
      * @param batch This will be the SpriteBatch object that will render the object
      */
-    public void renderSprite (SpriteBatch batch) {
+    public void renderSprite(SpriteBatch batch) {
         position = tankBody.getPosition().cpy();
         position.x -= width / 2;
         position.y -= height / 2;
         Vector2 localCenter = getLocalCenter();
         TextureRegion barrel = new TextureRegion(assetManager.getTankTexture(tankStyles)[1], 0, 0, 24, 2);
         barrel.flip(false, rightSide);
-        batch.draw(barrel, localCenter.x, localCenter.y,0,2.5f, barrelLength, 5,1,1,rotation);
-        batch.draw(assetManager.getTankTexture(tankStyles)[0], position.x, position.y, width, height,0,0,58,24,rightSide,false);
+        batch.draw(barrel, localCenter.x, localCenter.y, 0, 2.5f, barrelLength, 5, 1, 1, rotation);
+        batch.draw(assetManager.getTankTexture(tankStyles)[0], position.x, position.y, width, height, 0, 0, 58, 24, rightSide, false);
     }
 
     /**
@@ -103,11 +97,11 @@ public class Tank {
      *
      * @param clockwise This will specify if the tank aim should move clockwise or anti clockwise
      */
-    public void rotate(boolean clockwise){
-        if(clockwise) {
-            rotation = Math.min(Math.max(rotation - toleranceRotation, rightSide ? 135:0), rightSide ? 180:45);
-        }else{
-            rotation = Math.min(Math.max(rotation + toleranceRotation, rightSide ? 135:0), rightSide ? 180:45);
+    public void rotate(boolean clockwise) {
+        if (clockwise) {
+            rotation = Math.min(Math.max(rotation - toleranceRotation, rightSide ? 135 : 0), rightSide ? 180 : 45);
+        } else {
+            rotation = Math.min(Math.max(rotation + toleranceRotation, rightSide ? 135 : 0), rightSide ? 180 : 45);
         }
     }
 
@@ -153,7 +147,7 @@ public class Tank {
     /**
      * This sets the texture of the tank to something other than the default
      */
-    public void setTexture(AssetManager.TankStyles texture){
+    public void setTexture(AssetManager.TankStyles texture) {
         this.tankStyles = texture;
     }
 

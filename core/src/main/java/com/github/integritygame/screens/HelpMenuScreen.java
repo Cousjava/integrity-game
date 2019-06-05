@@ -3,12 +3,9 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -43,6 +40,7 @@ public class HelpMenuScreen extends AbstractScreen {
 
     /**
      * Renders the screen with an opacity of 100%
+     *
      * @param delta Time between actions
      */
     @Override
@@ -112,9 +110,9 @@ public class HelpMenuScreen extends AbstractScreen {
 
         mainTable.add(assetManager.getText(Color.FOREST, "Help", true));
         mainTable.row();
-        mainTable.add(help).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight()-((Gdx.graphics.getHeight() / tableHeightScalar)*2));
+        mainTable.add(help).width(Gdx.graphics.getWidth() - 200).height(Gdx.graphics.getHeight() - ((Gdx.graphics.getHeight() / tableHeightScalar) * 2));
         mainTable.row();
-        mainTable.add(menuButton).width(Gdx.graphics.getWidth()/tableWidthScalar).height(Gdx.graphics.getHeight()/tableHeightScalar).align(Align.bottomLeft);
+        mainTable.add(menuButton).width(Gdx.graphics.getWidth() / tableWidthScalar).height(Gdx.graphics.getHeight() / tableHeightScalar).align(Align.bottomLeft);
         stage.addActor(mainTable);
     }
 

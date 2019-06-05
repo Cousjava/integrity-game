@@ -16,7 +16,7 @@ public class Bullet {
     private Vector2 location;
     private Vector2 heading;
     private Body body;
-    
+
     private boolean impacted = false;
     private int damage = 5;
 
@@ -96,7 +96,7 @@ public class Bullet {
         bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;
-        
+
         return bulletDef;
     }
 
@@ -168,7 +168,7 @@ public class Bullet {
      *
      * @return Bullet data
      */
-    public BulletData.BulletName getBulletData(){
+    public BulletData.BulletName getBulletData() {
         return bulletData;
     }
 

@@ -13,7 +13,7 @@ public class PlayerHud {
     private String name;
     private BitmapFont font;
     private int money = 100;
-    
+
     private Tank tank;
 
     /**
@@ -62,10 +62,10 @@ public class PlayerHud {
         damage = tank.getDamage();
         money = tank.getMoney();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(1,1,1,1);
-            shapeRenderer.rect(x, y - 10, 200, 25);
-            shapeRenderer.setColor(1,0,0,1);
-            shapeRenderer.rect(x, y - 10, damage * 2, 25);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.rect(x, y - 10, 200, 25);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.rect(x, y - 10, damage * 2, 25);
         shapeRenderer.end();
     }
 

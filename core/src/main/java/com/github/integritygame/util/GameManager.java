@@ -50,9 +50,9 @@ public class GameManager {
 
     }
 
-    private void configureTanksAndUserTurn(){
+    private void configureTanksAndUserTurn() {
         userA = new UserTurn(new Tank(30, 180), InputManager.Control.LEFT);
-        userB = new UserTurn(new Tank(graphicsWidth - 110,180), InputManager.Control.RIGHT);
+        userB = new UserTurn(new Tank(graphicsWidth - 110, 180), InputManager.Control.RIGHT);
         userB.getTank().setTexture(AssetManager.TankStyles.LIGHT_GREEN_TANK);
 
         turnManager = new TurnManager<>(new LinkedList<>(Arrays.asList(userA, userB)));
@@ -61,14 +61,14 @@ public class GameManager {
 
     }
 
-    private void configureHud(){
+    private void configureHud() {
         hud = new Hud(graphicsWidth, graphicsHeight);
         List<PlayerHud> players = hud.getPlayerHuds();
         players.get(0).setTank(userA.getTank());
         players.get(1).setTank(userB.getTank());
     }
 
-    private void configureGameWorld(){
+    private void configureGameWorld() {
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         game = new GameWorld(terrain);
@@ -80,13 +80,13 @@ public class GameManager {
     /**
      * This will render everything on screen along with executing code that should be done with every frame
      */
-    public void render(float delta){
+    public void render(float delta) {
         game.update(delta);
 
         //Do logic when its a users turn else wait for next turn
-        if(!bullets.isOnScreen()){
+        if (!bullets.isOnScreen()) {
             turnManager.getTurnId().onTurn(bullets);
-        }else{
+        } else {
             userA.getTank().stopTank();
             userB.getTank().stopTank();
         }
@@ -96,18 +96,18 @@ public class GameManager {
 
         //Render the users tanks and bullets and background
         spriteBatch.begin();
-            spriteBatch.draw(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()), 0 , 0, graphicsWidth, graphicsHeight);
-            userA.getTank().renderSprite(spriteBatch);
-            userB.getTank().renderSprite(spriteBatch);
-            bullets.render(spriteBatch);
+        spriteBatch.draw(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()), 0, 0, graphicsWidth, graphicsHeight);
+        userA.getTank().renderSprite(spriteBatch);
+        userB.getTank().renderSprite(spriteBatch);
+        bullets.render(spriteBatch);
         spriteBatch.end();
 
         hud.render(shapeRenderer, spriteBatch);
 
-        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt()||userB.getTank().isBankrupt())) {
+        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt() || userB.getTank().isBankrupt())) {
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
         }
-        
+
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
     }

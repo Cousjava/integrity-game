@@ -14,7 +14,7 @@ public class UserTurn {
      *
      * @param tank First tank
      */
-    public UserTurn(Tank tank, InputManager.Control control){
+    public UserTurn(Tank tank, InputManager.Control control) {
         this.tank = tank;
         this.control = control;
         tank.registerTurn(this);
@@ -26,7 +26,7 @@ public class UserTurn {
      * @param control         Movement controls
      * @param userTurnManager Turn manage
      */
-    public void setInputManager(TurnManager<UserTurn> userTurnManager){
+    public void setInputManager(TurnManager<UserTurn> userTurnManager) {
         this.inputManager = new InputManager(control, tank, userTurnManager);
     }
 
@@ -48,12 +48,12 @@ public class UserTurn {
         return inputManager;
     }
 
-    public void onTurn(BulletsController bullet){
+    public void onTurn(BulletsController bullet) {
         inputManager.move();
         inputManager.tankFire(bullet);
     }
 
-    public void always(){
+    public void always() {
         inputManager.escapeGame();
     }
 
