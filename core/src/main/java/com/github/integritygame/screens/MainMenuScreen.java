@@ -3,7 +3,6 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,24 +14,18 @@ import com.github.integritygame.util.AssetManager;
 public class MainMenuScreen extends AbstractScreen {
 
     private Stage stage;
-
     private SpriteBatch spriteBatch;
+    private AssetManager assetManager;
 
     private TextButton playButton;
     private TextButton exitButton;
     private TextButton helpButton;
     private TextButton settingsButton;
-    private Table mainTable;
 
-    private Texture texture;
-
-    /**
-     * Initialises the Main Menu screen with and caches the background texture
-     */
     public MainMenuScreen() {
         stage = new Stage();
         spriteBatch = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg"));
+        assetManager = AssetManager.getInstance();
     }
 
     /**
@@ -44,13 +37,11 @@ public class MainMenuScreen extends AbstractScreen {
 
         createAndConfigureButtons();
         createAndConfigureTableForMenu();
-
-        //add table to stage
-        stage.addActor(mainTable);
     }
 
     /**
      * Renders page elements onto the screen medium
+     *
      * @param delta Delay between actions
      */
     @Override
@@ -61,7 +52,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 
         spriteBatch.begin();
-        spriteBatch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(assetManager.getBackgrounds(AssetManager.Background.HOME), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act();
@@ -107,10 +98,10 @@ public class MainMenuScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        playButton = new TextButton("Play", AssetManager.preGameScreenButtons());
-        exitButton = new TextButton("Exit", AssetManager.preGameScreenButtons());
-        helpButton = new TextButton("Help", AssetManager.preGameScreenButtons());
-        settingsButton = new TextButton("Settings", AssetManager.preGameScreenButtons());
+        playButton = new TextButton("Play", assetManager.getCustomTextButton());
+        exitButton = new TextButton("Exit", assetManager.getCustomTextButton());
+        helpButton = new TextButton("Help", assetManager.getCustomTextButton());
+        settingsButton = new TextButton("Settings", assetManager.getCustomTextButton());
 
         //add listeners to each button
         playButton.addListener(new ClickListener() {
@@ -146,19 +137,16 @@ public class MainMenuScreen extends AbstractScreen {
      * Method to create and configure the main table used for the menu buttons.
      */
     private void createAndConfigureTableForMenu() {
-        //add buttons to table
         int tableWidthScalar = 8;
         int tableHeightScalar = 10;
-
         int width = Gdx.graphics.getWidth() / tableWidthScalar;
         int height = Gdx.graphics.getHeight() / tableHeightScalar;
 
-        mainTable = new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.setDebug(false);
         mainTable.top();
-
-        mainTable.add(AssetManager.screenTitle(Color.BLACK, "Tanks"));
+        mainTable.add(assetManager.getText(Color.BLACK, "Tanks", true));
         mainTable.row();
         mainTable.add(playButton).width(width).height(height);
         mainTable.row();
@@ -167,5 +155,6 @@ public class MainMenuScreen extends AbstractScreen {
         mainTable.add(helpButton).width(width).height(height);
         mainTable.row();
         mainTable.add(exitButton).width(width).height(height);
+        stage.addActor(mainTable);
     }
 }

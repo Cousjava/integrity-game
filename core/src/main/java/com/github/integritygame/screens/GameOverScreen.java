@@ -7,34 +7,24 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.github.integritygame.util.AssetManager;
-import com.github.integritygame.util.VariableManager;
 
 public class GameOverScreen extends AbstractScreen {
 
     private Stage stage;
-    private VariableManager variableManager;
+    private AssetManager assetManager;
 
     private TextButton menuButton;
     private TextButton replayButton;
-    private Table mainTable;
-    private Table summaryTable;
-
-    private TextField nameOne;
-    private TextField nameTwo;
-
-    private boolean explicit;
-    private boolean name;
 
     /**
      * Initialises the Game Over screen with a Stage and an instance of the VariableManager
      */
     public GameOverScreen() {
         stage = new Stage();
-        variableManager = VariableManager.getInstance();
+        assetManager = AssetManager.getInstance();
     }
 
     /**
@@ -42,18 +32,15 @@ public class GameOverScreen extends AbstractScreen {
      */
     @Override
     public void show() {
-        explicit = true;
-        name = true;
+        Gdx.input.setInputProcessor(stage);
 
         createAndConfigureButtons();
         createAndConfigureTableForMenu();
-
-        Gdx.input.setInputProcessor(stage);
-        stage.addActor(mainTable);
     }
 
     /**
      * Renders the screen with 100% opacity
+     *
      * @param delta Timings between actions
      */
     @Override
@@ -94,8 +81,8 @@ public class GameOverScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        menuButton = new TextButton("Main Menu", AssetManager.preGameScreenButtons());
-        replayButton = new TextButton("Play Again", AssetManager.preGameScreenButtons());
+        menuButton = new TextButton("Main Menu", assetManager.getCustomTextButton());
+        replayButton = new TextButton("Play Again", assetManager.getCustomTextButton());
 
         //add listeners to each button
         menuButton.addListener(new ClickListener() {
@@ -118,14 +105,14 @@ public class GameOverScreen extends AbstractScreen {
      */
     private void createAndConfigureTableForMenu() {
 
-        mainTable = new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.setDebug(false);
 
-        summaryTable = new Table();
+        Table summaryTable = new Table();
         summaryTable.setDebug(false);
         summaryTable.row();
-        summaryTable.add(AssetManager.labelSimpleWhiteText("Proceed to debriefing.")).width(150).height(40);
+        summaryTable.add(assetManager.getText(Color.WHITE, "Proceed to debriefing.", false)).width(150).height(40);
 
         Table buttonTable = new Table();
         buttonTable.setDebug(false);
@@ -133,10 +120,11 @@ public class GameOverScreen extends AbstractScreen {
         buttonTable.add().width(100);
         buttonTable.add(replayButton).width(200).height(100);
 
-        mainTable.add(AssetManager.screenTitle(Color.FOREST, "Game Over!")).align(Align.center);
+        mainTable.add(assetManager.getText(Color.FOREST, "Game Over!", true)).align(Align.center);
         mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth());
         mainTable.add(summaryTable).align(Align.center);
         mainTable.row().height(100);
         mainTable.add(buttonTable);
+        stage.addActor(mainTable);
     }
 }

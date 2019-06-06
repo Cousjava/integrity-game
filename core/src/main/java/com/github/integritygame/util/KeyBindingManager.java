@@ -10,38 +10,39 @@ public class KeyBindingManager {
         BULLET_TOGGLE, LEFT_LEFT_MOVE, LEFT_RIGHT_MOVE, LEFT_AIM_UP, LEFT_AIM_DOWN, RIGHT_LEFT_MOVE, RIGHT_RIGHT_MOVE, RIGHT_AIM_UP, RIGHT_AIM_DOWN, FIRE
     }
 
+    private static final int DEFAULT_LEFT_LEFT_MOVE_KEY = Input.Keys.A;
+    private static final int DEFAULT_LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
+    private static final int DEFAULT_LEFT_AIM_UP_KEY = Input.Keys.W;
+    private static final int DEFAULT_LEFT_AIM_DOWN_KEY = Input.Keys.S;
+    private static final int DEFAULT_RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
+    private static final int DEFAULT_RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
+    private static final int DEFAULT_RIGHT_AIM_UP_KEY = Input.Keys.UP;
+    private static final int DEFAULT_RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
+    private static final int DEFAULT_FIRE_KEY = Input.Keys.SPACE;
+    private static final int DEFAULT_BULLET_TOGGLE = Input.Keys.T;
+
     public static HashMap<ConfigurableKeys, Integer> keyMap = new HashMap<>();
 
     //fixed keys - can not be changed
-    private final static int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
+    private static final int MAIN_GAME_EXIT = Input.Keys.ESCAPE;
 
     public KeyBindingManager() {
-        this.resetDefaultKeys();
+        resetDefaultKeys();
     }
 
     /**
      * Method to set the control keys back to default
      */
     public static void resetDefaultKeys() {
-        int DEFAULT_LEFT_LEFT_MOVE_KEY = Input.Keys.A;
         keyMap.put(ConfigurableKeys.LEFT_LEFT_MOVE, DEFAULT_LEFT_LEFT_MOVE_KEY);
-        int DEFAULT_LEFT_RIGHT_MOVE_KEY = Input.Keys.D;
         keyMap.put(ConfigurableKeys.LEFT_RIGHT_MOVE, DEFAULT_LEFT_RIGHT_MOVE_KEY);
-        int DEFAULT_LEFT_AIM_UP_KEY = Input.Keys.S;
         keyMap.put(ConfigurableKeys.LEFT_AIM_UP, DEFAULT_LEFT_AIM_UP_KEY);
-        int DEFAULT_LEFT_AIM_DOWN_KEY = Input.Keys.W;
         keyMap.put(ConfigurableKeys.LEFT_AIM_DOWN, DEFAULT_LEFT_AIM_DOWN_KEY);
-        int DEFAULT_RIGHT_LEFT_MOVE_KEY = Input.Keys.LEFT;
         keyMap.put(ConfigurableKeys.RIGHT_LEFT_MOVE, DEFAULT_RIGHT_LEFT_MOVE_KEY);
-        int DEFAULT_RIGHT_RIGHT_MOVE_KEY = Input.Keys.RIGHT;
         keyMap.put(ConfigurableKeys.RIGHT_RIGHT_MOVE, DEFAULT_RIGHT_RIGHT_MOVE_KEY);
-        int DEFAULT_RIGHT_AIM_UP_KEY = Input.Keys.UP;
         keyMap.put(ConfigurableKeys.RIGHT_AIM_UP, DEFAULT_RIGHT_AIM_UP_KEY);
-        int DEFAULT_RIGHT_AIM_DOWN_KEY = Input.Keys.DOWN;
         keyMap.put(ConfigurableKeys.RIGHT_AIM_DOWN, DEFAULT_RIGHT_AIM_DOWN_KEY);
-        int DEFAULT_FIRE_KEY = Input.Keys.SPACE;
         keyMap.put(ConfigurableKeys.FIRE, DEFAULT_FIRE_KEY);
-        int DEFAULT_BULLET_TOGGLE = Input.Keys.T;
         keyMap.put(ConfigurableKeys.BULLET_TOGGLE, DEFAULT_BULLET_TOGGLE);
     }
 
