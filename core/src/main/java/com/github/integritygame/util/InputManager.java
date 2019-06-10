@@ -2,7 +2,6 @@ package com.github.integritygame.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.github.integritygame.MyGdxGame;
 import com.github.integritygame.objects.BulletData;
 import com.github.integritygame.objects.BulletsController;
 import com.github.integritygame.objects.Tank;
@@ -10,16 +9,15 @@ import com.github.integritygame.screens.ScreenManager;
 
 public class InputManager {
 
-    public enum CONTROL {
+    public enum Control {
         LEFT, RIGHT
     }
 
-    private CONTROL control;
+    private Control control;
     private Tank tank;
     private TurnManager turnManager;
-    private static KeyBindingManager keyManager = MyGdxGame.keyManager;
 
-    public InputManager(CONTROL control, Tank tank, TurnManager turnManager) {
+    public InputManager(Control control, Tank tank, TurnManager turnManager) {
         this.control = control;
         this.tank = tank;
         this.turnManager = turnManager;
@@ -29,16 +27,16 @@ public class InputManager {
      * Defines how the player should move depending on what side they are
      */
     public void move() {
-        if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
+        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
             tank.updateX(false);
         }
-        if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
+        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
             tank.updateX(true);
         }
-        if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
+        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
             tank.rotate(true);
         }
-        if ((control.equals(CONTROL.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(CONTROL.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN)))) {
+        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_UP))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_DOWN)))) {
             tank.rotate(false);
         }
         if (Gdx.input.isKeyJustPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.BULLET_TOGGLE))) {

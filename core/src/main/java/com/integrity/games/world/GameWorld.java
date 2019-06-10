@@ -13,6 +13,8 @@ import com.github.integritygame.objects.Tank;
 public class GameWorld {
 
     World world;
+    
+    private float timeStep;
 
     /**
      * @param terrain Definition of terrain for the world.
@@ -86,7 +88,11 @@ public class GameWorld {
      * @param delta Delay between actions
      */
     public void update(float delta) {
-        world.step(delta, 10, 10);
+        timeStep += delta;
+        if (timeStep > 0.01f) {
+            world.step(0.01f, 5, 5);
+            timeStep -= 0.01f;
+        }
     }
 
 }

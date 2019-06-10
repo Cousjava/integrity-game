@@ -16,14 +16,13 @@ public class Bullet {
     private Vector2 location;
     private Vector2 heading;
     private Body body;
-    private BodyDef def;
 
     private boolean impacted = false;
     private int damage = 5;
 
     private Tank firingTank;
 
-    private BulletData bulletData;
+    private BulletData.BulletName bulletData;
 
     /**
      * This will create a bullet
@@ -31,7 +30,7 @@ public class Bullet {
      * @param position
      * @param vector
      */
-    public Bullet(Vector2 position, Vector2 vector, Tank firingTank, BulletData bulletData) {
+    public Bullet(Vector2 position, Vector2 vector, Tank firingTank, BulletData.BulletName bulletData) {
         location = position;
         this.heading = vector;
         this.firingTank = firingTank;
@@ -62,7 +61,7 @@ public class Bullet {
      * @return Bullet's texture
      */
     public Texture getTexture() {
-        return AssetManager.bullet(bulletData);
+        return AssetManager.getInstance().getBullets(bulletData);
     }
 
     /**
@@ -89,17 +88,16 @@ public class Bullet {
      * @return Bullet characteristic definition
      */
     public BodyDef getBodyDef() {
-        if (def == null) {
-            def = new BodyDef();
-            def.bullet = true;
-            def.linearVelocity.x = heading.x * 5;
-            def.linearVelocity.y = heading.y * 5;
-            def.gravityScale = 1;
-            def.type = BodyDef.BodyType.DynamicBody;
-            def.position.x = location.x;
-            def.position.y = location.y;
-        }
-        return def;
+        BodyDef bulletDef = new BodyDef();
+        bulletDef.bullet = true;
+        bulletDef.linearVelocity.x = heading.x * 5;
+        bulletDef.linearVelocity.y = heading.y * 5;
+        bulletDef.gravityScale = 1;
+        bulletDef.type = BodyDef.BodyType.DynamicBody;
+        bulletDef.position.x = location.x;
+        bulletDef.position.y = location.y;
+
+        return bulletDef;
     }
 
     /**
@@ -170,7 +168,7 @@ public class Bullet {
      *
      * @return Bullet data
      */
-    public BulletData getBulletData() {
+    public BulletData.BulletName getBulletData() {
         return bulletData;
     }
 

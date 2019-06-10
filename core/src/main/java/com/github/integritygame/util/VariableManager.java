@@ -7,6 +7,7 @@ public class VariableManager {
     private static VariableManager instance;
 
     private HashMap<String, String> strings;
+    private AssetManager.Background background;
 
     private VariableManager() {
         strings = new HashMap<>();
@@ -27,4 +28,11 @@ public class VariableManager {
         strings.put(key, value);
     }
 
+    public AssetManager.Background getBackground() {
+        return background;
+    }
+
+    public void setBackground(AssetManager.Background background) {
+        this.background = background;
+    }
 }

@@ -18,16 +18,15 @@ import java.util.regex.Pattern;
 public class PreGameScreen extends AbstractScreen {
 
     private Stage stage;
+    private AssetManager assetManager;
     private VariableManager variableManager;
 
     private TextButton menuButton;
     private TextButton playButtonGrass;
     private TextButton playButtonDesert;
-    private Table mainTable;
-    private Table playerTable;
-
     private TextField nameOne;
     private TextField nameTwo;
+    private Table playerTable;
 
     private boolean explicit;
     private boolean name;
@@ -37,6 +36,7 @@ public class PreGameScreen extends AbstractScreen {
      */
     public PreGameScreen() {
         stage = new Stage();
+        assetManager = AssetManager.getInstance();
         variableManager = VariableManager.getInstance();
     }
 
@@ -48,16 +48,18 @@ public class PreGameScreen extends AbstractScreen {
     public void show() {
         explicit = true;
         name = true;
+
+        Gdx.input.setInputProcessor(stage);
         createAndConfigureButtons();
         createAndConfigureTableForMenu();
+
         nameOne.setText(variableManager.getString("PlayerOneName"));
         nameTwo.setText(variableManager.getString("PlayerTwoName"));
-        Gdx.input.setInputProcessor(stage);
-        stage.addActor(mainTable);
     }
 
     /**
      * Renders page elements onto the screen medium
+     *
      * @param delta Delay between actions
      */
     @Override
@@ -99,16 +101,15 @@ public class PreGameScreen extends AbstractScreen {
      * All buttons can be created here and configured. Ie, add listeners
      */
     private void createAndConfigureButtons() {
-        menuButton = new TextButton("Main Menu", AssetManager.preGameScreenButtons());
-        playButtonGrass = new TextButton("Play Grass", AssetManager.preGameScreenButtons());
-        playButtonDesert = new TextButton("Play Desert", AssetManager.preGameScreenButtons());
+        menuButton = new TextButton("Main Menu", assetManager.getCustomTextButton());
+        playButtonGrass = new TextButton("Play Grass", assetManager.getCustomTextButton());
+        playButtonDesert = new TextButton("Play Desert", assetManager.getCustomTextButton());
 
         //add listeners to each button
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                variableManager.setString("PlayerOneName", nameOne.getText());
-                variableManager.setString("PlayerTwoName", nameTwo.getText());
+                storeNameData();
                 ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_MENU);
             }
         });
@@ -116,16 +117,16 @@ public class PreGameScreen extends AbstractScreen {
         playButtonGrass.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                variableManager.setString("Background", "Grass");
-                init();
+                variableManager.setBackground(AssetManager.Background.GRASS);
+                initGame();
             }
         });
 
         playButtonDesert.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                variableManager.setString("Background", "Desert");
-                init();
+                variableManager.setBackground(AssetManager.Background.DESERT);
+                initGame();
             }
         });
     }
@@ -133,49 +134,53 @@ public class PreGameScreen extends AbstractScreen {
     /**
      * Initialises the service to record the username and verify it
      */
-    public void init() {
+    private void initGame() {
         Pattern pattern = Pattern.compile("(?i)fuck|shit|wanker|twat");
         if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find() || nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20) {
             if (pattern.matcher(nameOne.getText()).find() || pattern.matcher(nameTwo.getText()).find()) {
                 if (explicit) {
                     playerTable.row().height(30);
-                    playerTable.add(AssetManager.labelSimpleWhiteText("Explicit Names Not Allowed")).colspan(3);
+                    playerTable.add(assetManager.getText(Color.WHITE, "Explicit Names Not Allowed", false)).colspan(3);
                 }
                 explicit = false;
             }
             if (nameOne.getText().length() < 3 || nameOne.getText().length() >= 20 || nameTwo.getText().length() < 3 || nameTwo.getText().length() >= 20) {
                 if (name) {
                     playerTable.row().height(30);
-                    playerTable.add(AssetManager.labelSimpleWhiteText("Name must be between 3 - 20 characters")).colspan(3);
+                    playerTable.add(assetManager.getText(Color.WHITE, "Name must be between 3 - 20 characters", false)).colspan(3);
                 }
                 name = false;
             }
             return;
         }
+        storeNameData();
+        ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
+    }
+
+    private void storeNameData() {
         variableManager.setString("PlayerOneName", nameOne.getText());
         variableManager.setString("PlayerTwoName", nameTwo.getText());
-        ScreenManager.getInstance().changeScreen(ScreenManager.Screens.MAIN_GAME);
     }
 
     /**
      * Method to create and configure the main table used for the menu buttons.
      */
     private void createAndConfigureTableForMenu() {
-        nameOne = AssetManager.skinnedTextField();
-        nameTwo = AssetManager.skinnedTextField();
+        nameOne = assetManager.getTextField();
+        nameTwo = assetManager.getTextField();
 
-        mainTable = new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.setDebug(false);
 
         playerTable = new Table();
         //playerTable.setFillParent(true);
         playerTable.setDebug(false);
-        playerTable.add(AssetManager.labelSimpleWhiteText("Player 1 Name: ")).width(150).height(40);
+        playerTable.add(assetManager.getText(Color.WHITE, "Player 1 Name: ", false)).width(150).height(40);
         playerTable.add().width(10);
         playerTable.add(nameOne).width(150);
         playerTable.row();
-        playerTable.add(AssetManager.labelSimpleWhiteText("Player 2 Name: ")).width(150).height(40);
+        playerTable.add(assetManager.getText(Color.WHITE, "Player 2 Name: ", false)).width(150).height(40);
         playerTable.add().width(10);
         playerTable.add(nameTwo).width(150);
 
@@ -187,10 +192,11 @@ public class PreGameScreen extends AbstractScreen {
         buttonTable.add().width(100);
         buttonTable.add(playButtonDesert).width(200).height(100);
 
-        mainTable.add(AssetManager.screenTitle(Color.FOREST, "Operation Briefing...")).align(Align.center);
+        mainTable.add(assetManager.getText(Color.FOREST, "Operation Briefing...", true)).align(Align.center);
         mainTable.row().height(Gdx.graphics.getHeight() / 1.3f).width(Gdx.graphics.getWidth());
         mainTable.add(playerTable).align(Align.center);
         mainTable.row().height(100);
         mainTable.add(buttonTable);
+        stage.addActor(mainTable);
     }
 }
