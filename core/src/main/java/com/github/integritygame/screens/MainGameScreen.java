@@ -15,7 +15,7 @@ public class MainGameScreen extends AbstractScreen {
 
     private int graphicsWidth;
     private int graphicsHeight;
-
+    
     /**
      * Create a main game screen and initialise the GameManager to handle most the stuff
      */
@@ -26,6 +26,9 @@ public class MainGameScreen extends AbstractScreen {
         graphicsWidth = Gdx.graphics.getWidth();
         graphicsHeight = Gdx.graphics.getHeight();
 
+        spriteBatch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        
         gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer);
     }
 
@@ -71,6 +74,7 @@ public class MainGameScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
+        spriteBatch.dispose();
 
     }
 
