@@ -61,11 +61,6 @@ public class TankContactListener implements ContactListener {
     private void bulletCollision(Tank tank, Bullet bullet) {
         tank.toggleByValue(false, bullet.getBulletData().damage);
         bullet.getFiringTank().changeMoney(true, bullet.getBulletData().moneyIfHit);
-        if (tank.isDead()) {
-            VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.DESTROY);
-            //set victor var
-            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
-        }
     }
 
     @Override

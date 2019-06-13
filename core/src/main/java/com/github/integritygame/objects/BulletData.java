@@ -9,7 +9,7 @@ public class BulletData {
 
         SMALL(15, 10, 5),
         MEDIUM(30, 20, 10),
-        LARGE(50, 200, 15);
+        LARGE(50, 50, 15);
 
         public final int damage;
         public final int costOnFire;

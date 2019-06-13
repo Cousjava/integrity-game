@@ -7,6 +7,7 @@ import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
 import com.integrity.games.world.GameWorld;
 
+import java.time.temporal.ValueRange;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -103,6 +104,18 @@ public class GameManager {
         spriteBatch.end();
 
         hud.render(shapeRenderer, spriteBatch);
+
+        if (turnManager.getTurnId().getTank().isDead()) {
+            VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.DESTROY);
+
+            if(userA.getTank().equals(turnManager.getTurnId().getTank())){
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_TWO);
+            } else {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_ONE);
+            }
+
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
+        }
 
         if (!bullets.isOnScreen() && userA.getTank().isBankrupt() || userB.getTank().isBankrupt()) {
             VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.BANKRUPT);
