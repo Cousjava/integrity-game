@@ -13,6 +13,7 @@ public class PlayerHud {
     private String name;
     private BitmapFont font;
     private int money = 100;
+    private int fuel = 100;
 
     private Tank tank;
 
@@ -45,11 +46,15 @@ public class PlayerHud {
     public void renderText(SpriteBatch spriteBatch) {
         damage = tank.getDamage();
         money = tank.getMoney();
+        fuel = tank.getFuel();
         spriteBatch.begin();
         font.setColor(Color.BLACK);
         font.draw(spriteBatch, name, x, y + 75);
         font.draw(spriteBatch, "Money: $" + money, x, y + 55);
         font.draw(spriteBatch, "Tank Damage: " + damage + "%", x, y + 35);
+        font.draw(spriteBatch, "F", x + 230, y + 80);
+        font.draw(spriteBatch, fuel + "%", x + 230, y + 39);
+        font.draw(spriteBatch, "E", x + 230, y - 9);
         spriteBatch.end();
     }
 
@@ -61,11 +66,16 @@ public class PlayerHud {
     public void render(ShapeRenderer shapeRenderer) {
         damage = tank.getDamage();
         money = tank.getMoney();
+        fuel = tank.getFuel();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(x, y - 10, 200, 25);
+        shapeRenderer.rect(x, y - 20, 200, 25);
         shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.rect(x, y - 10, damage * 2, 25);
+        shapeRenderer.rect(x, y - 20, damage * 2, 25);
+        shapeRenderer.setColor(1,1,1,1);
+        shapeRenderer.rect(x + 210, y - 20, 15, 100);
+        shapeRenderer.setColor(1,.5f,0,1);
+        shapeRenderer.rect(x + 210, y - 20, 15, fuel);
         shapeRenderer.end();
     }
 

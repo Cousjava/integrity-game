@@ -28,6 +28,7 @@ public class Tank {
     private float toleranceRotation = 1;
     private int damage = 100;
     private int money = 250;
+    private int fuel = 100;
 
     private boolean rightSide;
     private float rotation;
@@ -70,9 +71,9 @@ public class Tank {
     public void updateX(boolean positive) {
         tankBody.applyForceToCenter(position, true);
         if (positive) {
-            tankBody.applyForceToCenter(new Vector2(1000000, 5000), true);
+            tankBody.applyForceToCenter(new Vector2(500000000, 5000), true);
         } else {
-            tankBody.applyForceToCenter(new Vector2(-1000000, 0), true);
+            tankBody.applyForceToCenter(new Vector2(-500000000, 5000), true);
         }
     }
 
@@ -206,6 +207,12 @@ public class Tank {
                 : Math.min(Math.max(damage - value, 0), 100);
     }
 
+    public void toggelFuel(boolean increase, int value) {
+        fuel = increase
+                ? Math.min(Math.max(fuel + value, 0), 100)
+                : Math.min(Math.max(fuel - value, 0), 100);
+    }
+
     /**
      * Alerts the money by a given value
      *
@@ -254,4 +261,7 @@ public class Tank {
         return money;
     }
 
+    public int getFuel() {
+        return fuel;
+    }
 }

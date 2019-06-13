@@ -52,7 +52,7 @@ public class GameManager {
 
     private void configureTanksAndUserTurn() {
         userA = new UserTurn(new Tank(30, 180), InputManager.Control.LEFT);
-        userB = new UserTurn(new Tank(graphicsWidth - 110, 180), InputManager.Control.RIGHT);
+        userB = new UserTurn(new Tank(graphicsWidth - 40, 180), InputManager.Control.RIGHT);
         userB.getTank().setTexture(AssetManager.TankStyles.LIGHT_GREEN_TANK);
 
         turnManager = new TurnManager<>(new LinkedList<>(Arrays.asList(userA, userB)));
@@ -73,7 +73,7 @@ public class GameManager {
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         game = new GameWorld(terrain);
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
-        userB.getTank().setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userB.getTank()));
+        userB.getTank().setTankBody(game.addTank(graphicsWidth - 40, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
     }
 

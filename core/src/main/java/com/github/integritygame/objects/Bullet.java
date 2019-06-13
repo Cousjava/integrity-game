@@ -92,7 +92,8 @@ public class Bullet {
         bulletDef.bullet = true;
         bulletDef.linearVelocity.x = heading.x * 5;
         bulletDef.linearVelocity.y = heading.y * 5;
-        bulletDef.gravityScale = 1;
+        System.out.println(bulletDef.position.x);
+        bulletDef.gravityScale = bulletDef.position.x < 100 ? 2 : 1;
         bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;

@@ -1,6 +1,7 @@
 package com.github.integritygame.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.github.integritygame.objects.BulletData;
 import com.github.integritygame.objects.BulletsController;
@@ -27,11 +28,16 @@ public class InputManager {
      * Defines how the player should move depending on what side they are
      */
     public void move() {
-        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
-            tank.updateX(false);
-        }
-        if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
-            tank.updateX(true);
+        if (tank.getFuel() != 0) {
+            if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
+                tank.updateX(false);
+                tank.toggelFuel(false, 1);
+
+            }
+            if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
+                tank.updateX(true);
+                tank.toggelFuel(false, 1);
+            }
         }
         if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
             tank.rotate(true);
@@ -51,9 +57,15 @@ public class InputManager {
                     VariableManager.getInstance().setString("bulletType", "SMALL");
                     break;
             }
-
-
         }
+        //TODO- Add this to the UI to buy items
+        if(Gdx.input.isKeyPressed(Input.Keys.F)){
+            if(tank.getFuel() != 100){
+                tank.toggelFuel(true, 1);
+                tank.changeMoney(false,1);
+            }
+        }
+        tank.stopTank();
     }
 
     public void escapeGame() {
