@@ -104,7 +104,13 @@ public class GameManager {
 
         hud.render(shapeRenderer, spriteBatch);
 
-        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt() || userB.getTank().isBankrupt())) {
+        if (!bullets.isOnScreen() && userA.getTank().isBankrupt() || userB.getTank().isBankrupt()) {
+            VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.BANKRUPT);
+            if (userA.getTank().isBankrupt()) {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_TWO);
+            } else {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_ONE);
+            }
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
         }
 
