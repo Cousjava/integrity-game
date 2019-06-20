@@ -56,6 +56,9 @@ public class InputManager {
                 case "LARGE":
                     VariableManager.getInstance().setString("bulletType", "SMALL");
                     break;
+                case "NUKE":
+                    VariableManager.getInstance().setString("bulletType", "NUKE");
+                    break;
             }
         }
         //TODO- Add this to the UI to buy items
