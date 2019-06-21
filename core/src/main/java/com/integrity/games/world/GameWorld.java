@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.github.integritygame.objects.Tank;
+import com.integrity.games.util.TerrainGenerator;
 
 /**
  * The world of the game and contains the physics stuff for it
@@ -15,6 +16,8 @@ public class GameWorld {
     World world;
     
     private float timeStep;
+    
+    private Vector2[] points;
 
     /**
      * @param terrain Definition of terrain for the world.
@@ -22,8 +25,19 @@ public class GameWorld {
     public GameWorld(EdgeShape terrain) {
 
         world = new World(new Vector2(0, -10), true);
+        TerrainGenerator terrainGenerator = new TerrainGenerator(0.5f , Gdx.graphics.getWidth(), 4);
+        points = terrainGenerator.generate();
+        for (Vector2 point: points) {
+            point.y *= 500;
+            point.y += 90;
+            System.out.println(point);
+        }
+        ChainShape floor = new ChainShape();
+        floor.createChain(points);
+        
         Body terrainBody = world.createBody(new BodyDef());
-        terrainBody.createFixture(terrain, 0);
+        
+        terrainBody.createFixture(floor, 0);
 
         world.setContactListener(new TankContactListener());
         worldEdges();
@@ -34,6 +48,8 @@ public class GameWorld {
      * prevent tanks going off-screen
      */
     private void worldEdges() {
+        
+        
         EdgeShape leftEdge = new EdgeShape();
         leftEdge.set(0, 0, 0, Gdx.graphics.getHeight());
         EdgeShape rightEdge = new EdgeShape();
@@ -94,5 +110,9 @@ public class GameWorld {
             timeStep -= 0.01f;
         }
     }
+    
+    public Vector2[] getTerrain() {
+        return points;
+    }    
 
 }

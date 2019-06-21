@@ -1,5 +1,6 @@
 package com.github.integritygame.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -43,7 +44,7 @@ public class Tank {
     public Tank(float x, float y) {
         this.width = 80;
         this.height = 35;
-        this.position = new Vector2(x, y);
+        this.position = new Vector2(x, Gdx.graphics.getHeight());
         assetManager = AssetManager.getInstance();
         tankStyles = AssetManager.TankStyles.GREEN_TANK;
 
@@ -54,7 +55,7 @@ public class Tank {
         tankBodyDef = new BodyDef();
         tankBodyDef.fixedRotation = true;
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
-        tankBodyDef.position.set(x, y);
+        tankBodyDef.position.set(x, Gdx.graphics.getHeight());
     }
 
     public void registerTurn(UserTurn userTurn) {

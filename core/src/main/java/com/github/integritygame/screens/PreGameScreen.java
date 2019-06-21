@@ -118,6 +118,7 @@ public class PreGameScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 variableManager.setBackground(AssetManager.Background.GRASS);
+                System.out.println(System.nanoTime());
                 initGame();
             }
         });
