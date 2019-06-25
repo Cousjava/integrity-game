@@ -9,7 +9,8 @@ public class BulletData {
 
         SMALL(15, 10, 5),
         MEDIUM(30, 20, 10),
-        LARGE(50, 50, 15);
+        LARGE(50, 50, 15),
+        NUKE(100, 100, 20);
 
         public final int damage;
         public final int costOnFire;
@@ -49,6 +50,8 @@ public class BulletData {
             this.currentBullet = BulletName.MEDIUM;
         } else if (enumAsString.equals("LARGE")) {
             this.currentBullet = BulletName.LARGE;
+        } else if (enumAsString.equals("NUKE")) {
+            this.currentBullet = BulletName.NUKE;
         }
     }
 
