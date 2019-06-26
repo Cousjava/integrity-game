@@ -25,7 +25,7 @@ public class GameWorld {
     public GameWorld(EdgeShape terrain) {
 
         world = new World(new Vector2(0, -10), true);
-        TerrainGenerator terrainGenerator = new TerrainGenerator(0.5f , Gdx.graphics.getWidth(), 4);
+        TerrainGenerator terrainGenerator = new TerrainGenerator(0.5f , Gdx.graphics.getWidth(), 8);
         points = terrainGenerator.generate();
         for (Vector2 point: points) {
             point.y *= 500;

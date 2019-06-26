@@ -50,8 +50,6 @@ public class TerrainGenerator {
         points[0] = new Vector2(0, jitter(0));
         points[points.length - 1] = new Vector2(length, jitter(0));
         
-        System.out.println(this.toString());
-        new Exception().printStackTrace();
         for (int i = 1; i <= iterations; i++) {
             double limit =  Math.pow(2, i);
             int stepper = (int) Math.pow(2, iterations - i);
