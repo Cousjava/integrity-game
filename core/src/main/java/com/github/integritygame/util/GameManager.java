@@ -1,8 +1,15 @@
 package com.github.integritygame.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
 import com.integrity.games.world.GameWorld;
@@ -11,6 +18,7 @@ import java.time.temporal.ValueRange;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class GameManager {
 
@@ -31,6 +39,10 @@ public class GameManager {
     private int graphicsWidth;
     private int graphicsHeight;
 
+    private Stage powerUpStage;
+
+    private float timeAux;
+
     /**
      * Create a game manager
      *
@@ -39,11 +51,12 @@ public class GameManager {
      * @param spriteBatch    SpriteBatch so we can render them instead of creating a new one
      * @param shapeRenderer  ShapeRenderer so we can render them instead of creating a new one
      */
-    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
+    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Stage powerUpStage) {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
         this.graphicsWidth = graphicsWidth;
         this.graphicsHeight = graphicsHeight;
+        this.powerUpStage = powerUpStage;
 
         configureTanksAndUserTurn();
         configureHud();
@@ -76,6 +89,26 @@ public class GameManager {
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
         userB.getTank().setTankBody(game.addTank(graphicsWidth - 40, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
+    }
+
+    public void addPowerUp(AssetManager.PowerUp powerUp){
+        int top = 550;
+        int bottom = 150;
+        int left = 0;
+        int right = 1220;
+        ImageButton a = AssetManager.getInstance().getPowerUpButton(powerUp);
+        a.setPosition(new Random().nextInt(right - left) + left,new Random().nextInt(top - bottom) + bottom);
+        a.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y){
+                if(powerUp.equals(AssetManager.PowerUp.ONE)){
+                    turnManager.getTurnId().getTank().toggelFuel(true, 100);
+                }else if(powerUp.equals(AssetManager.PowerUp.TWO)){
+                    turnManager.getTurnId().getTank().changeMoney(true, 100);
+                }
+                a.remove();
+            }
+        });
+        powerUpStage.addActor(a);
     }
 
     /**
@@ -129,6 +162,15 @@ public class GameManager {
 
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
+
+        if(powerUpStage.getActors().size == 0){
+            if(timeAux>=10){ //10 seconds
+                addPowerUp(AssetManager.PowerUp.getRandomPowerUp());
+                timeAux=0;
+            }else{
+                timeAux+=delta;
+            }
+        }
     }
 
 }

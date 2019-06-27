@@ -82,7 +82,7 @@ public class InputManager {
     public void tankFire(BulletsController bullets) {
         if (Gdx.input.isKeyJustPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))) {
             BulletData bulletData = new BulletData(VariableManager.getInstance().getString("bulletType"));
-            Vector2 bullet = new Vector2(1, 1).setLength2(1000f);
+            Vector2 bullet = new Vector2(1, 1).setLength2(1000000000000f);
             bullet.setAngle(tank.getRotation());
             bullets.addBullet(tank.getBarrelEnd(), bullet, tank, bulletData);
             tank.changeMoney(false, bulletData.getBulletData().costOnFire);

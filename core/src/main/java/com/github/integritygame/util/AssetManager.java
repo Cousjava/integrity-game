@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.github.integritygame.objects.BulletData;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AssetManager {
 
@@ -22,6 +21,16 @@ public class AssetManager {
 
     public enum TankStyles {BLUE_TANK, GREEN_TANK, LIGHT_GREEN_TANK}
 
+    public enum PowerUp {
+        ONE, TWO;
+
+        public static PowerUp getRandomPowerUp() {
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+
     private Skin skin;
     private Skin customButton;
     private String helpText;
@@ -30,6 +39,7 @@ public class AssetManager {
     private Map<Background, Texture> backgrounds;
     private Map<BulletData.BulletName, Texture> bullets;
     private Map<TankStyles, Texture[]> tankTextures;
+    private Map<PowerUp, Texture> powerups;
 
     private AssetManager() {
         initAssets();
@@ -61,6 +71,9 @@ public class AssetManager {
         tankTextures.put(TankStyles.BLUE_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/BlueTankBody.png")), new Texture(Gdx.files.internal("tanks/BlueTankTurret.png"))});
         tankTextures.put(TankStyles.LIGHT_GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/LightGreenTankBody.png")), new Texture(Gdx.files.internal("tanks/LightGreenTankTurret.png"))});
 
+        powerups = new HashMap<>();
+        powerups.put(PowerUp.ONE, new Texture(Gdx.files.internal("petrol.png")));
+        powerups.put(PowerUp.TWO, new Texture(Gdx.files.internal("money.png")));
     }
 
     public static synchronized AssetManager getInstance() {
@@ -96,6 +109,13 @@ public class AssetManager {
         buttonStyle.down = customButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = customButton.getDrawable("rounded_rectangle_button");
         return buttonStyle;
+    }
+
+    public ImageButton getPowerUpButton(PowerUp powerUp){
+        ImageButton image = new ImageButton(skin, powerUp.toString());
+        image.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(powerups.get(powerUp), 32, 32));
+        image.setSize(32,32);
+        return image;
     }
 
     public Texture getBackgrounds(Background background) {
