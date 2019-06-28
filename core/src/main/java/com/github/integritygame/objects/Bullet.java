@@ -92,7 +92,7 @@ public class Bullet {
         bulletDef.bullet = true;
         bulletDef.linearVelocity.x = heading.x * 5;
         bulletDef.linearVelocity.y = heading.y * 5;
-        bulletDef.gravityScale = 5;
+        bulletDef.gravityScale = 2;
         bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;

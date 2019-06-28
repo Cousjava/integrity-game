@@ -1,6 +1,5 @@
 package com.github.integritygame.util;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
+import com.github.integritygame.util.AssetManager.Background;
 import com.integrity.games.world.GameWorld;
 
 import java.awt.Graphics2D;
@@ -38,7 +38,7 @@ public class GameManager {
 
     //TODO: Be able to calculate this from background
     private GameWorld game;
-    private static final int START_HEIGHT = 500;
+    private static final int START_HEIGHT = 300;
 
     private int graphicsWidth;
     private int graphicsHeight;
@@ -87,17 +87,19 @@ public class GameManager {
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         game = new GameWorld(terrain);
-        Pixmap producedimage = new Pixmap(Gdx.files.internal("backgrounds/green-ground.jpeg"));
-
-        producedimage.fillRectangle(0, 0, 100, 100);
+        
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
         userB.getTank().setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
         
         try {
-            BufferedImage image = ImageIO.read(Gdx.files.internal("backgrounds/desert-background.jpg").read());
+            BufferedImage image = ImageIO.read(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()).read());
             Graphics2D backgroundGraphics = image.createGraphics();
-            backgroundGraphics.setColor(java.awt.Color.BLUE);
+            if (VariableManager.getInstance().getBackground().equals(Background.GRASS)) {
+                backgroundGraphics.setColor(java.awt.Color.GREEN.darker());
+            } else {
+                backgroundGraphics.setColor(java.awt.Color.YELLOW);
+            }
             backgroundGraphics.fillPolygon(groundPolygon(game.getTerrain()));
             ByteArrayOutputStream out  = new ByteArrayOutputStream();
             ImageIO.write(image, "jpeg", out);
@@ -135,8 +137,6 @@ public class GameManager {
 
         //Always do this logic even if its not the users turn
         turnManager.getTurnId().always();
-        
-        //imageMap.drawPixmap(transparentLayer, START_HEIGHT, START_HEIGHT);
 
         //Render the users tanks and bullets and background
         spriteBatch.begin();

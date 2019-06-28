@@ -63,13 +63,21 @@ public class TerrainGenerator {
     
     private float jitter(int iteration) {
         float jitter = (random.nextFloat() - 0.5f) * variance;
-        jitter /= iteration + 1;
+        jitter /= iteration + 3;
         if (jitter > 1) {
             jitter = 1;
         } else if (jitter < 0) {
             jitter = 0;
         }
         return jitter;
+    }
+    
+    private void smooth(Vector2[] points) {
+        Vector2 previous = points[0];
+        for (int i = 1 ; i < points.length - 1; i++) {
+            
+        }
+        
     }
     
 }

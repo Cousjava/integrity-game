@@ -1,6 +1,7 @@
 package com.github.integritygame.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,8 +28,8 @@ public class AssetManager {
     private String helpText;
     private BitmapFont titleFont;
     private BitmapFont defaultFont;
-    private Map<Background, Texture> backgrounds;
-    private Map<Background, Texture> foregrounds;
+    private Map<Background, FileHandle> backgrounds;
+    private Map<Background, FileHandle> foregrounds;
     private Map<BulletData.BulletName, Texture> bullets;
     private Map<TankStyles, Texture[]> tankTextures;
 
@@ -48,13 +49,13 @@ public class AssetManager {
         defaultFont = new BitmapFont();
 
         backgrounds = new HashMap<>();
-        backgrounds.put(Background.DESERT, new Texture(Gdx.files.internal("backgrounds/desert-background.jpg")));
-        backgrounds.put(Background.GRASS, new Texture(Gdx.files.internal("backgrounds/tank-grass-background.jpeg")));
-        backgrounds.put(Background.HOME, new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg")));
+        backgrounds.put(Background.DESERT, Gdx.files.internal("backgrounds/desert-background.jpg"));
+        backgrounds.put(Background.GRASS, Gdx.files.internal("backgrounds/green-bg-no-ground.jpeg"));
+        backgrounds.put(Background.HOME, Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg"));
 
         foregrounds = new HashMap<>();
-        foregrounds.put(Background.DESERT, new Texture(Gdx.files.internal("backgrounds/desert-ground.jpeg")));
-        foregrounds.put(Background.GRASS, new Texture(Gdx.files.internal("backgrounds/green-ground.jpeg")));
+        foregrounds.put(Background.DESERT, Gdx.files.internal("backgrounds/desert-ground.jpeg"));
+        foregrounds.put(Background.GRASS, Gdx.files.internal("backgrounds/green-ground.jpeg"));
         
         bullets = new HashMap<>();
         bullets.put(BulletData.BulletName.SMALL, new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png")));
@@ -105,11 +106,11 @@ public class AssetManager {
         return buttonStyle;
     }
 
-    public Texture getBackgrounds(Background background) {
+    public FileHandle getBackgrounds(Background background) {
         return backgrounds.get(background);
     }
     
-    public Texture getGroundTexture(Background type) {
+    public FileHandle getGroundTexture(Background type) {
         return foregrounds.get(type);
     }
 

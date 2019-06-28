@@ -24,8 +24,8 @@ public class GameWorld {
      */
     public GameWorld(EdgeShape terrain) {
 
-        world = new World(new Vector2(0, -10), true);
-        TerrainGenerator terrainGenerator = new TerrainGenerator(0.5f , Gdx.graphics.getWidth(), 8);
+        world = new World(new Vector2(0, -30), true);
+        TerrainGenerator terrainGenerator = new TerrainGenerator(0.5f , Gdx.graphics.getWidth(), 4);
         points = terrainGenerator.generate();
         for (Vector2 point: points) {
             point.y *= 500;
@@ -36,7 +36,7 @@ public class GameWorld {
         floor.createChain(points);
         
         Body terrainBody = world.createBody(new BodyDef());
-        
+         
         terrainBody.createFixture(floor, 0);
 
         world.setContactListener(new TankContactListener());
