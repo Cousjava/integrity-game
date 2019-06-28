@@ -25,7 +25,7 @@ public class Hud {
         this.height = height;
         hBar = new ArrayList<>();
         hBar.add(new PlayerHud(10, height - 90));
-        hBar.add(new PlayerHud(width - 210, height - 90));
+        hBar.add(new PlayerHud(width - 275, height - 90));
         hBar.get(0).setName(VariableManager.getInstance().getString("PlayerOneName"));
         hBar.get(1).setName(VariableManager.getInstance().getString("PlayerTwoName"));
         generalHud = new GeneralHud(width / 2, height - 90);
@@ -40,7 +40,7 @@ public class Hud {
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(121 / 255f, 121 / 255f, 121 / 255f, 1);
-        shapeRenderer.rect(0, height - 110, width, 110);
+        shapeRenderer.rect(0, height - 120, width, 120);
         shapeRenderer.end();
 
         generalHud.render(spriteBatch);

@@ -67,7 +67,7 @@ public class GameManager {
 
     private void configureTanksAndUserTurn() {
         userA = new UserTurn(new Tank(30, 180), InputManager.Control.LEFT);
-        userB = new UserTurn(new Tank(graphicsWidth - 110, 180), InputManager.Control.RIGHT);
+        userB = new UserTurn(new Tank(graphicsWidth - 40, 180), InputManager.Control.RIGHT);
         userB.getTank().setTexture(AssetManager.TankStyles.LIGHT_GREEN_TANK);
 
         turnManager = new TurnManager<>(new LinkedList<>(Arrays.asList(userA, userB)));
@@ -89,7 +89,7 @@ public class GameManager {
         game = new GameWorld(terrain);
         
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
-        userB.getTank().setTankBody(game.addTank(graphicsWidth - 110, START_HEIGHT + 1, userB.getTank()));
+        userB.getTank().setTankBody(game.addTank(graphicsWidth - 40, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
         
         try {
@@ -149,7 +149,25 @@ public class GameManager {
         
         hud.render(shapeRenderer, spriteBatch);
 
-        if (!bullets.isOnScreen() && (userA.getTank().isBankrupt() || userB.getTank().isBankrupt())) {
+        if (turnManager.getTurnId().getTank().isDead()) {
+            VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.DESTROY);
+
+            if(userA.getTank().equals(turnManager.getTurnId().getTank())){
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_TWO);
+            } else {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_ONE);
+            }
+
+            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
+        }
+
+        if (!bullets.isOnScreen() && userA.getTank().isBankrupt() || userB.getTank().isBankrupt()) {
+            VariableManager.getInstance().setVictoryType(VariableManager.VictoryType.BANKRUPT);
+            if (userA.getTank().isBankrupt()) {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_TWO);
+            } else {
+                VariableManager.getInstance().setString(VariableManager.VICTOR_KEY, VariableManager.PLAYER_ONE);
+            }
             ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
         }
 

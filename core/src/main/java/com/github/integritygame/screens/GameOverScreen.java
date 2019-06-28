@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.github.integritygame.util.AssetManager;
+import com.github.integritygame.util.VariableManager;
 
 public class GameOverScreen extends AbstractScreen {
 
@@ -69,12 +70,12 @@ public class GameOverScreen extends AbstractScreen {
 
     @Override
     public void hide() {
-
+        stage.clear();
     }
 
     @Override
     public void dispose() {
-
+        stage.clear();
     }
 
     /**
@@ -105,6 +106,14 @@ public class GameOverScreen extends AbstractScreen {
      */
     private void createAndConfigureTableForMenu() {
 
+        String victor;
+
+        if (VariableManager.getInstance().getString(VariableManager.VICTOR_KEY).equals(VariableManager.PLAYER_ONE)) {
+            victor = VariableManager.getInstance().getString("PlayerOneName");
+        } else {
+            victor = VariableManager.getInstance().getString("PlayerTwoName");
+        }
+
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.setDebug(false);
@@ -112,8 +121,12 @@ public class GameOverScreen extends AbstractScreen {
         Table summaryTable = new Table();
         summaryTable.setDebug(false);
         summaryTable.row();
-        summaryTable.add(assetManager.getText(Color.WHITE, "Proceed to debriefing.", false)).width(150).height(40);
-
+        summaryTable.add(assetManager.getText(Color.WHITE, "Proceed to debriefing.", false)).width(150).height(40).align(Align.center);
+        summaryTable.row();
+        summaryTable.add(assetManager.getText(Color.WHITE, "The game was won by "+victor, false)).width(150).height(40).align(Align.center);
+        summaryTable.row();
+        summaryTable.add(assetManager.getText(Color.WHITE, "The game was won by method "+VariableManager.getInstance().getVictoryType().toString(), false))
+                .width(150).height(40).align(Align.center);
         Table buttonTable = new Table();
         buttonTable.setDebug(false);
         buttonTable.add(menuButton).width(200).height(100);

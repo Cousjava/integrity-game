@@ -1,9 +1,10 @@
 package com.integrity.games.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
-import com.github.integritygame.screens.ScreenManager;
 
 /**
  * When collisions occur between bullets and/or tanks
@@ -14,6 +15,8 @@ import com.github.integritygame.screens.ScreenManager;
 public class TankContactListener implements ContactListener {
 
     private static final int TANK_COLLISION_DAMAGE = 5;
+    Sound bulletCollisionSound = Gdx.audio.newSound(Gdx.files.internal("sounds/tank-hit.mp3"));
+    long bulletCollisionSoundId = 1;
 
     @Override
     public void beginContact(Contact contact) {
@@ -60,9 +63,9 @@ public class TankContactListener implements ContactListener {
     private void bulletCollision(Tank tank, Bullet bullet) {
         tank.toggleByValue(false, bullet.getBulletData().damage);
         bullet.getFiringTank().changeMoney(true, bullet.getBulletData().moneyIfHit);
-        if (tank.isDead()) {
-            ScreenManager.getInstance().changeScreen(ScreenManager.Screens.GAME_OVER);
-        }
+
+        bulletCollisionSound.setLooping(bulletCollisionSoundId, false);
+        bulletCollisionSound.play();
     }
 
     @Override
