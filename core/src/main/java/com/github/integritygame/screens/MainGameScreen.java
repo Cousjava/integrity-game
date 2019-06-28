@@ -14,6 +14,7 @@ import com.github.integritygame.util.GameManager;
 public class MainGameScreen extends AbstractScreen {
 
     private Stage stage;
+    private Stage upgrades;
 
     private GameManager gameManager;
 
@@ -28,6 +29,7 @@ public class MainGameScreen extends AbstractScreen {
      */
     public MainGameScreen() {
         stage = new Stage();
+        upgrades = new Stage();
 
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -38,14 +40,14 @@ public class MainGameScreen extends AbstractScreen {
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         
-        gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer, stage);
+        gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer, stage, upgrades);
     }
 
     //TODO - Add in other backgrounds again
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+
     }
 
 
@@ -61,7 +63,9 @@ public class MainGameScreen extends AbstractScreen {
         gameManager.render(delta);
 
         stage.act();
+        upgrades.act();
         stage.draw();
+        upgrades.draw();
     }
 
     @Override

@@ -22,12 +22,16 @@ public class AssetManager {
     public enum TankStyles {BLUE_TANK, GREEN_TANK, LIGHT_GREEN_TANK}
 
     public enum PowerUp {
-        ONE, TWO;
+        MONEY, FUEL;
 
         public static PowerUp getRandomPowerUp() {
             Random random = new Random();
             return values()[random.nextInt(values().length)];
         }
+    }
+
+    public enum Upgrade {
+        STAMINA, SPEED, STRENGTH
     }
 
 
@@ -40,6 +44,7 @@ public class AssetManager {
     private Map<BulletData.BulletName, Texture> bullets;
     private Map<TankStyles, Texture[]> tankTextures;
     private Map<PowerUp, Texture> powerups;
+    private Map<Upgrade, Texture> upgrades;
 
     private AssetManager() {
         initAssets();
@@ -72,8 +77,13 @@ public class AssetManager {
         tankTextures.put(TankStyles.LIGHT_GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/LightGreenTankBody.png")), new Texture(Gdx.files.internal("tanks/LightGreenTankTurret.png"))});
 
         powerups = new HashMap<>();
-        powerups.put(PowerUp.ONE, new Texture(Gdx.files.internal("petrol.png")));
-        powerups.put(PowerUp.TWO, new Texture(Gdx.files.internal("money.png")));
+        powerups.put(PowerUp.FUEL, new Texture(Gdx.files.internal("petrol.png")));
+        powerups.put(PowerUp.MONEY, new Texture(Gdx.files.internal("money.png")));
+
+        upgrades = new HashMap<>();
+        upgrades.put(Upgrade.SPEED, new Texture(Gdx.files.internal("money.png")));
+        upgrades.put(Upgrade.STAMINA, new Texture(Gdx.files.internal("money.png")));
+        upgrades.put(Upgrade.STRENGTH, new Texture(Gdx.files.internal("money.png")));
     }
 
     public static synchronized AssetManager getInstance() {
@@ -109,6 +119,13 @@ public class AssetManager {
         buttonStyle.down = customButton.getDrawable("rounded_rectangle_button");
         buttonStyle.checked = customButton.getDrawable("rounded_rectangle_button");
         return buttonStyle;
+    }
+
+    public ImageButton upgradeButton(Upgrade upgrade){
+        ImageButton image = new ImageButton(skin, upgrade.toString());
+        image.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(upgrades.get(upgrade), 32, 32));
+        image.setSize(32,32);
+        return image;
     }
 
     public ImageButton getPowerUpButton(PowerUp powerUp){

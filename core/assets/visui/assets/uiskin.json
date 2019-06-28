@@ -126,11 +126,23 @@
     }
   },
   com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-    ONE: {
+    FUEL: {
       down: button-down,
       up: button
     },
-    TWO: {
+    MONEY: {
+      down: button-down,
+      up: button
+    },
+    STAMINA: {
+      down: button-down,
+      up: button
+    },
+    SPEED: {
+      down: button-down,
+      up: button
+    },
+    STRENGTH: {
       down: button-down,
       up: button
     },

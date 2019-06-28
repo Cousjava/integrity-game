@@ -40,6 +40,7 @@ public class GameManager {
     private int graphicsHeight;
 
     private Stage powerUpStage;
+    private Stage upgrades;
 
     private float timeAux;
 
@@ -51,12 +52,13 @@ public class GameManager {
      * @param spriteBatch    SpriteBatch so we can render them instead of creating a new one
      * @param shapeRenderer  ShapeRenderer so we can render them instead of creating a new one
      */
-    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Stage powerUpStage) {
+    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Stage powerUpStage, Stage upgrades) {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
         this.graphicsWidth = graphicsWidth;
         this.graphicsHeight = graphicsHeight;
         this.powerUpStage = powerUpStage;
+        this.upgrades = upgrades;
 
         configureTanksAndUserTurn();
         configureHud();
@@ -76,7 +78,7 @@ public class GameManager {
     }
 
     private void configureHud() {
-        hud = new Hud(graphicsWidth, graphicsHeight);
+        hud = new Hud(graphicsWidth, graphicsHeight, upgrades);
         List<PlayerHud> players = hud.getPlayerHuds();
         players.get(0).setTank(userA.getTank());
         players.get(1).setTank(userB.getTank());
@@ -91,7 +93,7 @@ public class GameManager {
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
     }
 
-    public void addPowerUp(AssetManager.PowerUp powerUp){
+    private void addPowerUp(AssetManager.PowerUp powerUp){
         int top = 550;
         int bottom = 150;
         int left = 0;
@@ -100,9 +102,9 @@ public class GameManager {
         a.setPosition(new Random().nextInt(right - left) + left,new Random().nextInt(top - bottom) + bottom);
         a.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y){
-                if(powerUp.equals(AssetManager.PowerUp.ONE)){
+                if(powerUp.equals(AssetManager.PowerUp.FUEL)){
                     turnManager.getTurnId().getTank().toggelFuel(true, 100);
-                }else if(powerUp.equals(AssetManager.PowerUp.TWO)){
+                }else if(powerUp.equals(AssetManager.PowerUp.MONEY)){
                     turnManager.getTurnId().getTank().changeMoney(true, 100);
                 }
                 a.remove();
@@ -117,13 +119,16 @@ public class GameManager {
     public void render(float delta) {
         game.update(delta);
 
+
         //Do logic when its a users turn else wait for next turn
         if (!bullets.isOnScreen()) {
+            Gdx.input.setInputProcessor(upgrades);
             turnManager.getTurnId().onTurn(bullets);
         } else {
             userA.getTank().stopTank();
             userB.getTank().stopTank();
         }
+
 
         //Always do this logic even if its not the users turn
         turnManager.getTurnId().always();
@@ -170,6 +175,8 @@ public class GameManager {
             }else{
                 timeAux+=delta;
             }
+        }else{
+            Gdx.input.setInputProcessor(powerUpStage);
         }
     }
 
