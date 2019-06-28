@@ -68,6 +68,20 @@ public class InputManager {
                 tank.changeMoney(false,1);
             }
         }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            tank.toggleSpeedMultiplier(true);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+            tank.toggleStaminaMultiplier(false);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            tank.toggleStrengthMultiplier(false);
+        }
+        //Debug use -- System.out.println(tank.multipliersToString());
+
         tank.stopTank();
     }
 
