@@ -5,8 +5,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.github.integritygame.objects.Bullet;
 import com.github.integritygame.objects.Tank;
-import com.github.integritygame.screens.ScreenManager;
-import com.github.integritygame.util.VariableManager;
 
 /**
  * When collisions occur between bullets and/or tanks

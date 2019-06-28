@@ -38,7 +38,7 @@ public class InputManager {
                 tank.updateX(true);
                 tank.toggelFuel(false, 1);
             }
-        }
+        }        
         if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
             tank.rotate(true);
         }
@@ -81,8 +81,6 @@ public class InputManager {
             tank.toggleStrengthMultiplier(false);
         }
         //Debug use -- System.out.println(tank.multipliersToString());
-
-        tank.stopTank();
     }
 
     public void escapeGame() {

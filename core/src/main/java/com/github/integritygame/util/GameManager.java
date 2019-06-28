@@ -1,16 +1,28 @@
 package com.github.integritygame.util;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
+import com.github.integritygame.util.AssetManager.Background;
 import com.integrity.games.world.GameWorld;
 
-import java.time.temporal.ValueRange;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 
 public class GameManager {
 
@@ -26,10 +38,12 @@ public class GameManager {
 
     //TODO: Be able to calculate this from background
     private GameWorld game;
-    private static final int START_HEIGHT = 100;
+    private static final int START_HEIGHT = 300;
 
     private int graphicsWidth;
     private int graphicsHeight;
+    
+    private Texture background;
 
     /**
      * Create a game manager
@@ -73,9 +87,38 @@ public class GameManager {
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         game = new GameWorld(terrain);
+        
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
         userB.getTank().setTankBody(game.addTank(graphicsWidth - 40, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
+        
+        try {
+            BufferedImage image = ImageIO.read(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()).read());
+            Graphics2D backgroundGraphics = image.createGraphics();
+            if (VariableManager.getInstance().getBackground().equals(Background.GRASS)) {
+                backgroundGraphics.setColor(java.awt.Color.GREEN.darker());
+            } else {
+                backgroundGraphics.setColor(java.awt.Color.YELLOW);
+            }
+            backgroundGraphics.fillPolygon(groundPolygon(game.getTerrain()));
+            ByteArrayOutputStream out  = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpeg", out);
+            Pixmap altered = new Pixmap(out.toByteArray(), 0, out.size());
+            background = new Texture(altered);
+        } catch (IOException ex) {
+            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private Polygon groundPolygon(Vector2[] points) {
+        Polygon polygon = new Polygon();
+        polygon.addPoint(0, graphicsHeight);
+        for (Vector2 point: points) {
+            polygon.addPoint(Math.round(point.x), graphicsHeight - Math.round(point.y));
+        }
+        polygon.addPoint(graphicsWidth, graphicsHeight);
+        return polygon;
+        
     }
 
     /**
@@ -97,12 +140,13 @@ public class GameManager {
 
         //Render the users tanks and bullets and background
         spriteBatch.begin();
-        spriteBatch.draw(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()), 0, 0, graphicsWidth, graphicsHeight);
+       
+        spriteBatch.draw(background, 0, 0, graphicsWidth, graphicsHeight);
         userA.getTank().renderSprite(spriteBatch);
         userB.getTank().renderSprite(spriteBatch);
         bullets.render(spriteBatch);
         spriteBatch.end();
-
+        
         hud.render(shapeRenderer, spriteBatch);
 
         if (turnManager.getTurnId().getTank().isDead()) {

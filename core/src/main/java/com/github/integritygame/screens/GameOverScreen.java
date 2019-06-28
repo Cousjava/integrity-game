@@ -108,7 +108,7 @@ public class GameOverScreen extends AbstractScreen {
 
         String victor;
 
-        if (VariableManager.getInstance().getString(VariableManager.VICTOR_KEY) == VariableManager.PLAYER_ONE) {
+        if (VariableManager.getInstance().getString(VariableManager.VICTOR_KEY).equals(VariableManager.PLAYER_ONE)) {
             victor = VariableManager.getInstance().getString("PlayerOneName");
         } else {
             victor = VariableManager.getInstance().getString("PlayerTwoName");

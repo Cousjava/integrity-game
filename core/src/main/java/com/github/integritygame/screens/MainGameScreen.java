@@ -28,7 +28,6 @@ public class MainGameScreen extends AbstractScreen {
 
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        
         gameManager = new GameManager(graphicsWidth, graphicsHeight, spriteBatch, shapeRenderer);
     }
 

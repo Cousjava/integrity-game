@@ -3,6 +3,7 @@ package com.github.integritygame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,11 +22,14 @@ public class MainMenuScreen extends AbstractScreen {
     private TextButton exitButton;
     private TextButton helpButton;
     private TextButton settingsButton;
+    
+    private final Texture homeTexture;
 
     public MainMenuScreen() {
         stage = new Stage();
         spriteBatch = new SpriteBatch();
         assetManager = AssetManager.getInstance();
+        homeTexture = new Texture(assetManager.getBackgrounds(AssetManager.Background.HOME));
     }
 
     /**
@@ -52,7 +56,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 
         spriteBatch.begin();
-        spriteBatch.draw(assetManager.getBackgrounds(AssetManager.Background.HOME), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(homeTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
 
         stage.act();

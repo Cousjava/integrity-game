@@ -48,7 +48,7 @@ public class Tank {
     public Tank(float x, float y) {
         this.width = 80;
         this.height = 35;
-        this.position = new Vector2(x, y);
+        this.position = new Vector2(x, 300);
         assetManager = AssetManager.getInstance();
         tankStyles = AssetManager.TankStyles.GREEN_TANK;
 
@@ -59,7 +59,8 @@ public class Tank {
         tankBodyDef = new BodyDef();
         tankBodyDef.fixedRotation = true;
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
-        tankBodyDef.position.set(x, y);
+        tankBodyDef.gravityScale = 5;
+        tankBodyDef.position.set(x, 300);
     }
 
     public void registerTurn(UserTurn userTurn) {
