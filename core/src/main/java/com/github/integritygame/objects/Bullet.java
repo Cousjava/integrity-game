@@ -1,5 +1,7 @@
 package com.github.integritygame.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,6 +26,11 @@ public class Bullet {
 
     private BulletData.BulletName bulletData;
 
+    Sound tankFireSound = Gdx.audio.newSound(Gdx.files.internal("sounds/tank-fire.wav"));
+    Sound airRaidSirenSound = Gdx.audio.newSound(Gdx.files.internal("sounds/air-raid-siren2.wav"));
+    long tankFireId = 1;
+    long sirenId = 2;
+
     /**
      * This will create a bullet
      *
@@ -35,6 +42,15 @@ public class Bullet {
         this.heading = vector;
         this.firingTank = firingTank;
         this.bulletData = bulletData;
+
+        //play fire sound for new bullet
+        if (bulletData.equals(BulletData.BulletName.NUKE)) {
+            airRaidSirenSound.setLooping(sirenId, false);
+            airRaidSirenSound.play();
+        } else {
+            tankFireSound.setLooping(tankFireId, false);
+            tankFireSound.play();
+        }
     }
 
     /**
@@ -92,7 +108,7 @@ public class Bullet {
         bulletDef.bullet = true;
         bulletDef.linearVelocity.x = heading.x * 5;
         bulletDef.linearVelocity.y = heading.y * 5;
-        bulletDef.gravityScale = bulletDef.position.x < 100 ? 4 : 1;
+        bulletDef.gravityScale = 2;
         bulletDef.type = BodyDef.BodyType.DynamicBody;
         bulletDef.position.x = location.x;
         bulletDef.position.y = location.y;

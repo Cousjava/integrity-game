@@ -26,9 +26,15 @@ public class Tank {
 
     private int barrelLength = 30;
     private float toleranceRotation = 1;
-    private int damage = 100;
+    private float damage = 100;
     private int money = 250;
-    private int fuel = 100;
+    private float fuel = 100;
+
+    private float speedMultiplier = 1.0f;
+    private float staminaMultiplier = 1.0f;
+    private float strengthMultiplier = 1.0f;
+    final private float MULTIPLIER_MODIFIER_VALUE = 0.2f;
+    final private float MULTIPLIER_MINIMUM_VALUE = 0.1f;
 
     private boolean rightSide;
     private float rotation;
@@ -38,13 +44,11 @@ public class Tank {
      *
      * @param x      X position where the tank should be rendered on screen (bottom left corner of the tank)
      * @param y      Y position where the tank should be rendered on screen (bottom left corner of the tank)
-     * @param width  Width the tank should be
-     * @param height Height thee tank should be
      */
     public Tank(float x, float y) {
         this.width = 80;
         this.height = 35;
-        this.position = new Vector2(x, y);
+        this.position = new Vector2(x, 300);
         assetManager = AssetManager.getInstance();
         tankStyles = AssetManager.TankStyles.GREEN_TANK;
 
@@ -55,7 +59,8 @@ public class Tank {
         tankBodyDef = new BodyDef();
         tankBodyDef.fixedRotation = true;
         tankBodyDef.type = BodyDef.BodyType.DynamicBody;
-        tankBodyDef.position.set(x, y);
+        tankBodyDef.gravityScale = 5;
+        tankBodyDef.position.set(x, 300);
     }
 
     public void registerTurn(UserTurn userTurn) {
@@ -71,9 +76,9 @@ public class Tank {
     public void updateX(boolean positive) {
         tankBody.applyForceToCenter(position, true);
         if (positive) {
-            tankBody.applyForceToCenter(new Vector2(500000000, 5000), true);
+            tankBody.applyForceToCenter(new Vector2(50000000*speedMultiplier, 5000), true);
         } else {
-            tankBody.applyForceToCenter(new Vector2(-500000000, 5000), true);
+            tankBody.applyForceToCenter(new Vector2(-50000000*speedMultiplier, 5000), true);
         }
     }
 
@@ -107,7 +112,7 @@ public class Tank {
     }
 
     public void stopTank() {
-        tankBody.setLinearVelocity(0, 0);
+        tankBody.setLinearVelocity(0, -10);
     }
 
     /**
@@ -204,13 +209,19 @@ public class Tank {
     public void toggleByValue(boolean increase, int value) {
         damage = increase
                 ? Math.min(Math.max(damage + value, 0), 100)
-                : Math.min(Math.max(damage - value, 0), 100);
+                : Math.min(Math.max(damage - value*strengthMultiplier, 0), 100);
     }
 
+    /**
+     * increment or decrement fuel level of tank
+     *
+     * @param increase
+     * @param value
+     */
     public void toggelFuel(boolean increase, int value) {
         fuel = increase
                 ? Math.min(Math.max(fuel + value, 0), 100)
-                : Math.min(Math.max(fuel - value, 0), 100);
+                : Math.min(Math.max(fuel - value*staminaMultiplier, 0), 100);
     }
 
     /**
@@ -244,11 +255,62 @@ public class Tank {
     }
 
     /**
+     * increments/decrements the speed multiplier to move the tank faster or slower
+     *
+     * @param increase
+     */
+    public void toggleSpeedMultiplier(boolean increase) {
+        if(increase) {
+            speedMultiplier += 10000f;
+        } else {
+            speedMultiplier -= 0.0001f;
+        }
+
+        if (speedMultiplier < 0.001) {
+            speedMultiplier = 0.001f;
+        }
+    }
+
+    /**
+     * increments/decrements the stamina of a tank.
+     *
+     * @param increase
+     */
+    public void toggleStaminaMultiplier(boolean increase) {
+        if (increase) {
+            staminaMultiplier += MULTIPLIER_MODIFIER_VALUE;
+        } else {
+            staminaMultiplier -= MULTIPLIER_MODIFIER_VALUE;
+        }
+
+        if (staminaMultiplier <MULTIPLIER_MINIMUM_VALUE) {
+            staminaMultiplier = MULTIPLIER_MINIMUM_VALUE;
+        }
+    }
+
+    /**
+     * increments/decrements the strength of a tank.
+     *
+     * @param increase
+     */
+    public void toggleStrengthMultiplier(boolean increase) {
+        if (increase) {
+            strengthMultiplier += MULTIPLIER_MODIFIER_VALUE;
+        } else {
+            strengthMultiplier -= MULTIPLIER_MODIFIER_VALUE;
+        }
+
+        if (strengthMultiplier <MULTIPLIER_MINIMUM_VALUE) {
+            strengthMultiplier = MULTIPLIER_MINIMUM_VALUE;
+        }
+    }
+
+    /**
      * Returns how damaged the tank is
      *
      * @return Damage the tank can take before being destroyed
      */
-    int getDamage() {
+    float getDamage() {
         return damage;
     }
 
@@ -261,7 +323,11 @@ public class Tank {
         return money;
     }
 
-    public int getFuel() {
+    public float getFuel() {
         return fuel;
+    }
+
+    public String multipliersToString() {
+        return "Tank:\nSpeed: "+speedMultiplier + "\nStamina: "+staminaMultiplier + "\nPower: "+ strengthMultiplier;
     }
 }

@@ -32,12 +32,15 @@ public class InputManager {
             if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
                 tank.updateX(false);
                 tank.toggelFuel(false, 1);
-
             }
             if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
                 tank.updateX(true);
                 tank.toggelFuel(false, 1);
             }
+            tank.stopTank();
+        }
+        if(tank.getFuel() < 5){
+            tank.stopTank();
         }
         if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
             tank.rotate(true);
@@ -56,6 +59,9 @@ public class InputManager {
                 case "LARGE":
                     VariableManager.getInstance().setString("bulletType", "SMALL");
                     break;
+                case "NUKE":
+                    VariableManager.getInstance().setString("bulletType", "NUKE");
+                    break;
             }
         }
         //TODO- Add this to the UI to buy items
@@ -65,7 +71,9 @@ public class InputManager {
                 tank.changeMoney(false,1);
             }
         }
-        tank.stopTank();
+
+
+        //Debug use -- System.out.println(tank.multipliersToString());
     }
 
     public void escapeGame() {

@@ -83,7 +83,6 @@ public class ScreenManager {
      * This takes a Screens enum value and allows us to set the screen
      */
     public void changeScreen(Screens screen) {
-        System.out.println(getScreen(screen));
         parent.setScreen(getScreen(screen));
     }
 }

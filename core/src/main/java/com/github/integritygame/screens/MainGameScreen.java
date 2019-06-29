@@ -85,11 +85,14 @@ public class MainGameScreen extends AbstractScreen {
 
     @Override
     public void hide() {
-
+        stage.clear();
+        upgrades.clear();
     }
 
     @Override
     public void dispose() {
+        stage.dispose();
+        upgrades.dispose();
         spriteBatch.dispose();
 
     }

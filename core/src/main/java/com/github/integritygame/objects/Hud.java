@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.integritygame.util.AssetManager;
+import com.github.integritygame.util.TurnManager;
 import com.github.integritygame.util.VariableManager;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class Hud {
     private int width;
     private int height;
     private Stage upgrades;
+
+    private TurnManager<UserTurn> turnManager;
 
     /**
      * Initializes the Heads-Up-Display given the current width and height of the game client
@@ -40,6 +43,10 @@ public class Hud {
         upgradesDisplay();
     }
 
+    public void registerTurnManager(TurnManager<UserTurn> turnManager){
+        this.turnManager = turnManager;
+    }
+
     private void upgradesDisplay(){
         ImageButton a = AssetManager.getInstance().upgradeButton(AssetManager.Upgrade.SPEED);
         ImageButton b = AssetManager.getInstance().upgradeButton(AssetManager.Upgrade.STAMINA);
@@ -47,19 +54,28 @@ public class Hud {
         a.setPosition(573, 610);
         b.setPosition(620, 610);
         c.setPosition(668, 610);
-        a.addListener(new ClickListener() {
+        a.addListener(new ClickListener() {//SPEED
             public void clicked(InputEvent event, float x, float y){
-
+                if(turnManager.getTurnId().getTank().getMoney() >= 100){
+                    turnManager.getTurnId().getTank().changeMoney(false, 100);
+                    turnManager.getTurnId().getTank().toggleSpeedMultiplier(true);
+                }
             }
         });
-        b.addListener(new ClickListener() {
+        b.addListener(new ClickListener() {//STAMINA
             public void clicked(InputEvent event, float x, float y){
-
+                if(turnManager.getTurnId().getTank().getMoney() >= 100) {
+                    turnManager.getTurnId().getTank().changeMoney(false, 100);
+                    turnManager.getTurnId().getTank().toggleStaminaMultiplier(false);
+                }
             }
         });
-        c.addListener(new ClickListener() {
+        c.addListener(new ClickListener() {//STRENGTH
             public void clicked(InputEvent event, float x, float y){
-
+                if(turnManager.getTurnId().getTank().getMoney() >= 100) {
+                    turnManager.getTurnId().getTank().changeMoney(false, 100);
+                    turnManager.getTurnId().getTank().toggleStrengthMultiplier(false);
+                }
             }
         });
         upgrades.addActor(a);

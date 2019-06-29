@@ -9,11 +9,11 @@ public class PlayerHud {
 
     private int x;
     private int y;
-    private int damage = 100;
+    private float damage = 100;
     private String name;
     private BitmapFont font;
     private int money = 100;
-    private int fuel = 100;
+    private float fuel = 100;
 
     private Tank tank;
 

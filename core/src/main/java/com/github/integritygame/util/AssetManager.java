@@ -1,6 +1,7 @@
 package com.github.integritygame.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,7 +41,8 @@ public class AssetManager {
     private String helpText;
     private BitmapFont titleFont;
     private BitmapFont defaultFont;
-    private Map<Background, Texture> backgrounds;
+    private Map<Background, FileHandle> backgrounds;
+    private Map<Background, FileHandle> foregrounds;
     private Map<BulletData.BulletName, Texture> bullets;
     private Map<TankStyles, Texture[]> tankTextures;
     private Map<PowerUp, Texture> powerups;
@@ -62,9 +64,13 @@ public class AssetManager {
         defaultFont = new BitmapFont();
 
         backgrounds = new HashMap<>();
-        backgrounds.put(Background.DESERT, new Texture(Gdx.files.internal("backgrounds/tank-desert-background.jpeg")));
-        backgrounds.put(Background.GRASS, new Texture(Gdx.files.internal("backgrounds/tank-grass-background.jpeg")));
-        backgrounds.put(Background.HOME, new Texture(Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg")));
+        backgrounds.put(Background.DESERT, Gdx.files.internal("backgrounds/desert-background.jpg"));
+        backgrounds.put(Background.GRASS, Gdx.files.internal("backgrounds/green-bg-no-ground.jpeg"));
+        backgrounds.put(Background.HOME, Gdx.files.internal("backgrounds/tank-main-menu-background.jpeg"));
+
+        foregrounds = new HashMap<>();
+        foregrounds.put(Background.DESERT, Gdx.files.internal("backgrounds/desert-ground.jpeg"));
+        foregrounds.put(Background.GRASS, Gdx.files.internal("backgrounds/green-ground.jpeg"));
 
         bullets = new HashMap<>();
         bullets.put(BulletData.BulletName.SMALL, new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png")));
@@ -76,14 +82,16 @@ public class AssetManager {
         tankTextures.put(TankStyles.BLUE_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/BlueTankBody.png")), new Texture(Gdx.files.internal("tanks/BlueTankTurret.png"))});
         tankTextures.put(TankStyles.LIGHT_GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/LightGreenTankBody.png")), new Texture(Gdx.files.internal("tanks/LightGreenTankTurret.png"))});
 
+
+
         powerups = new HashMap<>();
         powerups.put(PowerUp.FUEL, new Texture(Gdx.files.internal("petrol.png")));
         powerups.put(PowerUp.MONEY, new Texture(Gdx.files.internal("money.png")));
 
         upgrades = new HashMap<>();
-        upgrades.put(Upgrade.SPEED, new Texture(Gdx.files.internal("money.png")));
-        upgrades.put(Upgrade.STAMINA, new Texture(Gdx.files.internal("money.png")));
-        upgrades.put(Upgrade.STRENGTH, new Texture(Gdx.files.internal("money.png")));
+        upgrades.put(Upgrade.SPEED, new Texture(Gdx.files.internal("speed.png")));
+        upgrades.put(Upgrade.STAMINA, new Texture(Gdx.files.internal("stamina.png")));
+        upgrades.put(Upgrade.STRENGTH, new Texture(Gdx.files.internal("strength.png")));
     }
 
     public static synchronized AssetManager getInstance() {
@@ -135,8 +143,12 @@ public class AssetManager {
         return image;
     }
 
-    public Texture getBackgrounds(Background background) {
+    public FileHandle getBackgrounds(Background background) {
         return backgrounds.get(background);
+    }
+
+    public FileHandle getGroundTexture(Background type) {
+        return foregrounds.get(type);
     }
 
     public Texture getBullets(BulletData.BulletName bullet) {
