@@ -2,10 +2,18 @@ package com.github.integritygame.util;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.integritygame.objects.*;
 import com.github.integritygame.screens.ScreenManager;
 import com.github.integritygame.util.AssetManager.Background;
@@ -23,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class GameManager {
 
@@ -42,8 +51,13 @@ public class GameManager {
 
     private int graphicsWidth;
     private int graphicsHeight;
-    
+
     private Texture background;
+
+    private Stage powerUpStage;
+    private Stage upgrades;
+
+    private float timeAux;
 
     /**
      * Create a game manager
@@ -53,11 +67,13 @@ public class GameManager {
      * @param spriteBatch    SpriteBatch so we can render them instead of creating a new one
      * @param shapeRenderer  ShapeRenderer so we can render them instead of creating a new one
      */
-    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
+    public GameManager(int graphicsWidth, int graphicsHeight, SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Stage powerUpStage, Stage upgrades) {
         this.spriteBatch = spriteBatch;
         this.shapeRenderer = shapeRenderer;
         this.graphicsWidth = graphicsWidth;
         this.graphicsHeight = graphicsHeight;
+        this.powerUpStage = powerUpStage;
+        this.upgrades = upgrades;
 
         configureTanksAndUserTurn();
         configureHud();
@@ -77,21 +93,22 @@ public class GameManager {
     }
 
     private void configureHud() {
-        hud = new Hud(graphicsWidth, graphicsHeight);
+        hud = new Hud(graphicsWidth, graphicsHeight, upgrades);
         List<PlayerHud> players = hud.getPlayerHuds();
         players.get(0).setTank(userA.getTank());
         players.get(1).setTank(userB.getTank());
+        hud.registerTurnManager(turnManager);
     }
 
     private void configureGameWorld() {
         EdgeShape terrain = new EdgeShape();
         terrain.set(0, START_HEIGHT, graphicsWidth, START_HEIGHT);
         game = new GameWorld(terrain);
-        
+
         userA.getTank().setTankBody(game.addTank(30, START_HEIGHT + 1, userA.getTank()));
         userB.getTank().setTankBody(game.addTank(graphicsWidth - 40, START_HEIGHT + 1, userB.getTank()));
         bullets = new BulletsController(graphicsWidth, graphicsHeight, game);
-        
+
         try {
             BufferedImage image = ImageIO.read(AssetManager.getInstance().getBackgrounds(VariableManager.getInstance().getBackground()).read());
             Graphics2D backgroundGraphics = image.createGraphics();
@@ -109,7 +126,7 @@ public class GameManager {
             Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private Polygon groundPolygon(Vector2[] points) {
         Polygon polygon = new Polygon();
         polygon.addPoint(0, graphicsHeight);
@@ -118,7 +135,27 @@ public class GameManager {
         }
         polygon.addPoint(graphicsWidth, graphicsHeight);
         return polygon;
-        
+
+    }
+
+    private void addPowerUp(AssetManager.PowerUp powerUp){
+        int top = 550;
+        int bottom = 150;
+        int left = 0;
+        int right = 1220;
+        ImageButton a = AssetManager.getInstance().getPowerUpButton(powerUp);
+        a.setPosition(new Random().nextInt(right - left) + left,new Random().nextInt(top - bottom) + bottom);
+        a.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y){
+                if(powerUp.equals(AssetManager.PowerUp.FUEL)){
+                    turnManager.getTurnId().getTank().toggelFuel(true, 100);
+                }else if(powerUp.equals(AssetManager.PowerUp.MONEY)){
+                    turnManager.getTurnId().getTank().changeMoney(true, 100);
+                }
+                a.remove();
+            }
+        });
+        powerUpStage.addActor(a);
     }
 
     /**
@@ -127,26 +164,29 @@ public class GameManager {
     public void render(float delta) {
         game.update(delta);
 
+
         //Do logic when its a users turn else wait for next turn
         if (!bullets.isOnScreen()) {
+            Gdx.input.setInputProcessor(upgrades);
             turnManager.getTurnId().onTurn(bullets);
         } else {
             userA.getTank().stopTank();
             userB.getTank().stopTank();
         }
 
+
         //Always do this logic even if its not the users turn
         turnManager.getTurnId().always();
 
         //Render the users tanks and bullets and background
         spriteBatch.begin();
-       
+
         spriteBatch.draw(background, 0, 0, graphicsWidth, graphicsHeight);
         userA.getTank().renderSprite(spriteBatch);
         userB.getTank().renderSprite(spriteBatch);
         bullets.render(spriteBatch);
         spriteBatch.end();
-        
+
         hud.render(shapeRenderer, spriteBatch);
 
         if (turnManager.getTurnId().getTank().isDead()) {
@@ -173,6 +213,17 @@ public class GameManager {
 
         //Cleanup unseen bullets
         bullets.cleanOutsideBullets();
+
+        if(powerUpStage.getActors().size == 0){
+            if(timeAux>=10){ //10 seconds
+                addPowerUp(AssetManager.PowerUp.getRandomPowerUp());
+                timeAux=0;
+            }else{
+                timeAux+=delta;
+            }
+        }else{
+            Gdx.input.setInputProcessor(powerUpStage);
+        }
     }
 
 }

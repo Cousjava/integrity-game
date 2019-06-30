@@ -112,7 +112,7 @@ public class Tank {
     }
 
     public void stopTank() {
-        tankBody.setLinearVelocity(0, 0);
+        tankBody.setLinearVelocity(0, -10);
     }
 
     /**

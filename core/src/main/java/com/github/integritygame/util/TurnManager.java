@@ -27,7 +27,7 @@ public class TurnManager<e> {
      *
      * @return Current users ID
      */
-    e getTurnId() {
+    public e getTurnId() {
         return turnId;
     }
 

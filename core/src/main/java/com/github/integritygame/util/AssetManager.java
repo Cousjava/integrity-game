@@ -6,14 +6,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.github.integritygame.objects.BulletData;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AssetManager {
 
@@ -22,6 +21,20 @@ public class AssetManager {
     public enum Background {DESERT, GRASS, HOME}
 
     public enum TankStyles {BLUE_TANK, GREEN_TANK, LIGHT_GREEN_TANK}
+
+    public enum PowerUp {
+        MONEY, FUEL;
+
+        public static PowerUp getRandomPowerUp() {
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+    public enum Upgrade {
+        STAMINA, SPEED, STRENGTH
+    }
+
 
     private Skin skin;
     private Skin customButton;
@@ -32,6 +45,8 @@ public class AssetManager {
     private Map<Background, FileHandle> foregrounds;
     private Map<BulletData.BulletName, Texture> bullets;
     private Map<TankStyles, Texture[]> tankTextures;
+    private Map<PowerUp, Texture> powerups;
+    private Map<Upgrade, Texture> upgrades;
 
     private AssetManager() {
         initAssets();
@@ -56,7 +71,7 @@ public class AssetManager {
         foregrounds = new HashMap<>();
         foregrounds.put(Background.DESERT, Gdx.files.internal("backgrounds/desert-ground.jpeg"));
         foregrounds.put(Background.GRASS, Gdx.files.internal("backgrounds/green-ground.jpeg"));
-        
+
         bullets = new HashMap<>();
         bullets.put(BulletData.BulletName.SMALL, new Texture(Gdx.files.internal("projectiles/ProjectileBlack.png")));
         bullets.put(BulletData.BulletName.MEDIUM, new Texture(Gdx.files.internal("projectiles/ProjectileBlackGreen.png")));
@@ -67,8 +82,16 @@ public class AssetManager {
         tankTextures.put(TankStyles.BLUE_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/BlueTankBody.png")), new Texture(Gdx.files.internal("tanks/BlueTankTurret.png"))});
         tankTextures.put(TankStyles.LIGHT_GREEN_TANK, new Texture[]{new Texture(Gdx.files.internal("tanks/LightGreenTankBody.png")), new Texture(Gdx.files.internal("tanks/LightGreenTankTurret.png"))});
 
-        
-        
+
+
+        powerups = new HashMap<>();
+        powerups.put(PowerUp.FUEL, new Texture(Gdx.files.internal("petrol.png")));
+        powerups.put(PowerUp.MONEY, new Texture(Gdx.files.internal("money.png")));
+
+        upgrades = new HashMap<>();
+        upgrades.put(Upgrade.SPEED, new Texture(Gdx.files.internal("speed.png")));
+        upgrades.put(Upgrade.STAMINA, new Texture(Gdx.files.internal("stamina.png")));
+        upgrades.put(Upgrade.STRENGTH, new Texture(Gdx.files.internal("strength.png")));
     }
 
     public static synchronized AssetManager getInstance() {
@@ -106,10 +129,24 @@ public class AssetManager {
         return buttonStyle;
     }
 
+    public ImageButton upgradeButton(Upgrade upgrade){
+        ImageButton image = new ImageButton(skin, upgrade.toString());
+        image.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(upgrades.get(upgrade), 32, 32));
+        image.setSize(32,32);
+        return image;
+    }
+
+    public ImageButton getPowerUpButton(PowerUp powerUp){
+        ImageButton image = new ImageButton(skin, powerUp.toString());
+        image.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(powerups.get(powerUp), 32, 32));
+        image.setSize(32,32);
+        return image;
+    }
+
     public FileHandle getBackgrounds(Background background) {
         return backgrounds.get(background);
     }
-    
+
     public FileHandle getGroundTexture(Background type) {
         return foregrounds.get(type);
     }

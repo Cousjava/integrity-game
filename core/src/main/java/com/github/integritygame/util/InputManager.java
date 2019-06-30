@@ -32,13 +32,16 @@ public class InputManager {
             if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_LEFT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_LEFT_MOVE)))) {
                 tank.updateX(false);
                 tank.toggelFuel(false, 1);
-
             }
             if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_RIGHT_MOVE))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_RIGHT_MOVE)))) {
                 tank.updateX(true);
                 tank.toggelFuel(false, 1);
             }
-        }        
+            tank.stopTank();
+        }
+        if(tank.getFuel() < 5){
+            tank.stopTank();
+        }
         if ((control.equals(Control.LEFT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.LEFT_AIM_DOWN))) || (control.equals(Control.RIGHT) && Gdx.input.isKeyPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.RIGHT_AIM_UP)))) {
             tank.rotate(true);
         }
@@ -69,17 +72,7 @@ public class InputManager {
             }
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-            tank.toggleSpeedMultiplier(true);
-        }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            tank.toggleStaminaMultiplier(false);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-            tank.toggleStrengthMultiplier(false);
-        }
         //Debug use -- System.out.println(tank.multipliersToString());
     }
 
@@ -97,7 +90,7 @@ public class InputManager {
     public void tankFire(BulletsController bullets) {
         if (Gdx.input.isKeyJustPressed(KeyBindingManager.keyMap.get(KeyBindingManager.ConfigurableKeys.FIRE))) {
             BulletData bulletData = new BulletData(VariableManager.getInstance().getString("bulletType"));
-            Vector2 bullet = new Vector2(1, 1).setLength2(1000f);
+            Vector2 bullet = new Vector2(1, 1).setLength2(1000000000000f);
             bullet.setAngle(tank.getRotation());
             bullets.addBullet(tank.getBarrelEnd(), bullet, tank, bulletData);
             tank.changeMoney(false, bulletData.getBulletData().costOnFire);
