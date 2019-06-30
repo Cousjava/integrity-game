@@ -12,7 +12,7 @@ import org.junit.Assert;
 public class TankTest extends GameTest {
     
     private static int OFFSET = 18;
-    private static int HEIGHT = 24;
+    private static int HEIGHT = 324;
 
     @Test
     public void testTankMovementPositive() {
